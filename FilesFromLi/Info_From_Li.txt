@@ -1,0 +1,10 @@
+Here's the link to download the files: https://www.dropbox.com/sh/n6l6xc21odm41nu/AAB5kpBXyO2uK40h6fY8XEUQa?dl=0. 
+
+beadDisplacements_TecplotFormat.dat: tracking beads information.
+Cell1_2000Facet_2D_01.inp: cell surface mesh.
+Cell1_2000Facet_Linear_match2ref_01.inp: matrix volume mesh and a few other things.
+Cell1_GFP_01.smooth.stl: cell geometry.
+gel.vtk: vtk file created from their mesh.
+gelRemesh_20more.vtk: our mesh created by constraining the mesh vertices on the tracking beads and adding more vertices to maintain the mesh quality.
+
+Basically what you need is only the .dat and .stl files. The other files are only for your reference. Let me know if you have any doubts.
