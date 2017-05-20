@@ -3,3 +3,6 @@
 
 # Do not ignore self
 !.gitignore
+
+# Ignore the build directory
+build/
