@@ -35,13 +35,36 @@ namespace GMD
     }
 
     // Create Face
-    
+    pSurface plane;
+    pGFace face;
+    int face_dirs[4] = {1,1,1,1};
+    int loopDef[1] = {0};
+    plane = SSurface_createPlane(vert_xyz[0], vert_xyz[1], vert_xyz[2]);
+    std::cout << "Created Plane" << std::endl;
+    face = GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
+
+    std::cout << "Inserted Face" << std::endl;
 
     return model;
   }
 
   void write_model(pGModel model, const char* filename)
   {
+    std::cout << "MODEL INFORMATION: "
+      << "\nVertices: "<< GM_numVertices(model)
+      << "\nEdges: "<< GM_numEdges(model)
+      << "\nFaces: "<< GM_numFaces(model)
+      << "\nRegions: "<< GM_numRegions(model) << std::endl;
+
+    int writestat = GM_write(model, filename, 0,0);
+    if(writestat == 0)
+    {
+      std::cout << "Model " << filename << " written." << std::endl;
+    }
+    else
+    {
+      std::cout << "Model " << filename << "failed to be written." << std::endl;
+    }
 
     return;
   }

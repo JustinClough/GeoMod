@@ -8,6 +8,7 @@
 
 // Standard C++ Headers
 #include <iostream>
+#include <stdio.h>
 #include <vector>
 
 namespace GMD

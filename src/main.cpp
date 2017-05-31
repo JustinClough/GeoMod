@@ -10,7 +10,7 @@ int main( int argc, char** argv)
 
   pGModel model = GMD::create_2D_bar( 6.0, 4.0);
 
-  GMD::write_model(model, "name");
+  GMD::write_model(model, "name.smd");
   
   GMD::release_model(model);
   
