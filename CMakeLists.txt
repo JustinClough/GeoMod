@@ -4,7 +4,7 @@ project(GeoMod VERSION 1.0.0 LANGUAGES CXX)
 set(PROJ_PREFIX /lore/clougj/GeoMod)
 
 include_directories(${PROJ_PREFIX})
-set(SOURCES GeoMod.cpp ${PROJ_PREFIX}/GeoMod.hpp)
+set(SOURCE_PREFIX ${PROJ_PREFIX}/src/)
 
 # Allow the user to indicate where they installed SCOREC
 # via "-DSCOREC_PREFIX=/home/somewhere" when calling `cmake`
@@ -27,8 +27,8 @@ else()
       )
 endif()
 
-add_executable(GeoMod main.cpp)
-target_include_directories( GeoMod PRIVATE ${SOURCES})
+add_executable(GeoMod ${SOURCE_PREFIX}/main.cpp ${SOURCE_PREFIX}/GeoMod.cpp)
+target_include_directories( GeoMod PRIVATE ${SOURCE_PREFIX})
 
 #for any targets that use PUMI, just use this command
 #to it to include the right directories and link to all
