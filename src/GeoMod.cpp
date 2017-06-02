@@ -5,6 +5,12 @@
 
 namespace GMD
 {
+  
+  void release_mesh(pMesh mesh)
+  {
+    M_release(mesh);
+    return;
+  }
 
   void write_mesh(pMesh mesh, const char* filename)
   {

@@ -21,6 +21,8 @@ namespace GMD
 
   void release_model(pGModel model);
 
+  void release_mesh(pMesh mesh);
+
   void sim_start();
 
   void sim_end();
