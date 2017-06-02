@@ -5,6 +5,27 @@
 
 namespace GMD
 {
+
+  void write_mesh(pMesh mesh, const char* filename)
+  {
+    std::cout << "MESH INFORMATION: "
+      << "\nVertices: "<< M_numVertices(mesh)
+      << "\nEdges: "<< M_numEdges(mesh)
+      << "\nFaces: "<< M_numFaces(mesh)
+      << "\nRegions: "<< M_numRegions(mesh) << std::endl;
+
+    int writestat = M_write(mesh, filename, 0,0);
+    if(writestat == 0)
+    {
+      std::cout << "Mesh " << filename << " written." << std::endl;
+    }
+    else
+    {
+      std::cout << "Mesh " << filename << "failed to be written." << std::endl;
+    }
+    return;
+  }
+
   pGModel create_2D_bar( double length, double width)
   {
     // Create an empty modeling space to work with
@@ -48,7 +69,7 @@ namespace GMD
     return model;
   }
 
-  void write_model(pGModel model, const char* filename)
+  void write_model(pGModel& model, const char* filename)
   {
     std::cout << "MODEL INFORMATION: "
       << "\nVertices: "<< GM_numVertices(model)

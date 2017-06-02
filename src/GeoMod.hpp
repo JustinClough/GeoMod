@@ -15,7 +15,9 @@ namespace GMD
 {
   pGModel create_2D_bar( double length, double width);
 
-  void write_model(pGModel model, const char* filename);
+  void write_mesh(pMesh& mesh, const char* filename);
+
+  void write_model(pGModel& model, const char* filename);
 
   void release_model(pGModel model);
 
