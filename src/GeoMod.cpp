@@ -5,6 +5,31 @@
 
 namespace GMD
 {
+  gmd_t::gmd_t(pMesh m, pGModel geom)
+  {
+    set_mesh( m);
+    set_model( geom);
+    return;
+  }
+
+  gmd_t::~gmd_t()
+  {
+    release_model(model);
+    release_mesh(mesh);
+    return;
+  }
+
+  void gmd_t::set_mesh( pMesh m)
+  { mesh = m;}
+  
+  void gmd_t::set_model( pGModel geom)
+  { model = geom;}
+ 
+  pMesh gmd_t::get_mesh()
+  { return mesh; }
+
+  pGModel gmd_t::get_model()
+  { return model; }
   
   void release_mesh(pMesh mesh)
   {
@@ -12,8 +37,9 @@ namespace GMD
     return;
   }
 
-  void write_mesh(pMesh mesh, const char* filename)
+  void gmd_t::write_mesh(const char* filename)
   {
+    pMesh mesh = get_mesh();
     std::cout << "MESH INFORMATION: "
       << "\nVertices: "<< M_numVertices(mesh)
       << "\nEdges: "<< M_numEdges(mesh)
@@ -75,7 +101,7 @@ namespace GMD
     return model;
   }
 
-  void write_model(pGModel& model, const char* filename)
+  void gmd_t::write_model( const char* filename)
   {
     std::cout << "MODEL INFORMATION: "
       << "\nVertices: "<< GM_numVertices(model)
