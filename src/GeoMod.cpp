@@ -1,10 +1,21 @@
 // This File's header
 #include "GeoMod.hpp"
-
 // NOTE: All needed headers belong in GeoMod.hpp
 
 namespace GMD
 {
+  void print_error(std::string message)
+  {
+    std::cout << "ERROR: " << message << "\n" ;
+    std::abort();
+  }
+
+  mesh_helper_t::mesh_helper_t( pMesh m, pGModel geom)
+  {
+
+    return;
+  }
+
   gmd_t::gmd_t(pMesh m, pGModel geom)
   {
     set_mesh( m);
@@ -19,18 +30,30 @@ namespace GMD
     return;
   }
 
+  void gmd_t::update_mesh( pMesh m)
+  { 
+    set_mesh(m);
+    return;
+  }
+
+  void gmd_t::update_model( pGModel geom)
+  {
+    set_model(geom);
+    return;
+  }
+
   void gmd_t::set_mesh( pMesh m)
   { mesh = m;}
-  
+
   void gmd_t::set_model( pGModel geom)
   { model = geom;}
- 
+
   pMesh gmd_t::get_mesh()
   { return mesh; }
 
   pGModel gmd_t::get_model()
   { return model; }
-  
+
   void release_mesh(pMesh mesh)
   {
     M_release(mesh);
@@ -68,9 +91,9 @@ namespace GMD
     // Create model vertices
     pGVertex verts[4];
     double vert_xyz[4][3] ={{ 0.0, 0.0, 0.0},
-                            { length, 0.0, 0.0},
-                            { length, width, 0.0},
-                            { 0.0, width, 0.0}}; 
+      { length, 0.0, 0.0},
+      { length, width, 0.0},
+      { 0.0, width, 0.0}}; 
     for(int i=0; i<4; i++)
     {
       verts[i] = GIP_insertVertexInRegion( part, vert_xyz[i], outRegion);
@@ -101,25 +124,63 @@ namespace GMD
     return model;
   }
 
+  void insert_vertex_on_face( pGModel geom, double* point)
+  {
+    pGIPart part = GM_part(geom);
+    pGRegion out_region = GIP_outerRegion(part);
+
+    GFIter f_it = GIP_faceIter( part);
+    GFIter_reset(f_it);
+    pGFace face = GFIter_next(f_it);
+
+    //GIP_insertVertexInRegion( part, point, out_region);
+    GIP_insertVertexInFace(part, point, face);
+
+    GFIter_delete(f_it);
+    return;
+  }
+
   void gmd_t::write_model( const char* filename)
   {
-    std::cout << "MODEL INFORMATION: "
-      << "\nVertices: "<< GM_numVertices(model)
-      << "\nEdges: "<< GM_numEdges(model)
-      << "\nFaces: "<< GM_numFaces(model)
-      << "\nRegions: "<< GM_numRegions(model) << std::endl;
 
-    int writestat = GM_write(model, filename, 0,0);
-    if(writestat == 0)
+    if(GM_isValid(model, 0, 0))
     {
-      std::cout << "Model " << filename << " written." << std::endl;
+      std::cout << "MODEL INFORMATION: "
+        << "\nVertices: "<< GM_numVertices(model)
+        << "\nEdges: "<< GM_numEdges(model)
+        << "\nFaces: "<< GM_numFaces(model)
+        << "\nRegions: "<< GM_numRegions(model) << std::endl;
+
+      int writestat = GM_write(model, filename, 0,0);
+      if(writestat == 0)
+      {
+        std::cout << "Model " << filename << " written." << std::endl;
+      }
+      else
+      {
+        std::cout << "Model " << filename << "failed to be written." << std::endl;
+      }
     }
     else
-    {
-      std::cout << "Model " << filename << "failed to be written." << std::endl;
-    }
+    { print_error("MODEL NOT VALID"); }
 
     return;
+  }
+
+  pMesh create_mesh( pGModel geom)
+  {
+    pMesh mesh = M_new(0, geom);
+    pACase m_case = MS_newMeshCase(geom);
+
+    MS_setMeshSize( m_case, GM_domain(geom), 2, 0.1, 0);
+    MS_setGlobalSizeGradationRate( m_case, 3); 
+    double point[] = {0.0, 0.0, 0.0};
+    MS_addPointRefinement(m_case, 0.1, point);
+
+    SurfaceMesher_execute( SurfaceMesher_new(m_case, mesh), 0);
+    VolumeMesher_execute ( VolumeMesher_new(m_case, mesh), 0);
+
+    return mesh;
   }
 
   void release_model(pGModel model)
@@ -134,14 +195,143 @@ namespace GMD
     SimUtil_start();
     Sim_readLicenseFile(0);
     SimModel_start();
+    MS_init();
   }
 
   void sim_end()
   {
     std::cout << "Stopping Simmetrix" << std::endl;
+    MS_exit();
     SimModel_stop();
     Sim_unregisterAllKeys();
     SimUtil_stop();
   }
 
+  pGModel make_box(double length)
+  {
+    pGModel model;
+    pGIPart part;
+    pGRegion outerRegion;
+    pGVertex vertices[8]; // array to store the returned model vertices
+    pGEdge edges[12]; // array to store the returned model edges
+    double hl = length/2;
+    // Create a new empty model
+    model = GM_new();
+    part = GM_part(model);
+    outerRegion = GIP_outerRegion(part);
+
+    double vert_xyz[8][3] = { {-hl,-hl,-hl},
+      {length-hl,-hl,-hl},
+      {length-hl,length-hl,-hl},
+      {-hl,length-hl,-hl}, 
+      {-hl,-hl,length-hl},
+      {length-hl,-hl,length-hl},
+      {length-hl,length-hl,length-hl},
+      {-hl,length-hl,length-hl} };
+
+    // First we'll add the vertices
+    int i;
+    for(i=0; i<8; i++)
+      vertices[i] = GIP_insertVertexInRegion(part,vert_xyz[i],outerRegion);
+
+    // Now we'll add the edges
+    pGVertex startVert, endVert;
+    double point0[3],point1[3];  // xyz locations of the two vertices
+    pCurve linearCurve;
+
+    // First, the bottom edges at z=0, connecting the first four vertices in the array
+    for(i=0; i<4; i++) {
+      startVert = vertices[i];
+      endVert = vertices[(i+1)%4];
+      GV_point(startVert, point0);
+      GV_point(endVert, point1);
+      linearCurve = SCurve_createLine(point0, point1);
+      edges[i] = GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
+    }
+
+    // Now the side edges of the box, traveling from z=0 to z=10
+    for(i=0; i<4; i++) {
+      startVert = vertices[i];
+      endVert = vertices[i+4];
+      GV_point(startVert,point0);
+      GV_point(endVert,point1);
+      linearCurve = SCurve_createLine(point0,point1);
+      edges[i+4] = GIP_insertEdgeInRegion(part,startVert, endVert, linearCurve, 1, outerRegion);
+    }
+
+    // Finally the top edges at z=10
+    for(i=0; i<4; i++) {
+      startVert = vertices[i+4];
+      endVert = vertices[(i+1)%4+4];
+      GV_point(startVert, point0);
+      GV_point(endVert, point1);
+      linearCurve = SCurve_createLine(point0, point1);
+      edges[i+8] = GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
+    }
+
+    // Now add the faces
+    double corner[3], xPt[3], yPt[3];  // the points defining the surface of the face
+    pGEdge faceEdges[4];               // the array of edges connected to the face
+    int faceDirs[4];                   // the direction of the edge with respect to the face
+    int loopDef[1] = {0};        
+    pSurface planarSurface;
+
+    // First the bottom face
+    // Define the surface - we want the normal to point out of the box
+    for(i=0; i<3; i++)
+    {
+      corner[i] = vert_xyz[1][i];  // the corner is at {length,0,0}
+      xPt[i] = vert_xyz[0][i];     // the xPt is at {0,0,0}
+      yPt[i] = vert_xyz[2][i];     // the yPt is at {length,length,0}
+    }
+    planarSurface = SSurface_createPlane(corner,xPt,yPt);
+    // Define and insert the face into the outer "void" region
+    for(i=0; i<4; i++) {
+      faceDirs[i] = 0;
+      faceEdges[i] = edges[3-i]; // edge order 3->2->1->0
+    }
+    GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+
+    // Now the side faces of the box - each side face has the edges defined in the same way
+    // for the first side face, the edge order is 0->5->8->4
+    for(i=0; i<4; i++) {
+      //Define surface such that normals all point out of the box
+      for(int j=0; j<3; j++) {
+        corner[j] = vert_xyz[i][j];      // the corner is the lower left vertex location
+        xPt[j] = vert_xyz[(i+1)%4][j];   // the xPt the lower right vertex location
+        yPt[j] = vert_xyz[i+4][j];       // the yPt is the upper left vertex location
+      }
+      planarSurface = SSurface_createPlane(corner,xPt,yPt);
+
+      faceEdges[0] = edges[i];
+      faceDirs[0] = 1;
+      faceEdges[1] = edges[(i+1)%4+4];
+      faceDirs[1] = 1;
+      faceEdges[2] = edges[i+8];
+      faceDirs[2] = 0;
+      faceEdges[3] = edges[i+4];
+      faceDirs[3] = 0;
+
+      GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+    }
+
+    // Finally the top face of the box
+    // Define the surface - we want the normal to point out of the box
+    for(i=0; i<3; i++) {
+      corner[i] = vert_xyz[4][i]; 
+      xPt[i] = vert_xyz[5][i];   
+      yPt[i] = vert_xyz[7][i];  
+    }
+    planarSurface = SSurface_createPlane(corner,xPt,yPt);
+    // Define and insert the face
+    for(i=0; i<4; i++) {
+      faceDirs[i] = 1;
+      faceEdges[i] = edges[i+8]; // edge order 8->9->10->11
+    }
+    // when this face is inserted, a new model region will automatically be created
+    GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+
+    // cleanup
+    return model;
+  }
 } // END namespace GMD
