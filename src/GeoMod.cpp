@@ -30,41 +30,45 @@ namespace GMD
       }
       else
       { // No possible solution
-        print_error("CANNOT DETERMINE CLASSIFICATION.");
+        print_error("CANNOT DETERMINE CLASSIFICATION FOR POINT PLACEMENT.");
       }
 
       pGVertex vert = GIP_insertVertexInRegion( part, point, region);
       placed = true;
     }
     GRIter_delete(r_it);
+
+    if(!placed)
+    { print_error("FAILED TO PLACE POINT");}
   
     return;
   }
 
 
-  mesh_helper_t::mesh_helper_t (pGModel model)
+  mesh_helper_t::mesh_helper_t ( pGModel geom)
   {
     mesh_order = 1;
     mesh_size = 0.1;
     grad_rate = 2.0;
-    m_case = MS_newMeshCase( model);
-    MS_setMeshOrder( m_case, 2);
+    mesh = M_new( 0, geom);
+    m_case = MS_newMeshCase( geom);
+
+    if(m_case == NULL)
+    { print_error("NULL m_case");}
     return;
   }
 
   mesh_helper_t::~mesh_helper_t()
   {
     MS_deleteMeshCase( m_case);
+    release_mesh( mesh);
     return;
   }
 
   gmd_t::gmd_t (pGModel geom)
   {
-    mesh_helper_t m_h (geom);
-    m_helper = &m_h;
     mesh_name = NULL;
     model_name = NULL;
-    set_mesh( NULL);
     set_model( geom);
     return;
   }
@@ -96,27 +100,28 @@ namespace GMD
   gmd_t::~gmd_t()
   {
     release_model(model);
-    release_mesh(mesh);
     return;
   }
 
   void gmd_t::update_model( pGModel geom)
   {
+    release_model(this->model);
     set_model(geom);
     return;
   }
 
   void gmd_t::set_mesh( pMesh m)
-  { mesh = m;}
+  { m_helper->mesh = m;}
 
   void gmd_t::set_model( pGModel geom)
   { 
     model = geom;
-    mesh_helper_t m_helper (geom);
+    mesh_helper_t mh (geom);
+    m_helper = &mh;
   }
 
   pMesh gmd_t::get_mesh()
-  { return mesh; }
+  { return m_helper->mesh; }
 
   pGModel gmd_t::get_model()
   { return model; }
@@ -250,11 +255,15 @@ namespace GMD
 
   pMesh gmd_t::create_mesh( )
   {
-    pMesh mesh = M_new(0, model);
-    SurfaceMesher_execute( SurfaceMesher_new(m_helper->m_case, mesh), 0);
-    VolumeMesher_execute ( VolumeMesher_new(m_helper->m_case, mesh), 0);
+    pModelItem model_domain = GM_domain(model);
+    MS_setMeshSize( m_helper->m_case, model_domain, 2, 1.0, 0);
 
-    return mesh;
+    pSurfaceMesher surface_mesher = SurfaceMesher_new( m_helper->m_case, m_helper->mesh);
+    SurfaceMesher_execute( surface_mesher, 0);
+    pVolumeMesher volume_mesher = VolumeMesher_new( m_helper->m_case, m_helper->mesh);
+    VolumeMesher_execute ( volume_mesher, 0);
+
+    return m_helper->mesh;
   }
 
   void release_model(pGModel model)

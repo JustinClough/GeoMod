@@ -14,6 +14,10 @@
 
 namespace GMD
 {
+  class refine_t;
+  class mesh_helper_t;
+  class gmd_t;
+  
   class refine_t
   {
     
@@ -22,19 +26,22 @@ namespace GMD
 
   class mesh_helper_t
   {
-    public:
+    friend class gmd_t;
+    private:
+      mesh_helper_t ( pGModel geom);
+      ~mesh_helper_t ();
       int mesh_order;
       double mesh_size;
       double grad_rate;
-      mesh_helper_t ( pGModel model);
-      ~mesh_helper_t ();
       pACase m_case;
       double global_refine;
+      pMesh mesh;
       //std::vector<refine_t> refines;
   };
 
   class gmd_t
   {
+    friend class mesh_helper_t;
     public:
       gmd_t( pGModel geom);
       ~gmd_t();
@@ -56,7 +63,6 @@ namespace GMD
       void set_model(pGModel geom);
       char* mesh_name;
       char* model_name;
-      pMesh mesh;
       pGModel model;
       mesh_helper_t* m_helper;
   };
