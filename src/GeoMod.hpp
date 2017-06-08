@@ -14,34 +14,8 @@
 
 namespace GMD
 {
-  class refine_t;
-  class mesh_helper_t;
-  class gmd_t;
-  
-  class refine_t
-  {
-    
-
-  };
-
-  class mesh_helper_t
-  {
-    friend class gmd_t;
-    private:
-      mesh_helper_t ( pGModel geom);
-      ~mesh_helper_t ();
-      int mesh_order;
-      double mesh_size;
-      double grad_rate;
-      pACase m_case;
-      double global_refine;
-      pMesh mesh;
-      //std::vector<refine_t> refines;
-  };
-
   class gmd_t
   {
-    friend class mesh_helper_t;
     public:
       gmd_t( pGModel geom);
       ~gmd_t();
@@ -59,12 +33,13 @@ namespace GMD
       pMesh create_mesh();
 
     protected:
-      void set_mesh(pMesh m);
+      void set_mesh( );
       void set_model(pGModel geom);
       char* mesh_name;
       char* model_name;
       pGModel model;
-      mesh_helper_t* m_helper;
+      pMesh mesh;
+      pACase m_case;
   };
 
   pGModel create_2D_rectangle( double y_length, double x_width);

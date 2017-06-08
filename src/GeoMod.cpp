@@ -44,32 +44,12 @@ namespace GMD
     return;
   }
 
-
-  mesh_helper_t::mesh_helper_t ( pGModel geom)
-  {
-    mesh_order = 1;
-    mesh_size = 0.1;
-    grad_rate = 2.0;
-    mesh = M_new( 0, geom);
-    m_case = MS_newMeshCase( geom);
-
-    if(m_case == NULL)
-    { print_error("NULL m_case");}
-    return;
-  }
-
-  mesh_helper_t::~mesh_helper_t()
-  {
-    MS_deleteMeshCase( m_case);
-    release_mesh( mesh);
-    return;
-  }
-
   gmd_t::gmd_t (pGModel geom)
   {
     mesh_name = NULL;
     model_name = NULL;
     set_model( geom);
+    set_mesh( );
     return;
   }
 
@@ -99,6 +79,8 @@ namespace GMD
 
   gmd_t::~gmd_t()
   {
+    MS_deleteMeshCase(m_case);
+    release_mesh(mesh);
     release_model(model);
     return;
   }
@@ -110,18 +92,20 @@ namespace GMD
     return;
   }
 
-  void gmd_t::set_mesh( pMesh m)
-  { m_helper->mesh = m;}
+  void gmd_t::set_mesh( )
+  { 
+    mesh = M_new(0, model);
+    m_case = MS_newMeshCase ( model);
+    return;
+  }
 
   void gmd_t::set_model( pGModel geom)
   { 
     model = geom;
-    mesh_helper_t mh (geom);
-    m_helper = &mh;
   }
 
   pMesh gmd_t::get_mesh()
-  { return m_helper->mesh; }
+  { return mesh; }
 
   pGModel gmd_t::get_model()
   { return model; }
@@ -256,14 +240,16 @@ namespace GMD
   pMesh gmd_t::create_mesh( )
   {
     pModelItem model_domain = GM_domain(model);
-    MS_setMeshSize( m_helper->m_case, model_domain, 2, 1.0, 0);
+    MS_setMeshSize( m_case, model_domain, 2, 1.0, 0);
 
-    pSurfaceMesher surface_mesher = SurfaceMesher_new( m_helper->m_case, m_helper->mesh);
+    pSurfaceMesher surface_mesher = SurfaceMesher_new( m_case, mesh);
     SurfaceMesher_execute( surface_mesher, 0);
-    pVolumeMesher volume_mesher = VolumeMesher_new( m_helper->m_case, m_helper->mesh);
+    pVolumeMesher volume_mesher = VolumeMesher_new( m_case, mesh);
     VolumeMesher_execute ( volume_mesher, 0);
 
-    return m_helper->mesh;
+    SurfaceMesher_delete(surface_mesher);
+    VolumeMesher_delete(volume_mesher);
+    return mesh;
   }
 
   void release_model(pGModel model)
