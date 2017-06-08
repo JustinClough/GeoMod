@@ -10,29 +10,57 @@ namespace GMD
     std::abort();
   }
 
-  mesh_helper_t::mesh_helper_t( pMesh m, pGModel geom)
+  mesh_helper_t::mesh_helper_t (pGModel model)
   {
-
+    m_case = MS_newMeshCase( model);
     return;
   }
 
-  gmd_t::gmd_t(pMesh m, pGModel geom)
+  mesh_helper_t::~mesh_helper_t()
   {
-    set_mesh( m);
+    MS_deleteMeshCase( m_case);
+    return;
+  }
+
+  gmd_t::gmd_t (pGModel geom)
+  {
+    mesh_helper_t m_h (geom);
+    m_helper = &m_h;
+
+    set_mesh( NULL);
     set_model( geom);
     return;
   }
 
-  gmd_t::~gmd_t()
+  void gmd_t::set_mesh_name( char* name)
   {
-    release_model(model);
-    release_mesh(mesh);
+    mesh_name = &name[0];
     return;
   }
 
-  void gmd_t::update_mesh( pMesh m)
-  { 
-    set_mesh(m);
+  void gmd_t::set_model_name( char* name)
+  {
+    model_name = &name[0];
+    return;
+  }
+
+  void gmd_t::verify_model( bool abort_on_fail)
+  {
+    if(GM_isValid(model, 0, 0))
+    {
+      return;
+    }
+    else if (abort_on_fail)
+    { print_error("MODEL NOT VALID");}
+    else
+    { std::cout << "MODEL" << model_name << " NOT VALID" << std::endl;return;}
+  }
+
+  gmd_t::~gmd_t()
+  {
+    delete m_helper;
+    release_model(model);
+    release_mesh(mesh);
     return;
   }
 
@@ -46,7 +74,10 @@ namespace GMD
   { mesh = m;}
 
   void gmd_t::set_model( pGModel geom)
-  { model = geom;}
+  { 
+    model = geom;
+    mesh_helper_t m_helper (geom);
+  }
 
   pMesh gmd_t::get_mesh()
   { return mesh; }
@@ -60,7 +91,19 @@ namespace GMD
     return;
   }
 
-  void gmd_t::write_mesh(const char* filename)
+  char* gmd_t::get_mesh_name()
+  {
+    char* ans = &mesh_name[0];
+    return ans;
+  }
+
+  char* gmd_t::get_model_name()
+  {
+    char* ans = &model_name[0];
+    return ans;
+  }
+
+  void gmd_t::write_mesh()
   {
     pMesh mesh = get_mesh();
     std::cout << "MESH INFORMATION: "
@@ -69,19 +112,19 @@ namespace GMD
       << "\nFaces: "<< M_numFaces(mesh)
       << "\nRegions: "<< M_numRegions(mesh) << std::endl;
 
-    int writestat = M_write(mesh, filename, 0,0);
+    int writestat = M_write(mesh, mesh_name, 0,0);
     if(writestat == 0)
     {
-      std::cout << "Mesh " << filename << " written." << std::endl;
+      std::cout << "Mesh " << mesh_name << " written." << std::endl;
     }
     else
     {
-      std::cout << "Mesh " << filename << "failed to be written." << std::endl;
+      std::cout << "Mesh " << mesh_name << "failed to be written." << std::endl;
     }
     return;
   }
 
-  pGModel create_2D_bar( double length, double width)
+  pGModel create_2D_rectangle( double y_length, double x_width)
   {
     // Create an empty modeling space to work with
     pGModel model = GM_new();
@@ -91,9 +134,9 @@ namespace GMD
     // Create model vertices
     pGVertex verts[4];
     double vert_xyz[4][3] ={{ 0.0, 0.0, 0.0},
-      { length, 0.0, 0.0},
-      { length, width, 0.0},
-      { 0.0, width, 0.0}}; 
+      { y_length, 0.0, 0.0},
+      { y_length, x_width, 0.0},
+      { 0.0, x_width, 0.0}}; 
     for(int i=0; i<4; i++)
     {
       verts[i] = GIP_insertVertexInRegion( part, vert_xyz[i], outRegion);
@@ -120,7 +163,6 @@ namespace GMD
     face = GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
 
     std::cout << "Inserted Face" << std::endl;
-
     return model;
   }
 
@@ -140,9 +182,8 @@ namespace GMD
     return;
   }
 
-  void gmd_t::write_model( const char* filename)
+  void gmd_t::write_model( )
   {
-
     if(GM_isValid(model, 0, 0))
     {
       std::cout << "MODEL INFORMATION: "
@@ -151,14 +192,14 @@ namespace GMD
         << "\nFaces: "<< GM_numFaces(model)
         << "\nRegions: "<< GM_numRegions(model) << std::endl;
 
-      int writestat = GM_write(model, filename, 0,0);
+      int writestat = GM_write(model, model_name, 0,0);
       if(writestat == 0)
       {
-        std::cout << "Model " << filename << " written." << std::endl;
+        std::cout << "Model " << model_name << " written." << std::endl;
       }
       else
       {
-        std::cout << "Model " << filename << "failed to be written." << std::endl;
+        std::cout << "Model " << model_name << "failed to be written." << std::endl;
       }
     }
     else
@@ -167,18 +208,11 @@ namespace GMD
     return;
   }
 
-  pMesh create_mesh( pGModel geom)
+  pMesh gmd_t::create_mesh( )
   {
-    pMesh mesh = M_new(0, geom);
-    pACase m_case = MS_newMeshCase(geom);
-
-    MS_setMeshSize( m_case, GM_domain(geom), 2, 0.1, 0);
-    MS_setGlobalSizeGradationRate( m_case, 3); 
-    double point[] = {0.0, 0.0, 0.0};
-    MS_addPointRefinement(m_case, 0.1, point);
-
-    SurfaceMesher_execute( SurfaceMesher_new(m_case, mesh), 0);
-    VolumeMesher_execute ( VolumeMesher_new(m_case, mesh), 0);
+    pMesh mesh = M_new(0, model);
+    SurfaceMesher_execute( SurfaceMesher_new(m_helper->m_case, mesh), 0);
+    VolumeMesher_execute ( VolumeMesher_new(m_helper->m_case, mesh), 0);
 
     return mesh;
   }
@@ -207,7 +241,7 @@ namespace GMD
     SimUtil_stop();
   }
 
-  pGModel make_box(double length)
+  pGModel create_cube(double length)
   {
     pGModel model;
     pGIPart part;
@@ -215,26 +249,24 @@ namespace GMD
     pGVertex vertices[8]; // array to store the returned model vertices
     pGEdge edges[12]; // array to store the returned model edges
     double hl = length/2;
-    // Create a new empty model
     model = GM_new();
     part = GM_part(model);
     outerRegion = GIP_outerRegion(part);
 
-    double vert_xyz[8][3] = { {-hl,-hl,-hl},
-      {length-hl,-hl,-hl},
-      {length-hl,length-hl,-hl},
-      {-hl,length-hl,-hl}, 
-      {-hl,-hl,length-hl},
-      {length-hl,-hl,length-hl},
-      {length-hl,length-hl,length-hl},
-      {-hl,length-hl,length-hl} };
+    double vert_xyz[8][3] = 
+    { {-hl,-hl,-hl},
+      { hl,-hl,-hl},
+      { hl, hl,-hl},
+      {-hl, hl,-hl}, 
+      {-hl,-hl, hl},
+      { hl,-hl, hl},
+      { hl, hl, hl},
+      {-hl, hl, hl} };
 
-    // First we'll add the vertices
     int i;
     for(i=0; i<8; i++)
       vertices[i] = GIP_insertVertexInRegion(part,vert_xyz[i],outerRegion);
 
-    // Now we'll add the edges
     pGVertex startVert, endVert;
     double point0[3],point1[3];  // xyz locations of the two vertices
     pCurve linearCurve;
@@ -269,7 +301,6 @@ namespace GMD
       edges[i+8] = GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
     }
 
-    // Now add the faces
     double corner[3], xPt[3], yPt[3];  // the points defining the surface of the face
     pGEdge faceEdges[4];               // the array of edges connected to the face
     int faceDirs[4];                   // the direction of the edge with respect to the face
@@ -331,7 +362,7 @@ namespace GMD
     // when this face is inserted, a new model region will automatically be created
     GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
 
-    // cleanup
     return model;
   }
+
 } // END namespace GMD
