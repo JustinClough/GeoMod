@@ -271,7 +271,7 @@ namespace GMD
     double point0[3],point1[3];  // xyz locations of the two vertices
     pCurve linearCurve;
 
-    // First, the bottom edges at z=0, connecting the first four vertices in the array
+    // First, the bottom edges
     for(i=0; i<4; i++) {
       startVert = vertices[i];
       endVert = vertices[(i+1)%4];
@@ -281,7 +281,7 @@ namespace GMD
       edges[i] = GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
     }
 
-    // Now the side edges of the box, traveling from z=0 to z=10
+    // Now the side edges of the box
     for(i=0; i<4; i++) {
       startVert = vertices[i];
       endVert = vertices[i+4];
@@ -291,7 +291,7 @@ namespace GMD
       edges[i+4] = GIP_insertEdgeInRegion(part,startVert, endVert, linearCurve, 1, outerRegion);
     }
 
-    // Finally the top edges at z=10
+    // Finally the top edges 
     for(i=0; i<4; i++) {
       startVert = vertices[i+4];
       endVert = vertices[(i+1)%4+4];
@@ -311,9 +311,9 @@ namespace GMD
     // Define the surface - we want the normal to point out of the box
     for(i=0; i<3; i++)
     {
-      corner[i] = vert_xyz[1][i];  // the corner is at {length,0,0}
-      xPt[i] = vert_xyz[0][i];     // the xPt is at {0,0,0}
-      yPt[i] = vert_xyz[2][i];     // the yPt is at {length,length,0}
+      corner[i] = vert_xyz[1][i];
+      xPt[i] = vert_xyz[0][i];
+      yPt[i] = vert_xyz[2][i];
     }
     planarSurface = SSurface_createPlane(corner,xPt,yPt);
     // Define and insert the face into the outer "void" region

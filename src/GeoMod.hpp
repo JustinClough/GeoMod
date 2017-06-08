@@ -46,6 +46,7 @@ namespace GMD
       void set_model_name (char* name);
       char* get_model_name();
       void verify_model( bool abort_on_fail=true);
+      void place_edge_lagraneInterp (std::vector<double*> pts)
       pMesh get_mesh();
       pGModel get_model();
       pMesh create_mesh();
