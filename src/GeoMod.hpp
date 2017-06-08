@@ -30,7 +30,7 @@ namespace GMD
       ~mesh_helper_t ();
       pACase m_case;
       double global_refine;
-      std::vector<refine_t> refines;
+      //std::vector<refine_t> refines;
   };
 
   class gmd_t
@@ -46,7 +46,7 @@ namespace GMD
       void set_model_name (char* name);
       char* get_model_name();
       void verify_model( bool abort_on_fail=true);
-      void place_edge_lagraneInterp (std::vector<double*> pts)
+      void place_point(double* point, double local_refine);
       pMesh get_mesh();
       pGModel get_model();
       pMesh create_mesh();

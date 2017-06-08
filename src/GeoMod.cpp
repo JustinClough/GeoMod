@@ -10,9 +10,45 @@ namespace GMD
     std::abort();
   }
 
+  void gmd_t::place_point( double* point, double local_refine)
+  {
+    pGIPart part = GM_part(model);
+    pGRegion in_region;
+    pGRegion region;
+
+    bool placed = false;
+    GRIter r_it = GM_regionIter( model);
+    while((in_region = GRIter_next(r_it)) && !placed)
+    {
+      if(GR_containsPoint(in_region, point) == 1)
+      { // Point is in region or on boundary
+        region = in_region;
+      }
+      else if(GR_containsPoint(in_region, point) == 0)
+      { // Point is not in region
+        region = GIP_outerRegion( part);
+      }
+      else
+      { // No possible solution
+        print_error("CANNOT DETERMINE CLASSIFICATION.");
+      }
+
+      pGVertex vert = GIP_insertVertexInRegion( part, point, region);
+      placed = true;
+    }
+    GRIter_delete(r_it);
+  
+    return;
+  }
+
+
   mesh_helper_t::mesh_helper_t (pGModel model)
   {
+    mesh_order = 1;
+    mesh_size = 0.1;
+    grad_rate = 2.0;
     m_case = MS_newMeshCase( model);
+    MS_setMeshOrder( m_case, 2);
     return;
   }
 
@@ -26,7 +62,8 @@ namespace GMD
   {
     mesh_helper_t m_h (geom);
     m_helper = &m_h;
-
+    mesh_name = NULL;
+    model_name = NULL;
     set_mesh( NULL);
     set_model( geom);
     return;
@@ -58,7 +95,6 @@ namespace GMD
 
   gmd_t::~gmd_t()
   {
-    delete m_helper;
     release_model(model);
     release_mesh(mesh);
     return;
@@ -105,6 +141,8 @@ namespace GMD
 
   void gmd_t::write_mesh()
   {
+    if(mesh_name==NULL)
+    { print_error("NO NAME ASSIGNED TO MESH");}
     pMesh mesh = get_mesh();
     std::cout << "MESH INFORMATION: "
       << "\nVertices: "<< M_numVertices(mesh)
@@ -184,6 +222,8 @@ namespace GMD
 
   void gmd_t::write_model( )
   {
+    if(model_name==NULL)
+    { print_error("NO NAME ASSIGNED TO MODEL");}
     if(GM_isValid(model, 0, 0))
     {
       std::cout << "MODEL INFORMATION: "
@@ -316,47 +356,47 @@ namespace GMD
       yPt[i] = vert_xyz[2][i];
     }
     planarSurface = SSurface_createPlane(corner,xPt,yPt);
-    // Define and insert the face into the outer "void" region
-    for(i=0; i<4; i++) {
-      faceDirs[i] = 0;
-      faceEdges[i] = edges[3-i]; // edge order 3->2->1->0
-    }
-    GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+      // Define and insert the face into the outer "void" region
+      for(i=0; i<4; i++) {
+        faceDirs[i] = 0;
+        faceEdges[i] = edges[3-i]; // edge order 3->2->1->0
+      }
+      GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
 
-    // Now the side faces of the box - each side face has the edges defined in the same way
-    // for the first side face, the edge order is 0->5->8->4
-    for(i=0; i<4; i++) {
-      //Define surface such that normals all point out of the box
-      for(int j=0; j<3; j++) {
-        corner[j] = vert_xyz[i][j];      // the corner is the lower left vertex location
-        xPt[j] = vert_xyz[(i+1)%4][j];   // the xPt the lower right vertex location
-        yPt[j] = vert_xyz[i+4][j];       // the yPt is the upper left vertex location
+      // Now the side faces of the box - each side face has the edges defined in the same way
+      // for the first side face, the edge order is 0->5->8->4
+      for(i=0; i<4; i++) {
+        //Define surface such that normals all point out of the box
+        for(int j=0; j<3; j++) {
+          corner[j] = vert_xyz[i][j];      // the corner is the lower left vertex location
+          xPt[j] = vert_xyz[(i+1)%4][j];   // the xPt the lower right vertex location
+          yPt[j] = vert_xyz[i+4][j];       // the yPt is the upper left vertex location
+        }
+        planarSurface = SSurface_createPlane(corner,xPt,yPt);
+
+        faceEdges[0] = edges[i];
+        faceDirs[0] = 1;
+        faceEdges[1] = edges[(i+1)%4+4];
+        faceDirs[1] = 1;
+        faceEdges[2] = edges[i+8];
+        faceDirs[2] = 0;
+        faceEdges[3] = edges[i+4];
+        faceDirs[3] = 0;
+
+        GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+      }
+
+      // Finally the top face of the box
+      // Define the surface - we want the normal to point out of the box
+      for(i=0; i<3; i++) {
+        corner[i] = vert_xyz[4][i]; 
+        xPt[i] = vert_xyz[5][i];   
+        yPt[i] = vert_xyz[7][i];  
       }
       planarSurface = SSurface_createPlane(corner,xPt,yPt);
-
-      faceEdges[0] = edges[i];
-      faceDirs[0] = 1;
-      faceEdges[1] = edges[(i+1)%4+4];
-      faceDirs[1] = 1;
-      faceEdges[2] = edges[i+8];
-      faceDirs[2] = 0;
-      faceEdges[3] = edges[i+4];
-      faceDirs[3] = 0;
-
-      GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
-    }
-
-    // Finally the top face of the box
-    // Define the surface - we want the normal to point out of the box
-    for(i=0; i<3; i++) {
-      corner[i] = vert_xyz[4][i]; 
-      xPt[i] = vert_xyz[5][i];   
-      yPt[i] = vert_xyz[7][i];  
-    }
-    planarSurface = SSurface_createPlane(corner,xPt,yPt);
-    // Define and insert the face
-    for(i=0; i<4; i++) {
-      faceDirs[i] = 1;
+      // Define and insert the face
+      for(i=0; i<4; i++) {
+        faceDirs[i] = 1;
       faceEdges[i] = edges[i+8]; // edge order 8->9->10->11
     }
     // when this face is inserted, a new model region will automatically be created
