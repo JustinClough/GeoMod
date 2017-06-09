@@ -69,7 +69,7 @@ void test3()
   gmd.write_model();
 
   gmd.set_global_mesh_params( 1, 0.1);
-  char mesh_name[] = "centered_point.smd";
+  char mesh_name[] = "centered_point.sms";
   gmd.set_mesh_name( mesh_name );
   gmd.create_mesh();
   gmd.write_mesh();
@@ -87,6 +87,19 @@ void test3()
 */
 void test4()
 {
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd(cube);
+  double point[] = {1.0, 0.0, 0.0};
+  gmd.place_point( point, 0.1);
+  char model_name[] = "surface_point_3D.smd";
+  gmd.set_model_name( model_name);
+  gmd.write_model();
+
+  gmd.set_global_mesh_params(1, 0.1);
+  char mesh_name[] = "surface_point_3D.sms";
+  gmd.set_mesh_name( mesh_name);
+  gmd.create_mesh();
+  gmd.write_mesh();
 
   std::cout << "\nPassed Test4\n\n" ;
   return;
