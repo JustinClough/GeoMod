@@ -31,6 +31,7 @@ namespace GMD
 
       void set_global_mesh_params( double order, double refine);
       void place_point(double* point, double local_refine);
+      void place_line( double** points, double local_refine, double refine_radius);
       pMesh get_mesh();
       pGModel get_model();
       pMesh create_mesh();

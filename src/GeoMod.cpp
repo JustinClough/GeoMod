@@ -10,6 +10,11 @@ namespace GMD
     std::abort();
   }
 
+  void gmd_t::place_line( double** points, double local_refine, double refine_radius)
+  {
+
+  }
+
   void gmd_t::place_point( double* point, double local_refine)
   {
     pGIPart part = GM_part(model);

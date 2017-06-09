@@ -105,4 +105,19 @@ void test4()
   return;
 }
 
+/* test5():
+*     - Create a 3D model 
+*     - Place a fully interior line with define mesh refinement for line only
+*     - Place a fully interior line with define mesh refinement for cyln. surrounding
+*     - Write model
+*     - Create mesh
+*     - Write mesh
+*/
+void test5()
+{
+
+  std::cout << "\nPassed Test5\n\n" ;
+  return;
+}
+
 #endif
