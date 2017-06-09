@@ -13,11 +13,11 @@ namespace GMD
   void gmd_t::place_point( double* point, double local_refine)
   {
     pGIPart part = GM_part(model);
-    pGRegion in_region;
     pGRegion region;
 
     bool placed = false;
     GRIter r_it = GM_regionIter( model);
+    pGRegion in_region;
     while((in_region = GRIter_next(r_it)) && !placed)
     {
       if(GR_containsPoint(in_region, point) == 1)
@@ -40,12 +40,29 @@ namespace GMD
 
     if(!placed)
     { print_error("FAILED TO PLACE POINT");}
+
+    set_point_refine( point, local_refine);
   
+    return;
+  }
+
+  void gmd_t::set_point_refine( double* point, double refine)
+  {
+
+    return;
+  }
+
+  void gmd_t::set_global_mesh_params( double order, double refine)
+  {
+    g_mesh_set = true;
+    m_order = order;
+    m_g_refine = refine;
     return;
   }
 
   gmd_t::gmd_t (pGModel geom)
   {
+    g_mesh_set = false;
     mesh_name = NULL;
     model_name = NULL;
     set_model( geom);
@@ -239,8 +256,15 @@ namespace GMD
 
   pMesh gmd_t::create_mesh( )
   {
+    if(!g_mesh_set)
+    { print_error("GLOBAL MESH PARAMETERS NOT SET");}
+
     pModelItem model_domain = GM_domain(model);
-    MS_setMeshSize( m_case, model_domain, 2, 1.0, 0);
+    MS_setMeshSize( m_case, model_domain, 2, m_g_refine, 0);
+
+    if(m_order == 2) 
+    // order is assumed to be 1 and can only be set to 2 according to Simmetrix documentation
+    { MS_setMeshOrder(m_case, m_order);}
 
     pSurfaceMesher surface_mesher = SurfaceMesher_new( m_case, mesh);
     SurfaceMesher_execute( surface_mesher, 0);

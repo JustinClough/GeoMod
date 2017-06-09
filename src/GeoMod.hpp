@@ -22,17 +22,21 @@ namespace GMD
       void update_model(pGModel geom);
       void write_mesh( );
       void write_model( );
+
       void set_mesh_name (char* name);
       char* get_mesh_name();
       void set_model_name (char* name);
       char* get_model_name();
       void verify_model( bool abort_on_fail=true);
+
+      void set_global_mesh_params( double order, double refine);
       void place_point(double* point, double local_refine);
       pMesh get_mesh();
       pGModel get_model();
       pMesh create_mesh();
 
     protected:
+      void set_point_refine( double* point, double local_refine);
       void set_mesh( );
       void set_model(pGModel geom);
       char* mesh_name;
@@ -40,6 +44,9 @@ namespace GMD
       pGModel model;
       pMesh mesh;
       pACase m_case;
+      bool g_mesh_set;
+      double m_order;
+      double m_g_refine;
   };
 
   pGModel create_2D_rectangle( double y_length, double x_width);

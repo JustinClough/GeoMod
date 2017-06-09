@@ -16,6 +16,7 @@ void test1()
   gmd.set_model_name( name);
   gmd.write_model();
 
+  gmd.set_global_mesh_params( 1, 0.1);
   gmd.create_mesh();
   char m_name[] = "2D_rect.sms";
   gmd.set_mesh_name( m_name);
@@ -40,6 +41,7 @@ void test2()
   gmd.set_model_name( name);
   gmd.write_model();
 
+  gmd.set_global_mesh_params( 1, 0.1);
   gmd.create_mesh();
   char mesh_name[] = "3D_cube.sms";
   gmd.set_mesh_name( mesh_name);
@@ -49,4 +51,28 @@ void test2()
   return;
 }
 
+/* test3():
+*     - Create a 3D model
+*     - Place a point with defined mesh refinement in center
+*     - Write model
+*     - Create a mesh from model
+*     - Write mesh
+*/
+void test3()
+{
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd(cube);
+  double point[] = {0.0, 0.0, 0.0};
+  gmd.place_point( point, 0.1);
+  char model_name[] = "centered_point.smd";
+  gmd.set_model_name( model_name);
+  gmd.write_model();
+
+  gmd.set_global_mesh_params( 1, 0.1);
+  char mesh_name[] = "centered_point.smd";
+  gmd.set_mesh_name( mesh_name );
+
+  std::cout << "\nPassed Test3\n\n" ;
+  return;
+}
 #endif
