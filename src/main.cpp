@@ -9,6 +9,7 @@ int main( int argc, char** argv)
   GMD::sim_start();
   
   test1();
+  test2();
   
   GMD::sim_end();
   std::cout << "END" << std::endl;
