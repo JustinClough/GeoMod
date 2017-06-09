@@ -71,6 +71,8 @@ void test3()
   gmd.set_global_mesh_params( 1, 0.1);
   char mesh_name[] = "centered_point.smd";
   gmd.set_mesh_name( mesh_name );
+  gmd.create_mesh();
+  gmd.write_mesh();
 
   std::cout << "\nPassed Test3\n\n" ;
   return;

@@ -48,7 +48,7 @@ namespace GMD
 
   void gmd_t::set_point_refine( double* point, double refine)
   {
-
+    MS_addPointRefinement( m_case, refine, point);
     return;
   }
 
