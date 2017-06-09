@@ -30,7 +30,7 @@ namespace GMD
       void verify_model( bool abort_on_fail=true);
 
       void set_global_mesh_params( double order, double refine);
-      pGVertex place_point(double* point, double local_refine);
+      void place_point(double* point, double local_refine);
       void place_line( double** points, double local_refine, double refine_radius);
       pMesh get_mesh();
       pGModel get_model();

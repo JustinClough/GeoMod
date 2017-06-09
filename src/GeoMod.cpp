@@ -2,6 +2,54 @@
 #include "GeoMod.hpp"
 // NOTE: All needed headers belong in GeoMod.hpp
 
+static void sum_coords( double* p1, double* p2, double* sum)
+{
+  for(int i=0; i<3; i++)
+  {
+    sum[i] = p1[i] + p2[i];
+  }
+  return;
+}
+
+static void subtract_coords( double* p1, double* p2, double* diff)
+{
+  for(int i=0; i<3; i++)
+  {
+    diff[i] = p2[i] - p1[i];
+  }
+  return;
+}
+
+static void magnitude( double* vec, double& mag)
+{
+  mag = 0;
+  for(int i=0; i<3; i++)
+  {
+    mag+=vec[i];
+  }
+  return;
+}
+
+static void ave_coords( double* p1, double* p2, double* ans)
+{
+  sum_coords( p1, p2, ans);
+  for(int i=0;i<3; i++)
+  {
+    ans[i]/=2;
+  }
+  return;
+}
+
+static void get_normal( double* point1, double* point2, double* normal)
+{
+  double diff[] = {0.0, 0.0, 0.0};
+  subtract_coords(point1, point2, diff);
+  double mag = 0;
+  magnitude( diff, mag);
+  
+  return;
+}
+
 namespace GMD
 {
   void print_error(std::string message)
@@ -12,10 +60,35 @@ namespace GMD
 
   void gmd_t::place_line( double** points, double local_refine, double refine_radius)
   {
+    double* point1 = points[0];
+    place_point( point1, local_refine);
+    double* point2 = points[1];
+    place_point( point2, local_refine);
 
+    if(refine_radius == 0.0)
+    { 
+      MS_addLineRefinement( m_case, local_refine, point1, point2);
+    }
+    else if(refine_radius > 0.0)
+    {
+      double center[] = {0.0, 0.0, 0.0};
+      ave_coords( point1, point2, center);
+      double normal[] = {0.0, 0.0, 0.0};
+      get_normal( point1, point2, normal);
+      double length_vec[] = {0.0, 0.0, 0.0};
+      subtract_coords( point1, point2, length_vec);
+      double length = 0;
+      magnitude( length_vec, length);
+    
+      MS_addCylinderRefinement( m_case, local_refine, refine_radius, length, center, normal);
+    }
+    else
+    { print_error("BAD REFINE_RADIUS (must be equal to or greater than zero)");}
+
+    return;
   }
 
-  pGVertex gmd_t::place_point( double* point, double local_refine)
+  void gmd_t::place_point( double* point, double local_refine)
   {
     pGIPart part = GM_part(model);
     pGRegion region;
@@ -49,7 +122,7 @@ namespace GMD
 
     set_point_refine( point, local_refine);
   
-    return vert;
+    return;
   }
 
   void gmd_t::set_point_refine( double* point, double refine)
