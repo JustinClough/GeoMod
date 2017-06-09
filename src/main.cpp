@@ -11,7 +11,6 @@ int main( int argc, char** argv)
   test1();
   
   GMD::sim_end();
-
   std::cout << "END" << std::endl;
   return 0;
 }
