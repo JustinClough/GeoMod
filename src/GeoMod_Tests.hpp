@@ -20,6 +20,7 @@ void test1()
   char m_name[] = "2D_rect.sms";
   gmd.set_mesh_name( m_name);
   gmd.write_mesh();
+  std::cout << "\nPassed Test1\n\n";
 }
 
 #endif
