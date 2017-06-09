@@ -77,4 +77,19 @@ void test3()
   std::cout << "\nPassed Test3\n\n" ;
   return;
 }
+
+/* test4():
+*     - Create a 3D model
+*     - Place a point with defined mesh refinement on surface
+*     - Write model
+*     - Create mesh from model
+*     - Write mesh
+*/
+void test4()
+{
+
+  std::cout << "\nPassed Test4\n\n" ;
+  return;
+}
+
 #endif
