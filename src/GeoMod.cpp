@@ -15,7 +15,7 @@ namespace GMD
 
   }
 
-  void gmd_t::place_point( double* point, double local_refine)
+  pGVertex gmd_t::place_point( double* point, double local_refine)
   {
     pGIPart part = GM_part(model);
     pGRegion region;
@@ -23,6 +23,7 @@ namespace GMD
     bool placed = false;
     GRIter r_it = GM_regionIter( model);
     pGRegion in_region;
+    pGVertex vert;
     while((in_region = GRIter_next(r_it)) && !placed)
     {
       if(GR_containsPoint(in_region, point) == 1)
@@ -38,7 +39,7 @@ namespace GMD
         print_error("CANNOT DETERMINE CLASSIFICATION FOR POINT PLACEMENT.");
       }
 
-      pGVertex vert = GIP_insertVertexInRegion( part, point, region);
+      vert = GIP_insertVertexInRegion( part, point, region);
       placed = true;
     }
     GRIter_delete(r_it);
@@ -48,7 +49,7 @@ namespace GMD
 
     set_point_refine( point, local_refine);
   
-    return;
+    return vert;
   }
 
   void gmd_t::set_point_refine( double* point, double refine)
