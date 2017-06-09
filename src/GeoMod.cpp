@@ -223,11 +223,30 @@ namespace GMD
     char* ans = &model_name[0];
     return ans;
   }
+  
+  void gmd_t::assign_model_name_to_mesh()
+  {
+    if(model_name == NULL)
+    { print_error("NO NAME ASSIGNED TO MODEL");}
+    mesh_name = model_name;
+    int i = 0;
+    char token = mesh_name[i];
+    while(token != '.')
+    {
+      token = mesh_name[i];
+      i++;
+    }
+    mesh_name[i+2] = 's';
+
+    return;
+  }
 
   void gmd_t::write_mesh()
   {
     if(mesh_name==NULL)
-    { print_error("NO NAME ASSIGNED TO MESH");}
+    { 
+      assign_model_name_to_mesh();
+    }
     pMesh mesh = get_mesh();
     std::cout << "MESH INFORMATION: "
       << "\nVertices: "<< M_numVertices(mesh)

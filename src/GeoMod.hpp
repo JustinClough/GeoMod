@@ -48,6 +48,7 @@ namespace GMD
       bool g_mesh_set;
       double m_order;
       double m_g_refine;
+      void assign_model_name_to_mesh();
   };
 
   pGModel create_2D_rectangle( double y_length, double x_width);

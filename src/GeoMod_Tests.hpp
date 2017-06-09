@@ -110,6 +110,7 @@ void test4()
 *     - Place a fully interior line with define mesh refinement for line only
 *     - Place a fully interior line with define mesh refinement for cyln. surrounding
 *     - Write model
+*     - Do not assign name so auto-nameing feature is checked
 *     - Create mesh
 *     - Write mesh
 */
@@ -133,8 +134,6 @@ void test5()
   gmd.write_model();
 
   gmd.set_global_mesh_params(1, 0.1);
-  char mesh_name[] = "interior_line_3D.sms";
-  gmd.set_mesh_name( mesh_name);
   gmd.create_mesh();
   gmd.write_mesh();
 
