@@ -42,6 +42,7 @@ namespace GMD
       bool verify_mesh( bool abort_on_fail=true);
 
     protected:
+      bool insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face);
       void set_point_refine( double* point, double local_refine, double refine_radius);
       void set_mesh( );
       void set_model(pGModel geom);
@@ -58,8 +59,6 @@ namespace GMD
   };
 
   pGModel create_2D_rectangle( double y_length, double x_width);
-
-  bool insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face);
 
   void release_model(pGModel model);
 

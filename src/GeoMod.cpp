@@ -461,7 +461,7 @@ namespace GMD
     return model;
   }
 
-  bool insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face)
+  bool gmd_t::insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face)
   {
     pGIPart part = GM_part(geom);
     GFIter f_it = GIP_faceIter( part);
