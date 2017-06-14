@@ -19,7 +19,6 @@ int main( int argc, char** argv)
   { 
     point_density_test( i);
   }
-  test_doubled_line();
 */
 
   test1();
@@ -27,6 +26,7 @@ int main( int argc, char** argv)
   test3();
   test4();
   test5();
+  //test6(); // edge to surface connection fails to mesh
 
   GMD::sim_end();
   std::cout << "END" << std::endl;

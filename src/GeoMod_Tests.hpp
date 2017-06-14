@@ -81,49 +81,6 @@ void point_density_test( int i)
   return;
 }
 
-void test_doubled_line()
-{
-  pGModel cube = GMD::create_cube( 2.0);
-  GMD::gmd_t gmd (cube);
-  
-  //gmd.count_face_loops();
-
-/*  double p1[] = {-0.75, 0.0, 0.0};
-  double p2[] = {0.5, 0.0, 0.0};
-  double* pts[]  = {p1, p2};
-  double local_refine = 0.2;
-  double refine_radius = 0.0;
-  gmd.place_line( pts, local_refine, refine_radius);
-  std::cout << "Placed first line.\n" ;
-
-  double p1b[] = {-0.5, 0.01, 0.0};
-  double p2b[] = {0.75, 0.0, 0.0};
-  double* pts2[]  = {p1b, p2b};
-  gmd.place_line( pts2, local_refine, refine_radius);
-  std::cout << "Placed second line.\n" ;
-*/
-  double p1c[] = {-0.5, 0.0, 0.0};
-  double p2c[] = {0.5, 0.0, 0.0};
-  double local_refine = 0.01;
-  double refine_radius = 0.001;
-  bool tmp = false;
-  gmd.place_point( p1c, local_refine, refine_radius, tmp);
-  gmd.place_point( p2c, local_refine, refine_radius, tmp);
-  //double* pts3[]  = {p1c, p2c};
-  //gmd.set_global_mesh_params( 1, 0.5, 0);
-  //gmd.place_line( pts3, local_refine, refine_radius);
-
-  char name[] = "box_2_point.smd";
-  gmd.set_model_name( name);
-  gmd.write_model();
-
-  //gmd.count_face_loops();
-
-  //gmd.create_mesh();
-  //gmd.write_mesh();
-
-  return;
-}
 
 /* test1(): 
 *     - Create 2D model
@@ -266,4 +223,42 @@ void test5()
   std::cout << "\nPassed Test5\n\n" ;
   return;
 }
+
+void test6()
+{
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd (cube);
+
+  double p1[] = {-0.75, 0.0, 0.0};
+  double p2[] = {0.5, 0.0, 0.0};
+  double* pts[]  = {p1, p2};
+  double local_refine = 0.2;
+  double refine_radius = 0.0;
+  gmd.place_line( pts, local_refine, refine_radius);
+  std::cout << "Placed first line.\n" ;
+
+  double p1b[] = {-0.5, 0.01, 0.0};
+  double p2b[] = {0.75, 0.0, 0.0};
+  double* pts2[]  = {p1b, p2b};
+  gmd.place_line( pts2, local_refine, refine_radius);
+  std::cout << "Placed second line.\n" ;
+
+  double p1c[] = {-0.5, 0.0, 0.0};
+  double p2c[] = {1.0, 0.0, 0.0};
+  local_refine = 0.01;
+  refine_radius = 0.001;
+  double* pts3[]  = {p1c, p2c};
+  gmd.set_global_mesh_params( 1, 0.5, 0);
+  gmd.place_line( pts3, local_refine, refine_radius);
+
+  char name[] = "box_2_point.smd";
+  gmd.set_model_name( name);
+  gmd.write_model();
+
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  return;
+}
+
 #endif
