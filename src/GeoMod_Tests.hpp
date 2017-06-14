@@ -252,26 +252,46 @@ void test6()
   gmd.place_line( pts2, local_refine, refine_radius);
   std::cout << "Placed second line.\n" ;
 
+  char name[] = "Overlapped_lines.smd";
+  gmd.set_model_name( name);
+  gmd.write_model();
+
+  gmd.set_global_mesh_params(1, 0.1, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  std::cout << "\nPassed Test6\n\n" ;
+  return;
+}
+
+/*  test7():
+*     - Create a 3D model
+*     - Create an edge from a surface point to an interior point
+*     - Write model
+*     - Create mesh
+*     - Write mesh
+*/
+void test7()
+{
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd( cube);
+
   double p1c[] = {-0.5, 0.0, 0.0};
   double p2c[] = {1.0, 0.0, 0.0};
-  local_refine = 0.01;
-  refine_radius = 0.001;
+  double local_refine = 0.01;
+  double refine_radius = 0.0;
   double* pts3[]  = {p1c, p2c};
   gmd.set_global_mesh_params( 1, 0.5, 0);
   gmd.place_line( pts3, local_refine, refine_radius);
 
-  char name[] = "box_2_point.smd";
+  char name[] = "Surface_to_interior_line.smd";
   gmd.set_model_name( name);
   gmd.write_model();
 
   gmd.create_mesh();
   gmd.write_mesh();
 
-  return;
-}
-
-void test7()
-{
+  std::cout << "\nPassed Test7\n\n" ;
   return;
 }
 
