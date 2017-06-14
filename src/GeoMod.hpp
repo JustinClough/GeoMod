@@ -8,9 +8,10 @@
 #include "MeshSim.h"
 
 // Standard C++ Headers
+#include <cstdlib>
 #include <iostream>
 #include <vector>
-#include <cstdlib>
+#include <math.h>
 
 namespace GMD
 {
@@ -29,15 +30,19 @@ namespace GMD
       char* get_model_name();
       void verify_model( bool abort_on_fail=true);
 
-      void set_global_mesh_params( double order, double refine);
-      void place_point(double* point, double local_refine);
+      void set_global_mesh_params( double order, double refine, double grad_rate_in);
+      pGVertex place_point(double* point, double local_refine, double refine_radius, bool& onFace);
       void place_line( double** points, double local_refine, double refine_radius);
       pMesh get_mesh();
       pGModel get_model();
-      pMesh create_mesh();
+      pMesh create_mesh( bool abort_on_fail = true);
+
+      int get_mesh_numVertsOnFaces();
+      void count_face_loops();
+      bool verify_mesh( bool abort_on_fail=true);
 
     protected:
-      void set_point_refine( double* point, double local_refine);
+      void set_point_refine( double* point, double local_refine, double refine_radius);
       void set_mesh( );
       void set_model(pGModel geom);
       char* mesh_name;
@@ -48,12 +53,13 @@ namespace GMD
       bool g_mesh_set;
       double m_order;
       double m_g_refine;
+      double grad_rate;
       void assign_model_name_to_mesh();
   };
 
   pGModel create_2D_rectangle( double y_length, double x_width);
 
-  void insert_vertex_on_face( pGModel geom, double* point);
+  bool insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face);
 
   void release_model(pGModel model);
 

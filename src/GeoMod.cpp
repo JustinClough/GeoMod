@@ -11,6 +11,20 @@ static void sum_coords( double* p1, double* p2, double* sum)
   return;
 }
 
+static void compare_coords( double* p1, double* p2, bool& areSame)
+{
+  areSame = true;
+  for(int i=0; i<3; i++)
+  {
+    if( p1[i] != p2[i])
+    {
+      areSame = false;
+    }
+  }
+  return;
+}
+    
+
 static void subtract_coords( double* p1, double* p2, double* diff)
 {
   for(int i=0; i<3; i++)
@@ -25,8 +39,9 @@ static void magnitude( double* vec, double& mag)
   mag = 0;
   for(int i=0; i<3; i++)
   {
-    mag+=vec[i];
+    mag+=(vec[i])*(vec[i]);
   }
+  mag = sqrt(mag);
   return;
 }
 
@@ -40,13 +55,61 @@ static void ave_coords( double* p1, double* p2, double* ans)
   return;
 }
 
-static void get_normal( double* point1, double* point2, double* normal)
+static void get_unit_vector( double* point1, double* point2, double* normal)
 {
   double diff[] = {0.0, 0.0, 0.0};
   subtract_coords(point1, point2, diff);
   double mag = 0;
   magnitude( diff, mag);
+  for(int i=0; i<3; i++)
+  {
+    normal[i] = diff[i]/mag;
+  }
+
+  return;
+}
+
+static void print_coords( double* point)
+{
+  std::cout << "(" ;
+  for(int i=0;i<3;i++)
+  {
+    std::cout << point[i] << ", " ;
+  }
+  std::cout << "\b\b)\n";
+  return;
+}
+
+double fRand(double fMin, double fMax)
+{
+  double f = (double)rand() / RAND_MAX;
+  return fMin + f * (fMax - fMin);
+}
+
+void get_rand_line_ends(double** line_ends, double length, double* range)
+{
+  double closeness = 0.9;
+  double max = range[0]*closeness;
+  double in_max = max - length;
+  double min = range[1]*closeness;
+  double in_min = min -length;
+  double dir[] = {0.0, 0.0, 0.0};
+  for(int i=0; i<3; i++)
+  {
+    line_ends[0][i] = fRand( in_min, in_max);
+    dir[i] = fRand(-1.0, 1.0);
+  }
+  double origin[] = {0.0, 0.0, 0.0};
+  double normal[] = {0.0, 0.0, 0.0};
+  get_unit_vector(dir, origin, normal);
+  *dir = *normal;
+  for(int i=0; i<3; i++)
+  {
+    dir[i] *= length;
+  }
+  sum_coords(line_ends[0], dir, line_ends[1]);
   
+
   return;
 }
 
@@ -58,13 +121,50 @@ namespace GMD
     std::abort();
   }
 
+  int gmd_t::get_mesh_numVertsOnFaces()
+  {
+    int total = 0;
+    VIter v_it = M_vertexIter(mesh);
+    pVertex vertex;
+    while((vertex = VIter_next(v_it)))
+    {
+      gType type = V_whatInType(vertex);
+      if(type == Gface || type == Gedge)
+      {
+        total++;
+      }
+    }
+    VIter_delete(v_it);
+
+    return total;
+  }
+
   void gmd_t::place_line( double** points, double local_refine, double refine_radius)
   {
+    bool areSame = false;
+    compare_coords( points[0], points[1], areSame);
+    if( areSame)
+    { print_error("CANNOT CREATE LINE OF ZERO LENGTH");}
+    
+    bool vert1OnFace = false;
     double* point1 = points[0];
-    place_point( point1, local_refine);
-    double* point2 = points[1];
-    place_point( point2, local_refine);
+    pGVertex vert1 = place_point( point1, local_refine, refine_radius, vert1OnFace);
 
+    bool vert2OnFace = false;
+    double* point2 = points[1];
+    pGVertex vert2 = place_point( point2, local_refine, refine_radius, vert2OnFace);
+
+    pGIPart part = GM_part(model);
+    GRIter r_it = GM_regionIter( model);
+    pGRegion in_region;
+    bool placed = false;
+    while(!placed && (in_region = GRIter_next(r_it)))
+    {
+      pCurve line = SCurve_createLine( point1, point2);
+      GIP_insertEdgeInRegion( part, vert1, vert2, line, 1, in_region);
+      placed = true;
+    }
+    GRIter_delete(r_it);
     if(refine_radius == 0.0)
     { 
       MS_addLineRefinement( m_case, local_refine, point1, point2);
@@ -74,12 +174,14 @@ namespace GMD
       double center[] = {0.0, 0.0, 0.0};
       ave_coords( point1, point2, center);
       double normal[] = {0.0, 0.0, 0.0};
-      get_normal( point1, point2, normal);
+      get_unit_vector( point1, point2, normal);
       double length_vec[] = {0.0, 0.0, 0.0};
       subtract_coords( point1, point2, length_vec);
       double length = 0;
       magnitude( length_vec, length);
-    
+      std::cout<<"length_vec="; print_coords(length_vec);
+      std::cout<<"length = " << length << std::endl;
+
       MS_addCylinderRefinement( m_case, local_refine, refine_radius, length, center, normal);
     }
     else
@@ -88,54 +190,110 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_point( double* point, double local_refine)
+  bool gmd_t::verify_mesh( bool abort_on_fail)
+  {
+    bool isValid = true;
+    RIter r_it = M_regionIter( mesh);
+    pRegion reg;
+    while(( reg = RIter_next( r_it)))
+    {
+      int status = R_isValidElement( reg);
+      if( status == 1)
+      { /* Do nothing, region is valid*/ }
+      else
+      {
+        double local[] = {0.0, 0.0, 0.0};
+        double global[] = {0.0, 0.0, 0.0};
+        R_localToGlobal(reg, local, global);
+        std::cout << "Invalid Mesh region near "; print_coords( global);
+        isValid = false;
+        if( abort_on_fail)
+        { print_error("INVALID MESH REGION FOUND");}
+      }
+    }
+   return isValid;
+  }
+
+  void gmd_t::count_face_loops()
+  {
+    pGIPart part = GM_part( model);
+    GFIter f_it = GIP_faceIter( part);
+    GFIter_reset(f_it);
+    pGFace face;
+    while(( face = GFIter_next(f_it)))
+    {
+      std::cout<< "Face Number = " << GEN_tag( face) << std::endl;
+      std::cout<< "Number of Loops on Face = " << GF_numLoops(face) << std::endl;
+    }
+    
+    return;
+  }
+  pGVertex gmd_t::place_point( double* point, double local_refine, double refine_radius, bool& onFace)
   {
     pGIPart part = GM_part(model);
     pGRegion region;
+
+    bool vert_on_face = false;
+    pGVertex vert_f;
+    pGFace face;
 
     bool placed = false;
     GRIter r_it = GM_regionIter( model);
     pGRegion in_region;
     pGVertex vert;
-    while((in_region = GRIter_next(r_it)) && !placed)
+    while(!placed && (in_region = GRIter_next(r_it)))
     {
       if(GR_containsPoint(in_region, point) == 1)
-      { // Point is in region or on boundary
+      { // Point is in region or on boundary of region
         region = in_region;
+        vert_on_face = insert_vertex_on_face( model, point, vert_f, face);
+        placed = vert_on_face;
+        onFace = vert_on_face;
+        if(!placed)
+        {
+          vert = GIP_insertVertexInRegion( part, point, region);
+          std::cout << "Inserted Vertex in Region.\n" ;
+          placed = true;
+        }
       }
       else if(GR_containsPoint(in_region, point) == 0)
       { // Point is not in region
         region = GIP_outerRegion( part);
+        vert = GIP_insertVertexInRegion( part, point, region);
+        placed = true;
       }
       else
       { // No possible solution
         print_error("CANNOT DETERMINE CLASSIFICATION FOR POINT PLACEMENT.");
       }
-
-      vert = GIP_insertVertexInRegion( part, point, region);
-      placed = true;
     }
+    std::cout << "Placed Point" << std::endl;
     GRIter_delete(r_it);
 
     if(!placed)
     { print_error("FAILED TO PLACE POINT");}
 
-    set_point_refine( point, local_refine);
-  
-    return;
+    set_point_refine( point, local_refine, refine_radius);
+
+    return vert;
   }
 
-  void gmd_t::set_point_refine( double* point, double refine)
+  void gmd_t::set_point_refine( double* point, double refine, double refine_radius)
   {
     MS_addPointRefinement( m_case, refine, point);
+    if( refine_radius > 0.0)
+    { 
+      MS_addSphereRefinement( m_case, refine, refine_radius, point);
+    }
     return;
   }
 
-  void gmd_t::set_global_mesh_params( double order, double refine)
+  void gmd_t::set_global_mesh_params( double order, double refine, double grad_rate_in)
   {
     g_mesh_set = true;
     m_order = order;
     m_g_refine = refine;
+    grad_rate = grad_rate_in;
     return;
   }
 
@@ -223,7 +381,7 @@ namespace GMD
     char* ans = &model_name[0];
     return ans;
   }
-  
+
   void gmd_t::assign_model_name_to_mesh()
   {
     if(model_name == NULL)
@@ -308,20 +466,31 @@ namespace GMD
     return model;
   }
 
-  void insert_vertex_on_face( pGModel geom, double* point)
+  bool insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face)
   {
     pGIPart part = GM_part(geom);
-    pGRegion out_region = GIP_outerRegion(part);
-
     GFIter f_it = GIP_faceIter( part);
     GFIter_reset(f_it);
-    pGFace face = GFIter_next(f_it);
-
-    //GIP_insertVertexInRegion( part, point, out_region);
-    GIP_insertVertexInFace(part, point, face);
-
+    bool foundFace = false;
+    while( !foundFace && (face = GFIter_next(f_it)))
+    {
+      double closest[] = {0.0, 0.0, 0.0};
+      double param[] = {0.0, 0.0};
+      GF_closestPoint( face, point, closest, param);
+      compare_coords(point, closest, foundFace);
+    }
     GFIter_delete(f_it);
-    return;
+
+    if(foundFace)
+    {
+      std::cout << "inserted vertex on face" << std::endl;
+      vert = GIP_insertVertexInFace(part, point, face);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   void gmd_t::write_model( )
@@ -352,16 +521,32 @@ namespace GMD
     return;
   }
 
-  pMesh gmd_t::create_mesh( )
+  pMesh gmd_t::create_mesh( bool abort_on_fail)
   {
     if(!g_mesh_set)
     { print_error("GLOBAL MESH PARAMETERS NOT SET");}
 
     pModelItem model_domain = GM_domain(model);
     MS_setMeshSize( m_case, model_domain, 2, m_g_refine, 0);
+    MS_setGlobalSizeGradationRate( m_case, grad_rate);
+    const unsigned char edges = 0x02;
+    const unsigned char faces = 0x04;
+    const unsigned char dimfilter = edges | faces;
+    MS_ensureGFaceVertices( m_case, model_domain, dimfilter);
+
+    pPList Plist;
+    int selfInter = MS_checkMeshIntersections( mesh, Plist, NULL);
+    if ( selfInter == 1)
+    {
+      std::cout << "Mesh is self intersecting.\n" ;
+    }
+    else if( selfInter == 0)
+    {
+      std::cout << "Mesh is not self intersecting.\n";
+    }
 
     if(m_order == 2) 
-    // order is assumed to be 1 and can only be set to 2 according to Simmetrix documentation
+      // order is assumed to be 1 and can only be set to 2 according to Simmetrix documentation
     { MS_setMeshOrder(m_case, m_order);}
 
     pSurfaceMesher surface_mesher = SurfaceMesher_new( m_case, mesh);
@@ -371,6 +556,9 @@ namespace GMD
 
     SurfaceMesher_delete(surface_mesher);
     VolumeMesher_delete(volume_mesher);
+
+    verify_mesh( abort_on_fail);
+
     return mesh;
   }
 
@@ -383,6 +571,7 @@ namespace GMD
   void sim_start()
   {
     std::cout << "Starting Simmetrix" << std::endl;
+    Sim_logOn("Sim_log.log");
     SimUtil_start();
     Sim_readLicenseFile(0);
     SimModel_start();
@@ -396,6 +585,7 @@ namespace GMD
     SimModel_stop();
     Sim_unregisterAllKeys();
     SimUtil_stop();
+    Sim_logOff();
   }
 
   pGModel create_cube(double length)
@@ -473,47 +663,47 @@ namespace GMD
       yPt[i] = vert_xyz[2][i];
     }
     planarSurface = SSurface_createPlane(corner,xPt,yPt);
-      // Define and insert the face into the outer "void" region
-      for(i=0; i<4; i++) {
-        faceDirs[i] = 0;
-        faceEdges[i] = edges[3-i]; // edge order 3->2->1->0
-      }
-      GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+    // Define and insert the face into the outer "void" region
+    for(i=0; i<4; i++) {
+      faceDirs[i] = 0;
+      faceEdges[i] = edges[3-i]; // edge order 3->2->1->0
+    }
+    GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
 
-      // Now the side faces of the box - each side face has the edges defined in the same way
-      // for the first side face, the edge order is 0->5->8->4
-      for(i=0; i<4; i++) {
-        //Define surface such that normals all point out of the box
-        for(int j=0; j<3; j++) {
-          corner[j] = vert_xyz[i][j];      // the corner is the lower left vertex location
-          xPt[j] = vert_xyz[(i+1)%4][j];   // the xPt the lower right vertex location
-          yPt[j] = vert_xyz[i+4][j];       // the yPt is the upper left vertex location
-        }
-        planarSurface = SSurface_createPlane(corner,xPt,yPt);
-
-        faceEdges[0] = edges[i];
-        faceDirs[0] = 1;
-        faceEdges[1] = edges[(i+1)%4+4];
-        faceDirs[1] = 1;
-        faceEdges[2] = edges[i+8];
-        faceDirs[2] = 0;
-        faceEdges[3] = edges[i+4];
-        faceDirs[3] = 0;
-
-        GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
-      }
-
-      // Finally the top face of the box
-      // Define the surface - we want the normal to point out of the box
-      for(i=0; i<3; i++) {
-        corner[i] = vert_xyz[4][i]; 
-        xPt[i] = vert_xyz[5][i];   
-        yPt[i] = vert_xyz[7][i];  
+    // Now the side faces of the box - each side face has the edges defined in the same way
+    // for the first side face, the edge order is 0->5->8->4
+    for(i=0; i<4; i++) {
+      //Define surface such that normals all point out of the box
+      for(int j=0; j<3; j++) {
+        corner[j] = vert_xyz[i][j];      // the corner is the lower left vertex location
+        xPt[j] = vert_xyz[(i+1)%4][j];   // the xPt the lower right vertex location
+        yPt[j] = vert_xyz[i+4][j];       // the yPt is the upper left vertex location
       }
       planarSurface = SSurface_createPlane(corner,xPt,yPt);
-      // Define and insert the face
-      for(i=0; i<4; i++) {
-        faceDirs[i] = 1;
+
+      faceEdges[0] = edges[i];
+      faceDirs[0] = 1;
+      faceEdges[1] = edges[(i+1)%4+4];
+      faceDirs[1] = 1;
+      faceEdges[2] = edges[i+8];
+      faceDirs[2] = 0;
+      faceEdges[3] = edges[i+4];
+      faceDirs[3] = 0;
+
+      GIP_insertFaceInRegion(part,4,faceEdges,faceDirs,1,loopDef,planarSurface,1,outerRegion);
+    }
+
+    // Finally the top face of the box
+    // Define the surface - we want the normal to point out of the box
+    for(i=0; i<3; i++) {
+      corner[i] = vert_xyz[4][i]; 
+      xPt[i] = vert_xyz[5][i];   
+      yPt[i] = vert_xyz[7][i];  
+    }
+    planarSurface = SSurface_createPlane(corner,xPt,yPt);
+    // Define and insert the face
+    for(i=0; i<4; i++) {
+      faceDirs[i] = 1;
       faceEdges[i] = edges[i+8]; // edge order 8->9->10->11
     }
     // when this face is inserted, a new model region will automatically be created
@@ -521,5 +711,6 @@ namespace GMD
 
     return model;
   }
+
 
 } // END namespace GMD
