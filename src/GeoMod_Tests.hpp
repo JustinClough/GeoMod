@@ -81,6 +81,21 @@ void point_density_test( int i)
   return;
 }
 
+void mesh_growth_test()
+{
+  std::ofstream res;
+  res.open("results.txt", std::ios_base::app);
+  res << "N_dis\tN_FE\tN_surf\n" ;
+  res.close();
+
+  srand(time(NULL));
+  for( int i=0; i< 41; i++)
+  { 
+    point_density_test( i);
+  }
+  return;
+}
+
 
 /* test1(): 
 *     - Create 2D model
