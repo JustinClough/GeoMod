@@ -1,6 +1,134 @@
 #ifndef GEOMOD_TESTS_HPP
 #define GEOMOD_TESTS_HPP
 
+#include <GeoMod.hpp>
+
+#include <stdlib.h>
+#include <time.h>
+#include <iostream>
+#include <fstream>
+
+double fRand(double fMin, double fMax);
+void get_rand_line_ends( double** line_ends, double length, double* range);
+
+void point_density_test( int i)
+{
+  double cube_edge = 1.0;
+  double length = (200.0/17500.0);
+  double range[] = {(cube_edge)/2, -(cube_edge)/2};
+
+  pGModel cube = GMD::create_cube( cube_edge);
+  GMD::gmd_t gmd( cube);
+
+  double xyz1[] = {0.0, 0.0, 0.0};
+  double xyz2[] = {0.0, 0.0, 0.0};
+  double* line_ends[] = {xyz1, xyz2};
+  double local_refine = cube_edge*length;
+  double refine_radius = 0.0;
+
+  int points = 1;
+  for(int j = 0; j<i;j++)
+  {
+    points +=50;
+  }
+  for(int j = 0; j<points; j++)
+  {
+    get_rand_line_ends( line_ends, length, range); 
+    gmd.place_line( line_ends, local_refine, refine_radius);
+  }
+  
+  gmd.set_global_mesh_params( 2, 0.9, 1);
+  gmd.create_mesh();
+
+  if(points == 1)
+  {
+    char name[] = "Density_level_01.smd";
+    gmd.set_model_name( name);
+    gmd.write_model();
+    gmd.write_mesh();
+  }
+  if(points == 51)
+  {
+    char name[] = "Density_level_51.smd";
+    gmd.set_model_name( name);
+    gmd.write_model();
+    gmd.write_mesh();
+  }
+  if(points == 501)
+  {
+    char name[] = "Density_level_501.smd";
+    gmd.set_model_name( name);
+    gmd.write_model();
+    gmd.write_mesh();
+  }
+  if(points == 1501)
+  {
+    char name[] = "Density_level_1501.smd";
+    gmd.set_model_name( name);
+    gmd.write_model();
+    gmd.write_mesh();
+  }
+  int N_surf = gmd.get_mesh_numVertsOnFaces();
+  std::cout<< "Surface Mesh Nodes = " << N_surf << std::endl;
+
+  std::ofstream res;
+  res.open("results.txt", std::ios_base::app);
+  int N_FE = M_numVertices(gmd.get_mesh());
+  int N_dis = points;
+  res << N_dis << "\t";
+  res << N_FE << "\t";
+  res << N_surf << "\n";
+
+  res.close();
+
+  return;
+}
+
+void test_doubled_line()
+{
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd (cube);
+  
+  //gmd.count_face_loops();
+
+/*  double p1[] = {-0.75, 0.0, 0.0};
+  double p2[] = {0.5, 0.0, 0.0};
+  double* pts[]  = {p1, p2};
+  double local_refine = 0.2;
+  double refine_radius = 0.0;
+  gmd.place_line( pts, local_refine, refine_radius);
+  std::cout << "Placed first line.\n" ;
+
+  double p1b[] = {-0.5, 0.01, 0.0};
+  double p2b[] = {0.75, 0.0, 0.0};
+  double* pts2[]  = {p1b, p2b};
+  gmd.place_line( pts2, local_refine, refine_radius);
+  std::cout << "Placed second line.\n" ;
+*/
+  double p1c[] = {-0.5, 0.0, 0.0};
+  double p2c[] = {0.5, 0.0, 0.0};
+  double local_refine = 0.01;
+  double refine_radius = 0.001;
+  bool tmp = false;
+  gmd.place_point( p1c, local_refine, refine_radius, tmp);
+  gmd.place_point( p2c, local_refine, refine_radius, tmp);
+  //double* pts3[]  = {p1c, p2c};
+  //gmd.set_global_mesh_params( 1, 0.5, 0);
+  //gmd.place_line( pts3, local_refine, refine_radius);
+
+  char name[] = "box_2_point.smd";
+  gmd.set_model_name( name);
+  gmd.write_model();
+
+  //gmd.count_face_loops();
+
+  //gmd.create_mesh();
+  //gmd.write_mesh();
+
+  return;
+}
+
+#if 0
 /* test1(): 
 *     - Create 2D model
 *     - Create gmd_t instance with model
@@ -63,7 +191,7 @@ void test3()
   pGModel cube = GMD::create_cube( 2.0);
   GMD::gmd_t gmd(cube);
   double point[] = {0.0, 0.0, 0.0};
-  gmd.place_point( point, 0.1);
+  gmd.place_point( point, 0.1, 0.1);
   char model_name[] = "centered_point.smd";
   gmd.set_model_name( model_name);
   gmd.write_model();
@@ -90,7 +218,7 @@ void test4()
   pGModel cube = GMD::create_cube( 2.0);
   GMD::gmd_t gmd(cube);
   double point[] = {1.0, 0.0, 0.0};
-  gmd.place_point( point, 0.1);
+  gmd.place_point( point, 0.1, 0.1);
   char model_name[] = "surface_point_3D.smd";
   gmd.set_model_name( model_name);
   gmd.write_model();
@@ -140,5 +268,7 @@ void test5()
   std::cout << "\nPassed Test5\n\n" ;
   return;
 }
+
+#endif
 
 #endif
