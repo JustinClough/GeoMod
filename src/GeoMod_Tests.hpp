@@ -224,6 +224,15 @@ void test5()
   return;
 }
 
+/* test6():
+*     - Create a 3D model
+*     - Create one edge
+*     - Create another edge that is collinear to the first edge
+*     - Write model
+*     - Create mesh
+*     - Write mesh
+*/
+
 void test6()
 {
   pGModel cube = GMD::create_cube( 2.0);
@@ -258,6 +267,11 @@ void test6()
   gmd.create_mesh();
   gmd.write_mesh();
 
+  return;
+}
+
+void test7()
+{
   return;
 }
 

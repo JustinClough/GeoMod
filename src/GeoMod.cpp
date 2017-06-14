@@ -179,8 +179,6 @@ namespace GMD
       subtract_coords( point1, point2, length_vec);
       double length = 0;
       magnitude( length_vec, length);
-      std::cout<<"length_vec="; print_coords(length_vec);
-      std::cout<<"length = " << length << std::endl;
 
       MS_addCylinderRefinement( m_case, local_refine, refine_radius, length, center, normal);
     }
@@ -252,7 +250,6 @@ namespace GMD
         if(!placed)
         {
           vert = GIP_insertVertexInRegion( part, point, region);
-          std::cout << "Inserted Vertex in Region.\n" ;
           placed = true;
         }
       }
@@ -267,7 +264,6 @@ namespace GMD
         print_error("CANNOT DETERMINE CLASSIFICATION FOR POINT PLACEMENT.");
       }
     }
-    std::cout << "Placed Point" << std::endl;
     GRIter_delete(r_it);
 
     if(!placed)
@@ -459,10 +455,8 @@ namespace GMD
     int face_dirs[4] = {1,1,1,1};
     int loopDef[1] = {0};
     plane = SSurface_createPlane(vert_xyz[0], vert_xyz[1], vert_xyz[2]);
-    std::cout << "Created Plane" << std::endl;
     face = GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
 
-    std::cout << "Inserted Face" << std::endl;
     return model;
   }
 
@@ -483,7 +477,6 @@ namespace GMD
 
     if(foundFace)
     {
-      std::cout << "inserted vertex on face" << std::endl;
       vert = GIP_insertVertexInFace(part, point, face);
       return true;
     }
