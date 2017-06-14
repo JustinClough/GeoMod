@@ -6,3 +6,6 @@
 
 # Ignore the build directory
 build/
+
+#Ignore the density_tests directory
+density_tests/
