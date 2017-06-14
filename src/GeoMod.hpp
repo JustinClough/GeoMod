@@ -65,7 +65,7 @@ namespace GMD
 
   void release_mesh(pMesh mesh);
 
-  void sim_start();
+  void sim_start( char* Sim_log_file_name);
 
   void sim_end();
 

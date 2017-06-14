@@ -5,8 +5,9 @@
 
 int main( int argc, char** argv)
 {
+  char sim_log[] = "Sim_log.log";
   std::cout << "START" << std::endl;
-  GMD::sim_start();
+  GMD::sim_start( sim_log);
 
 /*
   std::ofstream res;

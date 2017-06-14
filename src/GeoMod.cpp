@@ -562,10 +562,10 @@ namespace GMD
     return;
   }
 
-  void sim_start()
+  void sim_start( char* Sim_log_file_name)
   {
     std::cout << "Starting Simmetrix" << std::endl;
-    Sim_logOn("Sim_log.log");
+    Sim_logOn( Sim_log_file_name);
     SimUtil_start();
     Sim_readLicenseFile(0);
     SimModel_start();
