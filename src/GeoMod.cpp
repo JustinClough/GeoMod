@@ -209,6 +209,7 @@ namespace GMD
         { print_error("INVALID MESH REGION FOUND");}
       }
     }
+    RIter_delete(r_it);
    return isValid;
   }
 
@@ -543,11 +544,11 @@ namespace GMD
     { MS_setMeshOrder(m_case, m_order);}
 
     pSurfaceMesher surface_mesher = SurfaceMesher_new( m_case, mesh);
-    SurfaceMesher_execute( surface_mesher, 0);
+    SurfaceMesher_execute( surface_mesher, NULL);
+    SurfaceMesher_delete(surface_mesher);
+
     pVolumeMesher volume_mesher = VolumeMesher_new( m_case, mesh);
     VolumeMesher_execute ( volume_mesher, 0);
-
-    SurfaceMesher_delete(surface_mesher);
     VolumeMesher_delete(volume_mesher);
 
     verify_mesh( abort_on_fail);
