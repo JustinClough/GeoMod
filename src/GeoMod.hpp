@@ -72,6 +72,9 @@ namespace GMD
   pGModel create_cube(double length);
 } //END namespace GMD
 
+double fRand(double fMin, double fMax);
+void get_rand_line_ends( double** line_ends, double length, double* range);
+
 pGVertex GIP_insertVertexInFace(pGIPart part, double* xyz, pGFace face);
 
 #endif // GEOMOD_HPP

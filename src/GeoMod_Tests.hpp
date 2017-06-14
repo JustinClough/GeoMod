@@ -8,9 +8,6 @@
 #include <iostream>
 #include <fstream>
 
-double fRand(double fMin, double fMax);
-void get_rand_line_ends( double** line_ends, double length, double* range);
-
 void point_density_test( int i)
 {
   double cube_edge = 1.0;
@@ -128,7 +125,6 @@ void test_doubled_line()
   return;
 }
 
-#if 0
 /* test1(): 
 *     - Create 2D model
 *     - Create gmd_t instance with model
@@ -144,7 +140,7 @@ void test1()
   gmd.set_model_name( name);
   gmd.write_model();
 
-  gmd.set_global_mesh_params( 1, 0.1);
+  gmd.set_global_mesh_params( 1, 0.1, 0.0);
   gmd.create_mesh();
   char m_name[] = "2D_rect.sms";
   gmd.set_mesh_name( m_name);
@@ -169,7 +165,7 @@ void test2()
   gmd.set_model_name( name);
   gmd.write_model();
 
-  gmd.set_global_mesh_params( 1, 0.1);
+  gmd.set_global_mesh_params( 1, 0.1, 0.0);
   gmd.create_mesh();
   char mesh_name[] = "3D_cube.sms";
   gmd.set_mesh_name( mesh_name);
@@ -191,12 +187,13 @@ void test3()
   pGModel cube = GMD::create_cube( 2.0);
   GMD::gmd_t gmd(cube);
   double point[] = {0.0, 0.0, 0.0};
-  gmd.place_point( point, 0.1, 0.1);
+  bool tmp = false;
+  gmd.place_point( point, 0.1, 0.1, tmp);
   char model_name[] = "centered_point.smd";
   gmd.set_model_name( model_name);
   gmd.write_model();
 
-  gmd.set_global_mesh_params( 1, 0.1);
+  gmd.set_global_mesh_params( 1, 0.1, 0.0);
   char mesh_name[] = "centered_point.sms";
   gmd.set_mesh_name( mesh_name );
   gmd.create_mesh();
@@ -218,12 +215,13 @@ void test4()
   pGModel cube = GMD::create_cube( 2.0);
   GMD::gmd_t gmd(cube);
   double point[] = {1.0, 0.0, 0.0};
-  gmd.place_point( point, 0.1, 0.1);
+  bool tmp = false;
+  gmd.place_point( point, 0.1, 0.1, tmp);
   char model_name[] = "surface_point_3D.smd";
   gmd.set_model_name( model_name);
   gmd.write_model();
 
-  gmd.set_global_mesh_params(1, 0.1);
+  gmd.set_global_mesh_params(1, 0.1, 0.0);
   char mesh_name[] = "surface_point_3D.sms";
   gmd.set_mesh_name( mesh_name);
   gmd.create_mesh();
@@ -261,14 +259,11 @@ void test5()
   gmd.set_model_name( model_name);
   gmd.write_model();
 
-  gmd.set_global_mesh_params(1, 0.1);
+  gmd.set_global_mesh_params(1, 0.1, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
 
   std::cout << "\nPassed Test5\n\n" ;
   return;
 }
-
-#endif
-
 #endif
