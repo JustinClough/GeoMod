@@ -310,4 +310,33 @@ void test7()
   return;
 }
 
+/* test8();
+*     - Create a 3D model
+*     - Create an interpolating edge from 4 interior points
+*     - Write Model
+*     - Create Mesh
+*     - Write Mesh
+*/
+void test8()
+{
+  pGModel cube = GMD::create_cube( 20.0);
+  GMD::gmd_t gmd( cube);
+  std::vector<double*> points;
+  double p1[] = {7.0, 3.0, -4.0};
+  double p2[] = {4.0, -4.0, 0.0};
+  double p3[] = {-7.0, 3.0, 0.0};
+  double p4[] = {-3.0, -2.0, 6.0};
+  points.push_back(p1);
+  points.push_back(p2);
+  points.push_back(p3);
+  points.push_back(p4);
+
+  char name[] = "4pt_interpolating.smd";
+  gmd.set_model_name( name);
+  gmd.write_model();
+
+  std::cout << "\nPassed Test8\n\n" ;
+  return;
+}
+
 #endif

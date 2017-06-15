@@ -17,6 +17,7 @@ int main( int argc, char** argv)
   test5();
   test6(); 
   //test7();// edge to surface connection fails to mesh
+  test8();
 
   GMD::sim_end();
   std::cout << "END" << std::endl;
