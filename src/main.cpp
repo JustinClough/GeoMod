@@ -1,6 +1,5 @@
 // GeoMod Header
 #include "GeoMod.hpp"
-#include "GeoMod_util.hpp"
 
 #include "GeoMod_Tests.hpp"
 
@@ -11,14 +10,14 @@ int main( int argc, char** argv)
   GMD::sim_start( sim_log, argc, argv);
 
   // mesh_growth_test();
-  //test1();
-  //test2();
-  //test3();
-  //test4();
-  //test5();
-  //test6(); 
-  //test7();// edge to surface connection fails to mesh
-  //test8();
+  test1();
+  test2();
+  test3();
+  test4();
+  test5();
+  test6();
+  test7();
+  test8();
 
 #if 0
   pGModel cube = GMD::create_cube(2.0);

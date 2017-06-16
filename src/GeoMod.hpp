@@ -1,6 +1,9 @@
 #ifndef GEOMOD_HPP
 #define GEOMOD_HPP
 
+// GeoMod Headers
+#include <GeoMod_util.hpp>
+
 // Simmetrix Headers
 #include "SimUtil.h"
 #include "SimModel.h"
@@ -20,6 +23,8 @@
 
 namespace GMD
 {
-
+  class mesh_helper_t;
+  class model_helper_t;
+  class gmd_t;
 }
 #endif
