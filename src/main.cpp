@@ -3,12 +3,18 @@
 
 #include "GeoMod_Tests.hpp"
 
+pGVertex make_vert( double point)
+{
+  pGVertex vert = GIP_insertVertexInRegion ( part, point, region);
+  return vert
+}
+
 int main( int argc, char** argv)
 {
   char sim_log[] = "Sim_log.log";
   std::cout << "START" << std::endl;
   GMD::sim_start( sim_log, argc, argv);
-
+#if 0
   // mesh_growth_test();
   test1();
   test2();
@@ -18,8 +24,8 @@ int main( int argc, char** argv)
   test6();
   test7();
   test8();
+#endif
 
-#if 0
   pGModel cube = GMD::create_cube(2.0);
   double point1[] = {1.0, 0.0, 0.0};
   double point2[] = {0.0, 0.0, 0.0};
@@ -39,7 +45,6 @@ int main( int argc, char** argv)
   GIP_insertEdgeInRegion( part, vert1, vert2, line, 1, region);
 
   GM_write( cube, "test_cube.smd", 0, 0);
-#endif
 
   GMD::sim_end();
   std::cout << "END" << std::endl;
