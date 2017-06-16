@@ -160,6 +160,8 @@ namespace GMD
     bool placed = false;
     while(!placed && (in_region = GRIter_next(r_it)))
     {
+      if( vert1 == vert2)
+      { std::cout << "vert1 == vert2" << std::endl;}
       pCurve line = SCurve_createLine( point1, point2);
       GIP_insertEdgeInRegion( part, vert1, vert2, line, 1, in_region);
       placed = true;
@@ -188,29 +190,44 @@ namespace GMD
     return;
   }
 
-  bool gmd_t::verify_mesh( bool abort_on_fail)
+  void gmd_t::verify_mesh( bool abort_on_fail )
   {
-    bool isValid = true;
-    RIter r_it = M_regionIter( mesh);
-    pRegion reg;
-    while(( reg = RIter_next( r_it)))
+    int rank = PMU_rank();
+    int np = PMU_size();
+    pParMesh par_mesh;
+    pPList partBndryEnts = PList_new();
+    pPList entInfo = PList_new();
+    pPList entCopyPtrs = PList_new();
+    pPList gids = PList_new();
+    pPList meshes = PList_new();
+    PList_append( meshes, mesh);
+    int m_rep = M_representation( mesh);
+    par_mesh = PM_createFromMesh( model, m_rep, meshes, NULL, NULL, NULL);
     {
-      int status = R_isValidElement( reg);
-      if( status == 1)
-      { /* Do nothing, region is valid*/ }
-      else
+      for(int entType = 0; entType<3; entType++)
       {
-        double local[] = {0.0, 0.0, 0.0};
-        double global[] = {0.0, 0.0, 0.0};
-        R_localToGlobal(reg, local, global);
-        std::cout << "Invalid Mesh region near "; print_coords( global);
-        isValid = false;
-        if( abort_on_fail)
-        { print_error("INVALID MESH REGION FOUND");}
+
       }
     }
-    RIter_delete(r_it);
-   return isValid;
+
+    if(!PM_verify( par_mesh, 0, NULL))
+    { print_error("BAD PARTITIONED MESH AFTER JOIN");}
+     
+    //apf::Mesh2* apf_mesh = apf::createMesh( par_mesh);
+    apf::Mesh* apf_mesh = (apf::Mesh*) mesh;
+    apf::verify( apf_mesh, abort_on_fail );
+    std::cout << "HERE1" << std::endl;
+    apf::destroyMesh( apf_mesh);
+    std::cout << "HERE2" << std::endl;
+
+    M_release( par_mesh);
+    PList_delete( meshes);
+    PList_delete( partBndryEnts);
+    PList_delete( entInfo);
+    PList_delete( entCopyPtrs);
+    PList_delete( gids);
+    
+    return;
   }
 
   void gmd_t::count_face_loops()
@@ -551,7 +568,7 @@ namespace GMD
     VolumeMesher_execute ( volume_mesher, 0);
     VolumeMesher_delete(volume_mesher);
 
-    verify_mesh( abort_on_fail);
+    verify_mesh( );
 
     return mesh;
   }
@@ -562,9 +579,10 @@ namespace GMD
     return;
   }
 
-  void sim_start( char* Sim_log_file_name)
+  void sim_start( char* Sim_log_file_name, int argc, char** argv)
   {
     std::cout << "Starting Simmetrix" << std::endl;
+    SimPartitionedMesh_start(&argc, &argv);
     Sim_logOn( Sim_log_file_name);
     SimUtil_start();
     Sim_readLicenseFile(0);
@@ -580,6 +598,7 @@ namespace GMD
     Sim_unregisterAllKeys();
     SimUtil_stop();
     Sim_logOff();
+    SimPartitionedMesh_stop();
   }
 
   pGModel create_cube(double length)

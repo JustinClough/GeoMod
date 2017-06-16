@@ -6,12 +6,17 @@
 #include "SimModel.h"
 #include "SimAdvModel.h"
 #include "MeshSim.h"
+#include "SimPartitionedMesh.h"
 
 // Standard C++ Headers
 #include <cstdlib>
 #include <iostream>
 #include <vector>
 #include <math.h>
+
+// APF headers
+#include <apf.h>
+#include <apfSIM.h>
 
 namespace GMD
 {
@@ -39,7 +44,7 @@ namespace GMD
 
       int get_mesh_numVertsOnFaces();
       void count_face_loops();
-      bool verify_mesh( bool abort_on_fail=true);
+      void verify_mesh( bool abort_on_fail=true );
 
     protected:
       bool insert_vertex_on_face( pGModel geom, double* point, pGVertex vert, pGFace face);
@@ -64,7 +69,7 @@ namespace GMD
 
   void release_mesh(pMesh mesh);
 
-  void sim_start( char* Sim_log_file_name);
+  void sim_start( char* Sim_log_file_name, int argc, char** argv);
 
   void sim_end();
 
