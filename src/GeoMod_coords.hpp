@@ -17,5 +17,7 @@ namespace GMD
 
   void dot_product( double x[3], double y[3], double& ans);
 
+  void compare_coords( double x[3], double y[3], bool& areSame);
+
 }
 #endif

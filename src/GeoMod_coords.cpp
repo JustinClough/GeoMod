@@ -23,6 +23,30 @@ namespace GMD
     return;
   }
 
+  void get_mag(double vec[3], double& mag)
+  {
+    double tmp = 0.0;
+    for (int i=0; i<3; i++)
+    {
+      tmp += (vec[i]*vec[i]);
+    }
+    mag = sqrt( tmp);
+  }
+
+  void compare_coords( double x[3], double y[3], bool& areSame)
+  {
+    areSame = false;
+    double mag;
+    double ans[] = {0.0, 0.0, 0.0};
+    subtract_coords( x, y, ans);
+    get_mag( ans, mag);
+    if (mag==0)
+    {
+      areSame = true;
+    }
+    return;
+  }
+
   void divide( double vec[3], double denom, double ans[3])
   {
     if(denom == 0.0)
@@ -37,16 +61,6 @@ namespace GMD
       }
     }
     return;
-  }
-
-  void get_mag(double vec[3], double& mag)
-  {
-    double tmp = 0.0;
-    for (int i=0; i<3; i++)
-    {
-      tmp += (vec[i]*vec[i]);
-    }
-    mag = sqrt( tmp);
   }
 
   void get_unit_vector( double vec[3], double unit[3])
