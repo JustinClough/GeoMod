@@ -62,7 +62,8 @@ namespace GMD
       GV_point(startVert, point0);
       GV_point(endVert, point1);
       linearCurve = SCurve_createLine(point0, point1);
-      edges[i] = GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
+      edges[i] = 
+        GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
     }
 
     // Now the side edges of the box
@@ -72,7 +73,8 @@ namespace GMD
       GV_point(startVert,point0);
       GV_point(endVert,point1);
       linearCurve = SCurve_createLine(point0,point1);
-      edges[i+4] = GIP_insertEdgeInRegion(part,startVert, endVert, linearCurve, 1, outerRegion);
+      edges[i+4] = 
+        GIP_insertEdgeInRegion(part,startVert, endVert, linearCurve, 1, outerRegion);
     }
 
     // Finally the top edges 
@@ -82,7 +84,8 @@ namespace GMD
       GV_point(startVert, point0);
       GV_point(endVert, point1);
       linearCurve = SCurve_createLine(point0, point1);
-      edges[i+8] = GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
+      edges[i+8] = 
+        GIP_insertEdgeInRegion(part, startVert, endVert, linearCurve, 1, outerRegion);
     }
 
     double corner[3], xPt[3], yPt[3];  // the points defining the surface of the face
@@ -184,7 +187,8 @@ namespace GMD
     int face_dirs[4] = {1,1,1,1};
     int loopDef[1] = {0};
     plane = SSurface_createPlane(vert_xyz[0], vert_xyz[1], vert_xyz[2]);
-    face = GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
+    face = 
+      GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
 
     return model;
   }

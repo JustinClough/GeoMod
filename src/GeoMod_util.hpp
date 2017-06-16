@@ -12,6 +12,8 @@
 #include <cstdlib>
 #include <iostream>
 
+pGVertex GIP_insertVertexInFace(pGIPart part, double* xyz, pGFace face);
+
 namespace GMD
 {
   void sim_start( char* Sim_log_file_name, int argc, char** argv);
