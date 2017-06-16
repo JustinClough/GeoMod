@@ -6,13 +6,19 @@
 
 namespace GMD
 {
-  void print_error( std::string message, bool abort_on_fail=true)
+  void print_error( std::string message, bool abort_on_fail)
   {
     std::cout << "Error: " <<  message << std::endl;
     if( abort_on_fail)
     {
       std::abort();
     }
+    return;
+  }
+
+  void print_warning( std::string message)
+  {
+    std::cout << "Warning: " << message << std::endl;
     return;
   }
 
