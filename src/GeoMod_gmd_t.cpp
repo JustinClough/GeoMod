@@ -4,7 +4,7 @@ namespace GMD
 {
   gmd_t::gmd_t( pGModel in_model)
   {
-    panic = true;
+    panicStatus = true;
     modeler = new model_helper_t( in_model);
     mesher = new mesh_helper_t ( in_model);
     return;
@@ -19,7 +19,7 @@ namespace GMD
 
   void gmd_t::set_abort_on_fail( bool abort_on_fail)
   {
-    panic = abort_on_fail;
+    panicStatus = abort_on_fail;
     return;
   }
 
@@ -30,8 +30,14 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_point( double coords[3])
+  void gmd_t::place_point( double coords[3], double refine, double radius)
   {
+    pGVertex vert;
+    bool updateMesh = modeler->place_point( coords, vert, panicStatus);
+    if( updateMesh)
+    {
+      mesher->place_point( coords, refine, radius, panicStatus);
+    }
 
     return;
   }

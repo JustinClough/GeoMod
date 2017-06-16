@@ -14,6 +14,13 @@ namespace GMD
       pGModel model;
       void model_print();
 
+      bool place_point( double coords[3], pGVertex vert, bool abort_on_fail);
+      int point_location( double coords[3]);
+      void put_point_outside( double coords[3], pGVertex vert);
+      void put_point_in_line( double coords[3], pGVertex vert);
+      void put_point_in_face( double coords[3], pGVertex vert);
+      void put_point_in_region( double coords[3], pGVertex vert);
+
   };
 
 }
