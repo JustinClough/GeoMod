@@ -2,10 +2,13 @@
 
 namespace GMD
 {
-  class model_helper_t
+  model_helper_t::model_helper_t( pGModel in_model)
   {
-    private:
-      pGModel model;
+    return;
+  }
 
-  };
+  model_helper_t::~model_helper_t()
+  {
+    return;
+  }
 }

@@ -2,11 +2,13 @@
 
 namespace GMD
 {
-  class mesh_helper_t
+  mesh_helper_t::mesh_helper_t( pGModel in_model)
   {
-    private:
-      pMesh mesh;
-      pACase m_case;
+    return;
+  }
 
-  };
+  mesh_helper_t::~mesh_helper_t()
+  {
+    return;
+  }
 }
