@@ -27,7 +27,7 @@ else()
       )
 endif()
 
-add_executable(GeoMod ${SOURCE_PREFIX}/main.cpp ${SOURCE_PREFIX}/GeoMod.cpp)
+add_executable(GeoMod ${SOURCE_PREFIX}/main.cpp ${SOURCE_PREFIX}/GeoMod.cpp ${SOURCE_PREFIX}/GeoMod_util.cpp)
 target_include_directories( GeoMod PRIVATE ${SOURCE_PREFIX})
 
 #for any targets that use PUMI, just use this command
