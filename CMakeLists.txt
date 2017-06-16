@@ -28,11 +28,13 @@ else()
 endif()
 
 add_executable(GeoMod 
-${SOURCE_PREFIX}/main.cpp 
-${SOURCE_PREFIX}/GeoMod_util.cpp
+${SOURCE_PREFIX}/GeoMod_coords.cpp
+${SOURCE_PREFIX}/GeoMod_gmd_t.cpp
 ${SOURCE_PREFIX}/GeoMod_mesh_helper.cpp
 ${SOURCE_PREFIX}/GeoMod_model_helper.cpp
-${SOURCE_PREFIX}/GeoMod_gmd_t.cpp)
+${SOURCE_PREFIX}/GeoMod_printer.cpp
+${SOURCE_PREFIX}/GeoMod_util.cpp
+${SOURCE_PREFIX}/main.cpp)
 target_include_directories( GeoMod PRIVATE ${SOURCE_PREFIX})
 
 #for any targets that use PUMI, just use this command
