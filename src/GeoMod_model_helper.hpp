@@ -12,6 +12,7 @@ namespace GMD
       model_helper_t (pGModel in_model);
       ~model_helper_t();
       pGModel model;
+      void model_print();
 
   };
 

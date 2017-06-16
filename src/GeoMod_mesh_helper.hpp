@@ -13,6 +13,7 @@ namespace GMD
       ~mesh_helper_t();
       pMesh mesh;
       pACase m_case;
+      void mesh_print();
 
   };
 

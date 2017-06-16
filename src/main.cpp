@@ -10,6 +10,7 @@ int main( int argc, char** argv)
   GMD::sim_start( sim_log, argc, argv);
 
   // mesh_growth_test();
+  test0();
   test1();
   test2();
   test3();

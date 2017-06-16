@@ -3,6 +3,21 @@
 
 #include <GeoMod.hpp>
 
+
+/* test0(): 
+ *     - Create a 3D model
+ *     - Create a gmd object
+ *     - Test printing features
+ *     - Implicitly destory the gmd object
+ */
+void test0()
+{
+  pGModel cube = GMD::create_cube( 10.0);
+  GMD::gmd_t gmd( cube);
+  gmd.test_printers();
+  return;
+}
+
 /* test1(): 
  *     - Create 2D model
  *     - Create gmd_t instance with model
