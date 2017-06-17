@@ -113,7 +113,7 @@ namespace GMD
   void model_helper_t::put_point_outside( double coords[3], pGVertex vert)
   {
     pGRegion out_region = GIP_outerRegion( part);
-    
+    vert = GIP_insertVertexInRegion( part, coords, out_region);
     return;
   }
 
