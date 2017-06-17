@@ -16,6 +16,7 @@ namespace GMD
       ~mesh_helper_t();
       void mesh_print();
       void write( std::string name);
+      bool isValid();
 
       // Members
       pMesh mesh;

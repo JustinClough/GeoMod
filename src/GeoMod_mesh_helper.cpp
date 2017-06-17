@@ -22,9 +22,31 @@ namespace GMD
     return;
   }
 
+  bool mesh_helper_t::isValid()
+  {
+    return true;
+  }
+
   void mesh_helper_t::write( std::string name)
   {
+    name = name + ".sms";
+    const char* name_c = name.c_str();
+    if( !isValid())
+    { print_warning("Attempting to write invalid mesh.");}
 
+    std::cout << "MESH INFORMATION: "
+      << "\nVertices: "<< M_numVertices(mesh)
+      << "\nEdges: "<< M_numEdges(mesh)
+      << "\nFaces: "<< M_numFaces(mesh)
+      << "\nRegions: "<< M_numRegions(mesh) << std::endl;
+
+    int writestat = M_write(mesh, name_c, 0,0);
+    if(writestat == 0)
+    { 
+      std::cout << "Mesh " << name << " written." << std::endl; 
+    }
+    else
+    { std::cout << "Mesh " << name << " failed to be written." << std::endl; }
     return;
   }
 
@@ -47,5 +69,4 @@ namespace GMD
     }
     return;
   }
-
 }
