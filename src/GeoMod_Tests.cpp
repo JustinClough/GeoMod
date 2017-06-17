@@ -1,5 +1,7 @@
 #include <GeoMod_Tests.hpp>
 
+using std::cout;
+
 /* test0(): 
  *     - Create a 3D model
  *     - Create a gmd object
@@ -11,6 +13,8 @@ void test0()
   pGModel cube = GMD::create_cube( 10.0);
   GMD::gmd_t gmd( cube);
   gmd.test_printers();
+
+  cout << "\n\nPassed test0\n\n" ;
   return;
 }
 
@@ -23,6 +27,10 @@ void test0()
  */
 void test1()
 { 
+  pGModel rectangle = GMD::create_2D_rectangle( 5.0, 7.0);
+  GMD::gmd_t gmd( rectangle);
+  
+  cout << "\n\nPassed test1\n\n";
   return;
 }
 

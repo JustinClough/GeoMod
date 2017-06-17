@@ -1,13 +1,12 @@
 #include <GeoMod_model_helper.hpp>
-#include <GeoMod_printer.hpp>
-#include <GeoMod_coords.hpp>
 
 namespace GMD
 {
   model_helper_t::model_helper_t( pGModel in_model)
   {
     model = in_model;
-    if(GM_isValid( model, 1, NULL) != 1)
+    Written = false;
+    if(!isValid())
     {
       print_warning("Created gmd object on invalid model.");
     }
@@ -28,6 +27,40 @@ namespace GMD
   void model_helper_t::model_print()
   {
     std::cout << "Modeler says hello!" << std::endl;
+    return;
+  }
+  
+  bool model_helper_t::isValid()
+  {
+    if(GM_isValid( model, 1, NULL) == 1)
+    { return true; }
+    else
+    { return false; }
+  }
+    
+
+  void model_helper_t::write( std::string name)
+  {
+    name = name + ".smd";
+    const char* name_c = name.c_str();
+    if( !isValid())
+    { print_warning("Attempting to write invalid model.");}
+
+    std::cout << "MODEL INFORMATION: "
+      << "\nVertices: "<< GM_numVertices(model)
+      << "\nEdges: "<< GM_numEdges(model)
+      << "\nFaces: "<< GM_numFaces(model)
+      << "\nRegions: "<< GM_numRegions(model) << std::endl;
+
+    int writestat = GM_write(model, name_c, 0,0);
+    if(writestat == 0)
+    { 
+      std::cout << "Model " << name << " written." << std::endl; 
+      Written = true;
+    }
+    else
+    { std::cout << "Model " << name << " failed to be written." << std::endl; }
+
     return;
   }
 
@@ -129,6 +162,18 @@ namespace GMD
 
   void model_helper_t::put_point_in_region( double coords[3], pGVertex vert)
   {
+    bool placed = false;
+    GRIter r_it = GM_regionIter( model);
+    pGRegion region;
+    while( !placed && ( region= GRIter_next(r_it)))
+    {
+      if (GR_containsPoint( region, coords) ==1)
+      {
+        vert = GIP_insertVertexInRegion( part, coords, region);
+        placed = true;
+      }
+    }
+    GRIter_delete( r_it);
     return;
   }
 
@@ -156,4 +201,7 @@ namespace GMD
     }
     return updateMesh;
   }
+
+  bool model_helper_t::isWritten()
+  { return Written;}
 }

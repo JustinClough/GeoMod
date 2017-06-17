@@ -2,6 +2,9 @@
 #define GEOMOD_MODEL_HELPER_HPP
 
 #include <GeoMod_SIM.hpp>
+#include <GeoMod_printer.hpp>
+#include <GeoMod_coords.hpp>
+#include <string>
 
 namespace GMD
 {
@@ -13,11 +16,14 @@ namespace GMD
       model_helper_t (pGModel in_model);
       ~model_helper_t();
       void model_print();
+      void write( std::string name);
+      bool isValid();
+      bool isWritten();
 
       // Members
       pGModel model;
       pGIPart part;
-      bool valid;
+      bool Written;
 
       // Methods to place a point
       bool place_point( double coords[3], pGVertex vert, bool abort_on_fail);

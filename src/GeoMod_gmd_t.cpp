@@ -41,5 +41,25 @@ namespace GMD
 
     return;
   }
+  
+  void gmd_t::set_name( std::string file_name)
+  {
+    name = file_name;
+    return;
+  }
 
+  void gmd_t::write_model()
+  {
+    modeler->write( name);
+    return;
+  }
+
+  void gmd_t::write_mesh()
+  {
+    if(modeler->isWritten())
+    { mesher->write( name); }
+    else 
+    { print_error("Model must be written before mesh."); }
+    return;
+  }
 }

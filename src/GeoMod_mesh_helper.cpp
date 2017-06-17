@@ -1,5 +1,4 @@
 #include <GeoMod_mesh_helper.hpp>
-#include <GeoMod_printer.hpp>
 
 namespace GMD
 {
@@ -20,6 +19,12 @@ namespace GMD
   void mesh_helper_t::mesh_print()
   {
     std::cout << "Mesher says hello!" << std::endl;
+    return;
+  }
+
+  void mesh_helper_t::write( std::string name)
+  {
+
     return;
   }
 
