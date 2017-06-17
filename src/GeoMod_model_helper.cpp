@@ -7,6 +7,15 @@ namespace GMD
   model_helper_t::model_helper_t( pGModel in_model)
   {
     model = in_model;
+    if(GM_isValid( model, 1, NULL) != 1)
+    {
+      print_warning("Created gmd object on invalid model.");
+    }
+    part = GM_part( model);
+    if( part == NULL)
+    {
+      print_error("GeoMod does not support assembly models.");
+    }
     return;
   }
 
@@ -69,7 +78,7 @@ namespace GMD
     int answer = 0;
     // Want to find classification on lowest gEnt dim
     // start from top work down, overwrite old answer
-    for(int i=2; i>0; i--) 
+    for(int i=3; i>0; i--) 
     {
       if (i<3)
       {
@@ -103,6 +112,8 @@ namespace GMD
 
   void model_helper_t::put_point_outside( double coords[3], pGVertex vert)
   {
+    pGRegion out_region = GIP_outerRegion( part);
+    
     return;
   }
 

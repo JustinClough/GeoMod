@@ -9,11 +9,17 @@ namespace GMD
   {
     friend class gmd_t;
     private:
+      // Util methods
       model_helper_t (pGModel in_model);
       ~model_helper_t();
-      pGModel model;
       void model_print();
 
+      // Members
+      pGModel model;
+      pGIPart part;
+      bool valid;
+
+      // Methods to place a point
       bool place_point( double coords[3], pGVertex vert, bool abort_on_fail);
       bool point_on_dim( int dim, double coords[3]);
       int point_location( double coords[3]);
@@ -21,6 +27,10 @@ namespace GMD
       void put_point_in_line( double coords[3], pGVertex vert);
       void put_point_in_face( double coords[3], pGVertex vert);
       void put_point_in_region( double coords[3], pGVertex vert);
+
+      // Methods to place an edge
+
+      // Methods to place a face
 
   };
 
