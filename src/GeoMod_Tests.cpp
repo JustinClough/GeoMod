@@ -1,8 +1,4 @@
-#ifndef GEOMOD_TESTS_HPP
-#define GEOMOD_TESTS_HPP
-
-#include <GeoMod.hpp>
-
+#include <GeoMod_Tests.hpp>
 
 /* test0(): 
  *     - Create a 3D model
@@ -10,7 +6,13 @@
  *     - Test printing features
  *     - Implicitly destory the gmd object
  */
-void test0();
+void test0()
+{
+  pGModel cube = GMD::create_cube( 10.0);
+  GMD::gmd_t gmd( cube);
+  gmd.test_printers();
+  return;
+}
 
 /* test1(): 
  *     - Create 2D model
@@ -19,7 +21,10 @@ void test0();
  *     - Create mesh from model
  *     - Write mesh
  */
-void test1();
+void test1()
+{ 
+  return;
+}
 
 /* test2(): 
  *     - Create a 3D model
@@ -28,7 +33,10 @@ void test1();
  *     - Create mesh from model
  *     - Write mesh
  */
-void test2();
+void test2()
+{
+  return;
+}
 
 /* test3():
  *     - Create a 3D model
@@ -37,7 +45,10 @@ void test2();
  *     - Create a mesh from model
  *     - Write mesh
  */
-void test3();
+void test3()
+{
+  return;
+}
 
 /* test4():
  *     - Create a 3D model
@@ -46,7 +57,10 @@ void test3();
  *     - Create mesh from model
  *     - Write mesh
  */
-void test4();
+void test4()
+{
+  return;
+}
 
 /* test5():
  *     - Create a 3D model 
@@ -57,7 +71,10 @@ void test4();
  *     - Create mesh
  *     - Write mesh
  */
-void test5();
+void test5()
+{
+  return;
+}
 
 /* test6():
  *     - Create a 3D model
@@ -68,7 +85,10 @@ void test5();
  *     - Write mesh
  */
 
-void test6();
+void test6()
+{
+  return;
+}
 
 /*  test7():
  *     - Create a 3D model
@@ -77,7 +97,10 @@ void test6();
  *     - Create mesh
  *     - Write mesh
  */
-void test7();
+void test7()
+{
+  return;
+}
 
 /* test8();
  *     - Create a 3D model
@@ -86,6 +109,7 @@ void test7();
  *     - Create Mesh
  *     - Write Mesh
  */
-void test8();
-
-#endif
+void test8()
+{
+  return;
+}
