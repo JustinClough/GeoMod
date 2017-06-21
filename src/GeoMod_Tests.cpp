@@ -118,10 +118,37 @@ void test4()
 
   cout << "\n\nPassed test4\n\n";
   return;
-  return;
 }
 
 /* test5():
+ *     - Create a 3D model
+ *     - Place a point with defined mesh refinement on an edge
+ *     - Write model
+ *     - Create mesh from model
+ *     - Write mesh
+ */
+void test5()
+{
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd( cube);
+  std::string name = "test5_cube";
+  gmd.set_name( name);
+
+  double coords[3] = {1.0, 1.0, 0.0};
+  double refine = 0.1;
+  double radius = 0.5;
+  gmd.place_point( coords, refine, radius);
+
+  gmd.write_model();
+  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  cout << "\n\nPassed test5\n\n";
+  return;
+}
+
+/* test6():
  *     - Create a 3D model 
  *     - Place a fully interior line with define mesh refinement for line only
  *     - Place a fully interior line with define mesh refinement for cyln. surrounding
@@ -130,12 +157,12 @@ void test4()
  *     - Create mesh
  *     - Write mesh
  */
-void test5()
+void test6()
 {
   return;
 }
 
-/* test6():
+/* test7():
  *     - Create a 3D model
  *     - Create one edge
  *     - Create another edge that is collinear to the first edge
@@ -144,31 +171,31 @@ void test5()
  *     - Write mesh
  */
 
-void test6()
+void test7()
 {
   return;
 }
 
-/*  test7():
+/*  test8():
  *     - Create a 3D model
  *     - Create an edge from a surface point to an interior point
  *     - Write model
  *     - Create mesh
  *     - Write mesh
  */
-void test7()
+void test8()
 {
   return;
 }
 
-/* test8();
+/* test9();
  *     - Create a 3D model
  *     - Create an interpolating edge from 4 interior points
  *     - Write Model
  *     - Create Mesh
  *     - Write Mesh
  */
-void test8()
+void test9()
 {
   return;
 }

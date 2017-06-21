@@ -32,6 +32,7 @@ namespace GMD
       bool point_on_dim( int dim, double coords[3]);
       int point_location( double coords[3]);
       bool PointOnFace( double coords[3], pGFace face);
+      bool PointOnEdge( double coords[3], pGEdge edge);
       void put_point_outside( double coords[3], pGVertex vert);
       void put_point_in_line( double coords[3], pGVertex vert);
       void put_point_in_face( double coords[3], pGVertex vert);

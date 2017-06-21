@@ -151,6 +151,17 @@ namespace GMD
     return ans;
   }
 
+  bool model_helper_t::PointOnEdge( double coords[3], pGEdge edge)
+  {
+    bool ans = false;
+    double cp[] = {0.0, 0.0, 0.0};
+    double para[] = {0.0, 0.0, 0.0};
+    GE_closestPoint( edge, coords, cp, para);
+    compare_coords(coords, cp, ans);
+
+    return ans;
+  }
+
   void model_helper_t::put_point_outside( double coords[3], pGVertex vert)
   {
     pGRegion out_region = GIP_outerRegion( part);
@@ -160,7 +171,26 @@ namespace GMD
 
   void model_helper_t::put_point_in_line( double coords[3], pGVertex vert)
   {
-    
+    bool placed = false;
+    GEIter e_it = GM_edgeIter( model);
+    pGEdge edge;
+    while ( !placed && (edge = GEIter_next( e_it)))
+    {
+      if (PointOnEdge(coords,edge))
+      {
+        double param = 0.0;
+        GE_closestPoint( edge, coords, NULL, &param);
+        vert = GM_splitEdge( edge, param);
+        placed = true;
+      }
+    }
+    GEIter_delete( e_it);
+
+    if( !placed)
+    { 
+      print_warning("Failed to place point at");
+      print_coords( coords);
+    }
     return;
   }
   
