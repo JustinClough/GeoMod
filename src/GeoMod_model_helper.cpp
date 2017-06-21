@@ -142,6 +142,15 @@ namespace GMD
     return answer;
   }
 
+  bool model_helper_t::PointOnFace( double coords[3], pGFace face)
+  {
+    bool ans = false;
+    double cp[] = {0.0, 0.0, 0.0};
+    GF_closestPoint( face, coords, cp, NULL);
+    compare_coords(coords, cp, ans);
+    return ans;
+  }
+
   void model_helper_t::put_point_outside( double coords[3], pGVertex vert)
   {
     pGRegion out_region = GIP_outerRegion( part);
@@ -156,6 +165,18 @@ namespace GMD
   
   void model_helper_t::put_point_in_face( double coords[3], pGVertex vert)
   {
+    bool placed = false;
+    GFIter f_it = GM_faceIter( model);
+    pGFace face;
+    while (( face = GFIter_next( f_it)))
+    {
+      if (PointOnFace(coords,face))
+      {
+        vert = GIP_insertVertexInFace( part, coords, face);
+        placed = true;
+      }
+    }
+    GFIter_delete( f_it);
     
     return;
   }
