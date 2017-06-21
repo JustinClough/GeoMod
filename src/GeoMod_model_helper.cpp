@@ -101,8 +101,8 @@ namespace GMD
     else if (dim == 3)
     {
       print_warning("point_on_dim does not support this dimension");
-      return answer;
     }
+    return answer;
   }
 
   int model_helper_t::point_location(double coords[3])
@@ -156,6 +156,7 @@ namespace GMD
   
   void model_helper_t::put_point_in_face( double coords[3], pGVertex vert)
   {
+    
     return;
   }
 

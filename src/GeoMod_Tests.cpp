@@ -101,6 +101,23 @@ void test3()
  */
 void test4()
 {
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd( cube);
+  std::string name = "test4_cube";
+  gmd.set_name( name);
+
+  double coords[3] = {1.0, 0.0, 0.0};
+  double refine = 0.1;
+  double radius = 0.5;
+  gmd.place_point( coords, refine, radius);
+
+  gmd.write_model();
+  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  cout << "\n\nPassed test4\n\n";
+  return;
   return;
 }
 
