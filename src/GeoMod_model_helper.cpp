@@ -29,7 +29,7 @@ namespace GMD
     std::cout << "Modeler says hello!" << std::endl;
     return;
   }
-  
+
   bool model_helper_t::isValid()
   {
     if(GM_isValid( model, 1, NULL) == 1)
@@ -38,7 +38,6 @@ namespace GMD
     { return false; }
   }
     
-
   void model_helper_t::write( std::string name)
   {
     name = name + ".smd";

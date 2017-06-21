@@ -21,9 +21,13 @@ namespace GMD
       // Members
       pMesh mesh;
       pACase m_case;
+      double order;
+      double refine;
+      double grad_rate;
 
       // Mesh preping methods
       void place_point( double coords[3], double refine, double radius, bool abort_on_fail);
+      void set_global( double order_in, double refine_in, double grad_rate_in);
 
   };
 

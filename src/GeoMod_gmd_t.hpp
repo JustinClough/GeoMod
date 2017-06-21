@@ -25,6 +25,9 @@ namespace GMD
 
       // Methods to modify the geometry
       void place_point( double coords[3], double refine, double radius);
+
+      // Methods for only meshing
+      void set_global_mesh_params( double order_in, double refine_in, double grad_rate_in);
     
     private:
       bool panicStatus;

@@ -33,6 +33,8 @@ void test1()
 
   std::string name = "test1";
   gmd.set_name( name);
+  gmd.write_model();
+  gmd.write_mesh();
   
   cout << "\n\nPassed test1\n\n";
   return;

@@ -62,4 +62,9 @@ namespace GMD
     { print_error("Model must be written before mesh."); }
     return;
   }
+  void gmd_t::set_global_mesh_params( double order_in, double refine_in, double grad_rate_in)
+  {
+    mesher->set_global( order_in, refine_in, grad_rate_in);
+    return;
+  }
 }

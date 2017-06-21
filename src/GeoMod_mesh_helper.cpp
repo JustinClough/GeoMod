@@ -6,6 +6,7 @@ namespace GMD
   {
     mesh = M_new( 0, in_model);
     m_case = MS_newMeshCase( in_model);
+    order = 0.0;
     return;
   }
 
@@ -67,6 +68,14 @@ namespace GMD
         print_error( "Refinement radius must be zero or greater");
       }
     }
+    return;
+  }
+
+  void mesh_helper_t::set_global( double order_in, double refine_in, double grad_rate_in)
+  {
+    order = order_in;
+    refine = refine_in;
+    grad_rate = grad_rate_in;
     return;
   }
 }
