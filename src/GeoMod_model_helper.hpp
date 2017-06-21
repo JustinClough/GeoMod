@@ -6,6 +6,8 @@
 #include <GeoMod_coords.hpp>
 #include <string>
 
+pGVertex GIP_insertVertexInFace(pGIPart part, double* xyz, pGFace face);
+
 namespace GMD
 {
   class model_helper_t

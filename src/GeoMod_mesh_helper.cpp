@@ -30,7 +30,10 @@ namespace GMD
     pGModel model = M_model( mesh);
     pPList mesh_list = PList_new();
     PList_append( mesh_list, mesh);
-    pParMesh par_mesh = PM_createFromMesh(model, M_representation(mesh), mesh_list, NULL, NULL, NULL);
+    pParMesh par_mesh = PM_createFromMesh(
+        model, 
+        M_representation(mesh), 
+        mesh_list, NULL, NULL, NULL);
 
     int status = PM_verify(par_mesh, 0, NULL);
     if (status == 1)
