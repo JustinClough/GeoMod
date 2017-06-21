@@ -17,6 +17,7 @@ namespace GMD
       ~gmd_t();
       void set_abort_on_fail( bool abort_on_fail);
       void test_printers();
+      void verify_mesh();
 
       // Writing methods
       void set_name( std::string file_name);

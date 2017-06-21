@@ -23,15 +23,25 @@ namespace GMD
     return;
   }
 
-  bool mesh_helper_t::isValid()
-  {
+  bool mesh_helper_t::isValid( )
+  { // Only validates serial meshes for now
+    pGModel model = M_model( mesh);
+    pPList mesh_list = PList_new();
+    PList_append( mesh_list, mesh);
+
+    pParMesh par_mesh = PM_createFromMesh(model, M_representation(mesh), mesh_list, NULL, NULL, NULL);
+
+   // apf::MeshSIM apf_mesh (par_mesh);
+
+    PList_delete( mesh_list);
+    M_release( par_mesh);
     return true;
   }
 
   void mesh_helper_t::write( std::string name)
   {
-    name = name + ".sms";
-    const char* name_c = name.c_str();
+    std::string tmp_name = name + ".sms";
+    const char* name_c = tmp_name.c_str();
     if( !isValid())
     { print_warning("Attempting to write invalid mesh.");}
 

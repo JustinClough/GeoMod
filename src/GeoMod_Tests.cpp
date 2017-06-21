@@ -31,7 +31,7 @@ void test1()
   pGModel rectangle = GMD::create_2D_rectangle( 5.0, 7.0);
   GMD::gmd_t gmd( rectangle);
 
-  std::string name = "test1";
+  std::string name = "test1_rectangle";
   gmd.set_name( name);
   gmd.write_model();
   gmd.write_mesh();

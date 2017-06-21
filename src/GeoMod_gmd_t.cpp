@@ -54,6 +54,18 @@ namespace GMD
     return;
   }
 
+  void gmd_t::verify_mesh()
+  {
+    if(!mesher->isValid())
+    {
+      if(panicStatus)
+      { print_error("Mesh Not Valid.");}
+      else if( !panicStatus)
+      { print_warning("Mesh Not Valid.");}
+    }
+    return;
+  }
+
   void gmd_t::write_mesh()
   {
     if(modeler->isWritten())
