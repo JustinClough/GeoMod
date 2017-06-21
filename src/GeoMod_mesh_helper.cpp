@@ -41,6 +41,24 @@ namespace GMD
     return ans;
   }
 
+  void mesh_helper_t::create()
+  {
+    pModelItem domain = GM_domain( M_model(mesh));
+    MS_setMeshSize(m_case, domain, 2, refine, NULL);
+    if( grad_rate > 0.0)
+    { MS_setGlobalSizeGradationRate(m_case, grad_rate); }
+
+    pSurfaceMesher surf = SurfaceMesher_new(m_case, mesh);
+    SurfaceMesher_execute( surf, NULL);
+    SurfaceMesher_delete( surf);
+
+    pVolumeMesher vol = VolumeMesher_new( m_case, mesh);
+    VolumeMesher_execute( vol, NULL);
+    VolumeMesher_delete(vol);
+
+    return;
+  }
+
   void mesh_helper_t::write( std::string name)
   {
     std::string tmp_name = name + ".sms";
@@ -84,7 +102,7 @@ namespace GMD
     return;
   }
 
-  void mesh_helper_t::set_global( double order_in, double refine_in, double grad_rate_in)
+  void mesh_helper_t::set_global( int order_in, double refine_in, double grad_rate_in)
   {
     order = order_in;
     refine = refine_in;

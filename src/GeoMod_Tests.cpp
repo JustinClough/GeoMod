@@ -34,6 +34,8 @@ void test1()
   std::string name = "test1_rectangle";
   gmd.set_name( name);
   gmd.write_model();
+  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.create_mesh();
   gmd.write_mesh();
   
   cout << "\n\nPassed test1\n\n";
@@ -49,6 +51,14 @@ void test1()
  */
 void test2()
 {
+  pGModel cube = GMD::create_cube( 10.0);
+  GMD::gmd_t gmd( cube);
+  std::string name = "test2_cube";
+  gmd.set_name( name);
+  gmd.write_model();
+  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
   return;
 }
 

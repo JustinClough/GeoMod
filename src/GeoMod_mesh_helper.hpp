@@ -17,6 +17,7 @@ namespace GMD
       void mesh_print();
       void write( std::string name);
       bool isValid();
+      void create();
 
       // Members
       pMesh mesh;
@@ -27,7 +28,7 @@ namespace GMD
 
       // Mesh preping methods
       void place_point( double coords[3], double refine, double radius, bool abort_on_fail);
-      void set_global( double order_in, double refine_in, double grad_rate_in);
+      void set_global( int order_in, double refine_in, double grad_rate_in);
 
   };
 
