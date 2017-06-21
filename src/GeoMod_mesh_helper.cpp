@@ -7,6 +7,7 @@ namespace GMD
     mesh = M_new( 0, in_model);
     m_case = MS_newMeshCase( in_model);
     order = 0.0;
+
     return;
   }
 
@@ -23,19 +24,21 @@ namespace GMD
     return;
   }
 
-  bool mesh_helper_t::isValid( )
+  bool mesh_helper_t::isValid()
   { // Only validates serial meshes for now
+    bool ans = false;
     pGModel model = M_model( mesh);
     pPList mesh_list = PList_new();
     PList_append( mesh_list, mesh);
-
     pParMesh par_mesh = PM_createFromMesh(model, M_representation(mesh), mesh_list, NULL, NULL, NULL);
 
-   // apf::MeshSIM apf_mesh (par_mesh);
+    int status = PM_verify(par_mesh, 0, NULL);
+    if (status == 1)
+    { ans = true;}
 
+    M_release(par_mesh);
     PList_delete( mesh_list);
-    M_release( par_mesh);
-    return true;
+    return ans;
   }
 
   void mesh_helper_t::write( std::string name)
