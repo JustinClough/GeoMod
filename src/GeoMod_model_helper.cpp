@@ -160,6 +160,7 @@ namespace GMD
 
   void model_helper_t::put_point_in_line( double coords[3], pGVertex vert)
   {
+    
     return;
   }
   
@@ -168,7 +169,7 @@ namespace GMD
     bool placed = false;
     GFIter f_it = GM_faceIter( model);
     pGFace face;
-    while (( face = GFIter_next( f_it)))
+    while ( !placed && (face = GFIter_next( f_it)))
     {
       if (PointOnFace(coords,face))
       {
@@ -177,6 +178,12 @@ namespace GMD
       }
     }
     GFIter_delete( f_it);
+
+    if( !placed)
+    { 
+      print_warning("Failed to place point at");
+      print_coords( coords);
+    }
     
     return;
   }
