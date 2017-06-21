@@ -6,7 +6,7 @@ namespace GMD
   {
     mesh = M_new( 0, in_model);
     m_case = MS_newMeshCase( in_model);
-    order = 0.0;
+    globalSet = false;
 
     return;
   }
@@ -43,10 +43,16 @@ namespace GMD
 
   void mesh_helper_t::create()
   {
+    if(!globalSet)
+    { print_error("Global Mesh Parameters not set.");}
     pModelItem domain = GM_domain( M_model(mesh));
     MS_setMeshSize(m_case, domain, 2, refine, NULL);
+
     if( grad_rate > 0.0)
     { MS_setGlobalSizeGradationRate(m_case, grad_rate); }
+
+    if( order == 2)
+    { MS_setMeshOrder(m_case, order);}
 
     pSurfaceMesher surf = SurfaceMesher_new(m_case, mesh);
     SurfaceMesher_execute( surf, NULL);
@@ -104,6 +110,7 @@ namespace GMD
 
   void mesh_helper_t::set_global( int order_in, double refine_in, double grad_rate_in)
   {
+    globalSet = true;
     order = order_in;
     refine = refine_in;
     grad_rate = grad_rate_in;

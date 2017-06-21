@@ -22,6 +22,7 @@ namespace GMD
       // Members
       pMesh mesh;
       pACase m_case;
+      bool globalSet;
       double order;
       double refine;
       double grad_rate;
