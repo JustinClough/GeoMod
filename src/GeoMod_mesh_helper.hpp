@@ -1,9 +1,10 @@
 #ifndef GEOMOD_MESH_HELPER_HPP
 #define GEOMOD_MESH_HELPER_HPP
 
+#include <string>
+#include <vector>
 #include <GeoMod_SIM.hpp>
 #include <GeoMod_printer.hpp>
-#include <string>
 
 namespace GMD
 {
@@ -30,6 +31,7 @@ namespace GMD
       // Mesh preping methods
       void place_point( double coords[3], double refine, double radius, bool abort_on_fail);
       void set_global( int order_in, double refine_in, double grad_rate_in);
+      void refine_edge( double refine, pGEdge edge);
 
   };
 

@@ -260,6 +260,12 @@ namespace GMD
     return updateMesh;
   }
 
+  void model_helper_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pGEdge edge)
+  {
+
+    return;
+  }
+
   bool model_helper_t::isWritten()
   { return Written;}
 }

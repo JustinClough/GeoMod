@@ -1,10 +1,11 @@
 #ifndef GEOMOD_MODEL_HELPER_HPP
 #define GEOMOD_MODEL_HELPER_HPP
 
+#include <string>
+#include <vector>
 #include <GeoMod_SIM.hpp>
 #include <GeoMod_printer.hpp>
 #include <GeoMod_coords.hpp>
-#include <string>
 
 pGVertex GIP_insertVertexInFace(pGIPart part, double* xyz, pGFace face);
 
@@ -39,8 +40,14 @@ namespace GMD
       void put_point_in_region( double coords[3], pGVertex vert);
 
       // Methods to place an edge
+      void place_edge( 
+          int order, 
+          std::vector<double*> points, 
+          std::vector<double> knots,
+          std::vector<double> weights,
+          pGEdge edge);
 
-      // Methods to place a face
+      // Methods to place a surface
 
   };
 

@@ -48,9 +48,43 @@ namespace GMD
     return;
   }
 
-  void place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights)
+  void gmd_t::check_spline_params( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights)
   {
+    if( order <=1)
+    { print_error("Spline order too low. Must be polnomial order + 1.");}
+    if( points.size() < order)
+    { print_error("Spline order too high for number of given control points.");}
+    if( (points.size()+order) != knots.size())
+    { print_error("Mismatch between knot vector size and sum of order with control point size.");}
 
+    for( int i=0; i<knots.size(); i++)
+    {
+      double tmp1 = knots[i];
+      if( i<(knots.size() -1) )
+      { 
+        double tmp2 = knots[i+1];
+        if (tmp2 > tmp1)
+        { print_error("Knots must be in accending order");}
+      }
+      if( i<order && tmp1 != 0.0)
+      { print_error("First order_number of knots must be zero.");}
+      if( i>(knots.size()-order) && tmp1 != 1.0)
+      { print_error("Last order_number of knots must be one.");}
+
+      if( tmp1 > 1.0 || tmp1 < 0.0)
+      { 
+        print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
+      }
+    }
+    return;
+  }
+
+  void gmd_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, double refine)
+  {
+    check_spline_params( order, points, knots, weights);
+    pGEdge edge;
+    modeler->place_edge( order, points, knots, weights, edge);
+    mesher->refine_edge( refine, edge);
     return;
   }
   void gmd_t::write_model()

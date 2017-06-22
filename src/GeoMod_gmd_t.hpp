@@ -31,7 +31,8 @@ namespace GMD
           int order,
           std::vector<double*> points, 
           std::vector<double> knots,
-          std::vector<double> weights);
+          std::vector<double> weights,
+          double refine);
 
       // Methods for only meshing
       void set_global_mesh_params( int order_in, double refine_in, double grad_rate_in);
@@ -42,6 +43,11 @@ namespace GMD
       std::string name;
       model_helper_t* modeler;
       mesh_helper_t* mesher;
+      void check_spline_params( 
+          int order,
+          std::vector<double*> points,
+          std::vector<double> knots,
+          std::vector<double> weights);
   };
 
 }

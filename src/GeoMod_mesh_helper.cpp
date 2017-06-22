@@ -119,4 +119,10 @@ namespace GMD
     grad_rate = grad_rate_in;
     return;
   }
+
+  void mesh_helper_t::refine_edge( double refine, pGEdge edge)
+  {
+
+    return;
+  }
 }
