@@ -2,7 +2,7 @@
 
 namespace GMD
 {
-  model_helper_t::model_helper_t( pGModel in_model)
+  model_helper_t::model_helper_t( pGModel& in_model)
   {
     model = in_model;
     Written = false;
@@ -38,7 +38,7 @@ namespace GMD
     { return false; }
   }
     
-  void model_helper_t::write( std::string name)
+  void model_helper_t::write( std::string& name)
   {
     name = name + ".smd";
     const char* name_c = name.c_str();
@@ -260,9 +260,41 @@ namespace GMD
     return updateMesh;
   }
 
+  void model_helper_t::unpack_vector_spline_points( std::vector<double*> vec, double* x)
+  {
+    int pos = 0;
+    double* tmp = vec[0];
+    for( int i=0; i<vec.size(); i++)
+    {
+      tmp = vec[i];
+      for( int j=0; j<3; j++)
+      {
+        pos = j+3*i;
+        x[pos] = tmp[j];
+      }
+    }
+    return;
+  }
+
+  void model_helper_t::unpack_vector( std::vector<double> vec, double* x)
+  {
+    for (int i=0; i<vec.size(); i++)
+    {
+      x[i] = vec[i];
+    }
+    return;
+  }
+
   void model_helper_t::create_curve( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve curve)
   {
-
+    int num_points = points.size();
+    double u_points[num_points*3] = {0.0};
+    double u_knots[knots.size()] = {0.0};
+    double u_weights[weights.size()] = {0.0};
+    unpack_vector_spline_points( points, u_points);
+    unpack_vector( knots, u_knots);
+    unpack_vector( weights, u_weights);
+    curve = SCurve_createBSpline( order, num_points, u_points, u_knots, u_weights);
     return;
   }
 
@@ -309,7 +341,7 @@ namespace GMD
     }
   }
 
-  void model_helper_t::create_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve curve, pGEdge edge)
+  void model_helper_t::create_edge( int order, std::vector<double*> points, pCurve curve, pGEdge edge)
   {
     double* start_point = points[0];
     pGVertex start_vert;
@@ -346,7 +378,7 @@ namespace GMD
   {
     pCurve curve;
     create_curve( order, points, knots, weights, curve);
-    create_edge( order, points, knots, weights, curve, edge);
+    create_edge( order, points, curve, edge);
     return;
   }
 

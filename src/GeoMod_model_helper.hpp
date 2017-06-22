@@ -16,12 +16,14 @@ namespace GMD
     friend class gmd_t;
     private:
       // Util methods
-      model_helper_t (pGModel in_model);
+      model_helper_t (pGModel& in_model);
       ~model_helper_t();
       void model_print();
-      void write( std::string name);
+      void write( std::string& name);
       bool isValid();
       bool isWritten();
+      void unpack_vector_spline_points( std::vector<double*> vec, double* x);
+      void unpack_vector( std::vector<double> vec, double* x);
 
       // Members
       pGModel model;
@@ -55,8 +57,6 @@ namespace GMD
       void create_edge( 
           int order, 
           std::vector<double*> points, 
-          std::vector<double> knots,
-          std::vector<double> weights,
           pCurve curve,
           pGEdge edge);
       bool PointsOnSameFace( std::vector<double*> points);
