@@ -2,6 +2,7 @@
 #define GEOMOD_GMD_T_HPP
 
 #include <string>
+#include <vector>
 #include <GeoMod_printer.hpp>
 #include <GeoMod_model_helper.hpp>
 #include <GeoMod_mesh_helper.hpp>
@@ -26,6 +27,11 @@ namespace GMD
 
       // Methods to modify the geometry
       void place_point( double coords[3], double refine, double radius);
+      void place_edge( 
+          int order,
+          std::vector<double*> points, 
+          std::vector<double> knots,
+          std::vector<double> weights);
 
       // Methods for only meshing
       void set_global_mesh_params( int order_in, double refine_in, double grad_rate_in);

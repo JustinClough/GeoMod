@@ -48,6 +48,11 @@ namespace GMD
     return;
   }
 
+  void place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights)
+  {
+
+    return;
+  }
   void gmd_t::write_model()
   {
     modeler->write( name);
