@@ -151,7 +151,6 @@ void test5()
 /* test6():
  *     - Create a 3D model 
  *     - Place a fully interior line with define mesh refinement for line only
- *     - Place a fully interior line with define mesh refinement for cyln. surrounding
  *     - Write model
  *     - Do not assign name so auto-nameing feature is checked
  *     - Create mesh
@@ -164,8 +163,7 @@ void test6()
 
 /* test7():
  *     - Create a 3D model
- *     - Create one edge
- *     - Create another edge that is collinear to the first edge
+ *     - Create one spline based edge defined by three points
  *     - Write model
  *     - Create mesh
  *     - Write mesh
