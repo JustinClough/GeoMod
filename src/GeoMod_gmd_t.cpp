@@ -84,7 +84,8 @@ namespace GMD
     check_spline_params( order, points, knots, weights);
     pGEdge edge;
     modeler->place_edge( order, points, knots, weights, edge);
-    mesher->refine_edge( refine, edge);
+    if( refine > 0.0)
+    { mesher->refine_edge( refine, edge);}
     return;
   }
   void gmd_t::write_model()

@@ -122,7 +122,7 @@ namespace GMD
 
   void mesh_helper_t::refine_edge( double refine, pGEdge edge)
   {
-
+    MS_setMeshSize(m_case, edge, 2, refine, NULL);
     return;
   }
 }

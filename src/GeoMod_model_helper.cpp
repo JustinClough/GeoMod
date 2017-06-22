@@ -260,9 +260,93 @@ namespace GMD
     return updateMesh;
   }
 
-  void model_helper_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pGEdge edge)
+  void model_helper_t::create_curve( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve curve)
   {
 
+    return;
+  }
+
+  bool model_helper_t::PointsOnSameFace( std::vector<double*> points)
+  {
+    bool onFace = true;
+    for( int i=0; i<points.size(); i++)
+    { // Check if all points are on any face
+      if( !point_on_dim( 2, points[i]))
+      {
+        onFace = false;
+      }
+    }
+
+    if( onFace)
+    {
+      bool answer = false;
+      pGFace face;
+      pGFace conFace;
+      GFIter f_it = GM_faceIter( model);
+      while(( face = GFIter_next(f_it)))
+      {
+        for(int i=0; i<points.size(); i++)
+        {
+          if( (i==0) && PointOnFace( points[i], face))
+          {
+            conFace = face;
+          }
+          else if( PointOnFace( points[i], face))
+          {
+            if( face == conFace)
+            { answer = true; }
+            else
+            { answer = false; }
+          }
+        }
+      }
+      GFIter_delete(f_it);
+      return answer;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  void model_helper_t::create_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve curve, pGEdge edge)
+  {
+    double* start_point = points[0];
+    pGVertex start_vert;
+    place_point( start_point, start_vert, false);
+
+    double* end_point = points[points.size()-1];
+    pGVertex end_vert;
+    place_point( end_point, end_vert, false);
+
+    pGIPart part = GM_part( model);
+    GRIter r_it = GM_regionIter( model);
+    pGRegion region = GRIter_next( r_it);
+    edge = GIP_insertEdgeInRegion( part, start_vert, end_vert, curve, 1, region);
+    GRIter_delete( r_it);
+
+    bool onSameFace = PointsOnSameFace( points);
+    if( onSameFace)
+    {
+      pGFace face;
+      GFIter f_it = GM_faceIter( model);
+      bool found = false;
+      while( !found && (face = GFIter_next(f_it)))
+      {
+        if(PointOnFace(points[0], face))
+        { found = true; }
+      }
+      GFIter_delete( f_it);
+      GM_insertEdgeOnFace( face, edge, NULL);
+    }
+    return;
+  }
+
+  void model_helper_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pGEdge edge)
+  {
+    pCurve curve;
+    create_curve( order, points, knots, weights, curve);
+    create_edge( order, points, knots, weights, curve, edge);
     return;
   }
 

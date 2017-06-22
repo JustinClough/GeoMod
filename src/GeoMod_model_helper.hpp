@@ -46,6 +46,20 @@ namespace GMD
           std::vector<double> knots,
           std::vector<double> weights,
           pGEdge edge);
+      void create_curve( 
+          int order, 
+          std::vector<double*> points, 
+          std::vector<double> knots,
+          std::vector<double> weights,
+          pCurve curve);
+      void create_edge( 
+          int order, 
+          std::vector<double*> points, 
+          std::vector<double> knots,
+          std::vector<double> weights,
+          pCurve curve,
+          pGEdge edge);
+      bool PointsOnSameFace( std::vector<double*> points);
 
       // Methods to place a surface
 
