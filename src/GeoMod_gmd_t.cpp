@@ -88,6 +88,7 @@ namespace GMD
     { mesher->refine_edge( refine, edge);}
     return;
   }
+
   void gmd_t::write_model()
   {
     modeler->write( name);
