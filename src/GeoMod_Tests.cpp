@@ -34,7 +34,7 @@ void test1()
   std::string name = "test1_rectangle";
   gmd.set_name( name);
   gmd.write_model();
-  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
   
@@ -56,7 +56,7 @@ void test2()
   std::string name = "test2_cube";
   gmd.set_name( name);
   gmd.write_model();
-  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
 
@@ -84,7 +84,7 @@ void test3()
   gmd.place_point( coords, refine, radius);
 
   gmd.write_model();
-  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
 
@@ -112,7 +112,7 @@ void test4()
   gmd.place_point( coords, refine, radius);
 
   gmd.write_model();
-  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
 
@@ -140,7 +140,7 @@ void test5()
   gmd.place_point( coords, refine, radius);
 
   gmd.write_model();
-  gmd.set_global_mesh_params( 1.0, 0.9, 0.0);
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
 
