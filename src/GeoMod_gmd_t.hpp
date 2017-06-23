@@ -41,7 +41,7 @@ namespace GMD
       void place_surface_by_spline(
           int order, 
           int periodicity, 
-            // 0=none, 1=u periodic, 2=v periodic, 3=u&&v peridoic
+            // 0=none, 1=u periodic, 2=v periodic, 3=u&&v periodic
           std::vector<double*> u_points,
           std::vector<double*> v_points,
           std::vector<double> u_knots,
