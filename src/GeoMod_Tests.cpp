@@ -220,9 +220,9 @@ void test7()
 
   int order = 4;
 
-  double p1[3] = {1.0, 0.0, -0.4};
-  double p2[3] = {1.0, 0.3, 0.0};
-  double p3[3] = {1.0, 0.0, 0.0};
+  double p1[3] = {1.0, 0.0, 0.9};
+  double p2[3] = {1.0, 0.6, 0.0};
+  double p3[3] = {1.0, 0.0, -0.9};
   double p4[3] = {1.0, -0.3, 0.0};
   double p5[3] = {1.0, 0.0, 0.4};
   std::vector<double*> points;

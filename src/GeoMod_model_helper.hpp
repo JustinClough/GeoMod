@@ -19,7 +19,7 @@ namespace GMD
       model_helper_t (pGModel& in_model);
       ~model_helper_t();
       void model_print();
-      void write( std::string& name);
+      void write( std::string name);
       bool isValid();
       bool isWritten();
       void unpack_vector_spline_points( std::vector<double*> vec, double* x);

@@ -33,14 +33,14 @@ namespace GMD
     mag = sqrt( tmp);
   }
 
-  void compare_coords( double x[3], double y[3], bool& areSame)
+  void compare_coords( double x[3], double y[3], bool& areSame, double tol)
   {
     areSame = false;
     double mag;
     double ans[] = {0.0, 0.0, 0.0};
     subtract_coords( x, y, ans);
     get_mag( ans, mag);
-    if (mag==0)
+    if (mag<=tol)
     {
       areSame = true;
     }

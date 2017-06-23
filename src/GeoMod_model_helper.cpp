@@ -38,7 +38,7 @@ namespace GMD
     { return false; }
   }
     
-  void model_helper_t::write( std::string& name)
+  void model_helper_t::write( std::string name)
   {
     name = name + ".smd";
     const char* name_c = name.c_str();
@@ -65,6 +65,7 @@ namespace GMD
 
   bool model_helper_t::point_on_dim( int dim, double coords[3])
   {
+    double tol = GM_tolerance( model);
     bool answer = false;
     bool areSame = false;
     double closest[] = {0.0, 0.0, 0.0};
@@ -75,7 +76,7 @@ namespace GMD
       while (( e = GEIter_next(e_it)))
       {
         GE_closestPoint(e, coords, closest, NULL);
-        compare_coords(coords, closest, areSame);
+        compare_coords(coords, closest, areSame, tol);
         if(areSame)
         {
           answer = true;
@@ -90,7 +91,7 @@ namespace GMD
       while (( f = GFIter_next(f_it)))
       {
         GF_closestPoint(f, coords, closest, NULL);
-        compare_coords(coords, closest, areSame);
+        compare_coords(coords, closest, areSame, tol);
         if(areSame)
         {
           answer = true;
@@ -144,10 +145,11 @@ namespace GMD
 
   bool model_helper_t::PointOnFace( double coords[3], pGFace face)
   {
+    double tol = GM_tolerance( model);
     bool ans = false;
     double cp[] = {0.0, 0.0, 0.0};
     GF_closestPoint( face, coords, cp, NULL);
-    compare_coords(coords, cp, ans);
+    compare_coords(coords, cp, ans, tol);
     return ans;
   }
 
@@ -188,7 +190,7 @@ namespace GMD
 
     if( !placed)
     { 
-      print_warning("Failed to place point at");
+      print_warning("Failed to place point on edge at");
       print_coords( coords);
     }
     return;
@@ -211,7 +213,7 @@ namespace GMD
 
     if( !placed)
     { 
-      print_warning("Failed to place point at");
+      print_warning("Failed to place point in face at");
       print_coords( coords);
     }
     
@@ -299,7 +301,6 @@ namespace GMD
     unpack_vector( knots, u_knots);
     if(weightLess)
     {
-      std::cout << "Creating weightLess curve." << std::endl;
       curve = SCurve_createBSpline( order, num_points, u_points, u_knots, NULL);
     }
     else
@@ -365,6 +366,7 @@ namespace GMD
     pGVertex end_vert = NULL;
     place_point( end_point, end_vert, false);
 
+    // Assumes a one region, one part model
     pGIPart part = GM_part( model);
     GRIter r_it = GM_regionIter( model);
     pGRegion region = GRIter_next( r_it);
@@ -384,7 +386,8 @@ namespace GMD
         { found = true; }
       }
       GFIter_delete( f_it);
-      GM_insertEdgeOnFace( face, edge, NULL);
+      pGFace new_faces[2] = {NULL, NULL};
+      GM_insertEdgeOnFace( face, edge, new_faces);
     }
     return;
   }
