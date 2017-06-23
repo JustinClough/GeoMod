@@ -355,7 +355,7 @@ namespace GMD
     }
   }
 
-  void model_helper_t::create_edge( int order, std::vector<double*> points, pCurve curve, pGEdge& edge)
+  void model_helper_t::create_edge( int order, std::vector<double*> points, pCurve& curve, pGEdge& edge)
   {
     double* start_point = points[0];
     pGVertex start_vert = NULL;
@@ -368,17 +368,6 @@ namespace GMD
     pGIPart part = GM_part( model);
     GRIter r_it = GM_regionIter( model);
     pGRegion region = GRIter_next( r_it);
-
-    if( part == NULL)
-    { print_error("part is NULL");}
-    if( start_vert == NULL)
-    { print_error("start_vert is NULL");}
-    if( end_vert == NULL)
-    { print_error("end_vert is NULL");}
-    if( curve == NULL)
-    { print_error("curve is NULL");}
-    if( region == NULL)
-    { print_error("region is NULL");}
 
     edge = GIP_insertEdgeInRegion( part, start_vert, end_vert, curve, 1, region);
     GRIter_delete( r_it);

@@ -57,7 +57,7 @@ namespace GMD
       void create_edge( 
           int order, 
           std::vector<double*> points, 
-          pCurve curve,
+          pCurve& curve,
           pGEdge& edge);
       bool PointsOnSameFace( std::vector<double*> points);
 
