@@ -22,6 +22,7 @@ int main( int argc, char** argv)
   test9();
   test10();
   test11();
+  test12();
 
 #if 0
   pGModel cube = GMD::create_cube(2.0);

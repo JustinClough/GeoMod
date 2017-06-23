@@ -400,3 +400,17 @@ void test11()
 
   return;
 }
+
+/* test12();
+ *     - Create a 3D model
+ *     - Create a face completely internal to the region expect for one edge
+ *        which is on a pre-existing surface
+ *     - Write Model
+ *     - Create Mesh
+ *     - Write Mesh
+ */
+void test12()
+{
+
+  return;
+}
