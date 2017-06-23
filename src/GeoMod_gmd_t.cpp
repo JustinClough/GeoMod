@@ -190,6 +190,14 @@ namespace GMD
     if (periodicity < 0 || periodicity > 4)
     { print_error("Bad periodicity.");}
 
+    // Need to check weights together, pass tmp to spline check
+    std::vector<double> tmp;
+    tmp.push_back(0.0);
+    check_spline_params( u_order, u_points, u_knots, tmp);
+    check_spline_params( v_order, v_points, v_knots, tmp);
+
+    if(weights.size() != 0 && weights.size() != (u_points.size()*v_points.size()))
+    { print_error("Mismatch between weights size and u_points & v_points vectors.");} 
 
     return;
   }
