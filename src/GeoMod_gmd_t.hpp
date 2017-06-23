@@ -39,7 +39,8 @@ namespace GMD
           double refine,
           pGEdge& edge);
       void place_surface_by_spline(
-          int order, 
+          int u_order, 
+          int v_order, 
           int periodicity, 
             // 0=none, 1=u periodic, 2=v periodic, 3=u&&v periodic
           std::vector<double*> u_points,
@@ -71,7 +72,8 @@ namespace GMD
           std::vector<double> knots,
           std::vector<double> weights);
       void check_surface_params( 
-          int order, 
+          int u_order, 
+          int v_order, 
           int periodicity, 
           std::vector<double*> u_points,
           std::vector<double*>  v_points, 

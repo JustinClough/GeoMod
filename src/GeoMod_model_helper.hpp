@@ -23,7 +23,7 @@ namespace GMD
       bool isValid();
       bool isWritten();
       void unpack_vector_spline_points( 
-          std::vector<double*> vec, 
+          std::vector<double*> vec,
           double* x);
       void unpack_vector( std::vector<double> vec, double* x);
 
@@ -65,7 +65,8 @@ namespace GMD
 
       // Methods to place a surface
       void place_surface_by_spline( 
-          int order, 
+          int u_order, 
+          int v_order, 
           int periodicity, 
           std::vector<double*> u_points,
           std::vector<double*> v_points,
@@ -74,7 +75,8 @@ namespace GMD
           std::vector<double> weights,
           pGFace& face);
       void create_surface( 
-          int order, 
+          int u_order, 
+          int v_order, 
           int periodicity, 
           std::vector<double*> u_points,
           std::vector<double*> v_points,

@@ -147,7 +147,8 @@ namespace GMD
     return;
   }
   void gmd_t::place_surface_by_spline(
-      int order, 
+      int u_order, 
+      int v_order, 
       int periodicity, 
       std::vector<double*> u_points,
       std::vector<double*> v_points,
@@ -157,9 +158,9 @@ namespace GMD
       double refine,
       pGFace& face)
   {
-    check_surface_params( order, periodicity, u_points, v_points, u_knots, v_knots, weights);
+    check_surface_params( u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights);
     modeler->place_surface_by_spline( 
-        order, periodicity, u_points, v_points, u_knots, v_knots, weights, face);
+        u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights, face);
     mesher->refine_face( refine, face);
 
     return;
@@ -174,7 +175,8 @@ namespace GMD
   }
 
   void gmd_t::check_surface_params( 
-      int order, 
+      int u_order, 
+      int v_order, 
       int periodicity, 
       std::vector<double*> u_points, 
       std::vector<double*>  v_points, 
@@ -182,8 +184,10 @@ namespace GMD
       std::vector<double> v_knots, 
       std::vector<double> weights)
   {
+    if (periodicity < 0 || periodicity > 4)
+    { print_error("Bad periodicity.");}
 
-    print_warning("func not written");
+
     return;
   }
 }

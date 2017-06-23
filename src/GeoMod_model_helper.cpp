@@ -412,7 +412,8 @@ namespace GMD
   }
 
   void model_helper_t::place_surface_by_spline( 
-      int order, 
+      int u_order, 
+      int v_order, 
       int periodicity, 
       std::vector<double*> u_points, 
       std::vector<double*> v_points, 
@@ -422,7 +423,7 @@ namespace GMD
       pGFace& face)
   {
     pSurface surf;
-    create_surface( order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf);
+    create_surface( u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf);
     create_face( u_points, v_points, surf, face);
     return;
   }
@@ -438,7 +439,8 @@ namespace GMD
   }
 
   void model_helper_t::create_surface( 
-      int order, 
+      int u_order, 
+      int v_order, 
       int periodicity, 
       std::vector<double*> u_points, 
       std::vector<double*> v_points, 
