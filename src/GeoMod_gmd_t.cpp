@@ -136,4 +136,36 @@ namespace GMD
     mesher->set_global( order_in, refine_in, grad_rate_in);
     return;
   }
+  void gmd_t::place_surface_by_spline(
+      int order, 
+      int periodicity, 
+      std::vector<double*> u_points,
+      std::vector<double*> v_points,
+      std::vector<double> u_knots,
+      std::vector<double> v_knots,
+      std::vector<double> weights,
+      double refine,
+      pGFace& face)
+  {
+    check_surface_params( order, periodicity, u_points, v_points, u_knots, v_knots, weights);
+    modeler->place_surface_by_spline( order, periodicity, u_points, v_points, u_knots, v_knots, weights, face);
+    mesher->refine_face( refine, face);
+
+    return;
+  }
+
+  void gmd_t::place_surface_by_loops( std::vector<pGEdge> edges, pGFace& face)
+  {
+
+    print_warning("func not written");
+
+    return;
+  }
+
+  void gmd_t::check_surface_params( int order, int periodicity, std::vector<double*> u_points, std::vector<double*>  v_points, std::vector<double> u_knots, std::vector<double> v_knots, std::vector<double> weights)
+  {
+
+    print_warning("func not written");
+    return;
+  }
 }

@@ -125,4 +125,11 @@ namespace GMD
     MS_setMeshSize(m_case, edge, 2, refine, NULL);
     return;
   }
+
+  void mesh_helper_t::refine_face( double refine, pGFace face)
+  {
+
+    print_warning("func not written");
+    return;
+  }
 }

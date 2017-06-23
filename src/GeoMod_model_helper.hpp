@@ -62,6 +62,30 @@ namespace GMD
       bool PointsOnSameFace( std::vector<double*> points);
 
       // Methods to place a surface
+      void place_surface_by_spline( 
+          int order, 
+          int periodicity, 
+          std::vector<double*> u_points,
+          std::vector<double*> v_points,
+          std::vector<double> u_knots,
+          std::vector<double> v_knots,
+          std::vector<double> weights,
+          pGFace& face);
+      void create_surface( 
+          int order, 
+          int periodicity, 
+          std::vector<double*> u_points,
+          std::vector<double*> v_points,
+          std::vector<double> u_knots,
+          std::vector<double> v_knots,
+          std::vector<double> weights,
+          pSurface& surface);
+      void create_face(
+          std::vector<double*> u_points,
+          std::vector<double*> v_points,
+          pSurface surface,
+          pGFace& face);
+          
 
   };
 

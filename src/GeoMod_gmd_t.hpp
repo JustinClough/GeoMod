@@ -46,8 +46,12 @@ namespace GMD
           std::vector<double*> v_points,
           std::vector<double> u_knots,
           std::vector<double> v_knots,
-          std::vector<double> weights);
-      void place_surface_by_loops( std::vector<pGEdge> edges);
+          std::vector<double> weights,
+          double refine,
+          pGFace& face);
+      void place_surface_by_loops( 
+          std::vector<pGEdge> edges, 
+          pGFace& face);
 
       // Methods for only meshing
       void set_global_mesh_params( 
@@ -65,6 +69,14 @@ namespace GMD
           int order,
           std::vector<double*> points,
           std::vector<double> knots,
+          std::vector<double> weights);
+      void check_surface_params( 
+          int order, 
+          int periodicity, 
+          std::vector<double*> u_points,
+          std::vector<double*>  v_points, 
+          std::vector<double> u_knots, 
+          std::vector<double> v_knots, 
           std::vector<double> weights);
   };
 

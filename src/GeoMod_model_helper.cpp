@@ -401,6 +401,26 @@ namespace GMD
     return;
   }
 
+  void model_helper_t::place_surface_by_spline( int order, int periodicity, std::vector<double*> u_points, std::vector<double*> v_points, std::vector<double> u_knots, std::vector<double> v_knots, std::vector<double> weights, pGFace& face)
+  {
+    pSurface surf;
+    create_surface( order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf);
+    create_face( u_points, v_points, surf, face);
+    return;
+  }
+
+  void model_helper_t::create_face( std::vector<double*> u_points, std::vector<double*> v_points, pSurface surface, pGFace& face)
+  {
+    print_warning("func not written");
+    return;
+  }
+  void model_helper_t::create_surface( int order, int periodicity, std::vector<double*> u_points, std::vector<double*> v_points, std::vector<double> u_knots, std::vector<double> v_knots, std::vector<double> weights, pSurface& surface)
+  {
+
+    print_warning("func not written");
+    return;
+  }
+
   bool model_helper_t::isWritten()
   { return Written;}
 }

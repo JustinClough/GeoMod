@@ -32,6 +32,7 @@ namespace GMD
       void place_point( double coords[3], double refine, double radius, bool abort_on_fail);
       void set_global( int order_in, double refine_in, double grad_rate_in);
       void refine_edge( double refine, pGEdge edge);
+      void refine_face( double refine, pGFace face);
 
   };
 
