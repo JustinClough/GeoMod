@@ -314,7 +314,8 @@ void test8()
 
 /* test9();
  *     - Create a 3D model
- *     - Create an interpolating edge from 4 interior points
+ *     - Create an edge that starts at a pre existing edge and then terminates
+ *        in the region
  *     - Write Model
  *     - Create Mesh
  *     - Write Mesh
