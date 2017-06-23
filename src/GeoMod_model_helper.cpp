@@ -423,8 +423,9 @@ namespace GMD
       pGFace& face)
   {
     pSurface surf;
-    create_surface( u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf);
-    create_face( u_points, v_points, surf, face);
+    std::vector<pGEdge> edges;
+    create_surface( u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf, edges);
+    create_face( u_points, v_points, surf, edges, face);
     return;
   }
 
@@ -432,6 +433,7 @@ namespace GMD
       std::vector<double*> u_points, 
       std::vector<double*> v_points, 
       pSurface surface, 
+      std::vector<pGEdge>& edges,
       pGFace& face)
   {
     print_warning("func not written");
@@ -447,7 +449,8 @@ namespace GMD
       std::vector<double> u_knots, 
       std::vector<double> v_knots, 
       std::vector<double> weights, 
-      pSurface& surface)
+      pSurface& surface,
+      std::vector<pGEdge>& edges)
   {
 
     print_warning("func not written");

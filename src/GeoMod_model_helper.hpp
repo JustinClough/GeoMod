@@ -83,11 +83,13 @@ namespace GMD
           std::vector<double> u_knots,
           std::vector<double> v_knots,
           std::vector<double> weights,
-          pSurface& surface);
+          pSurface& surface,
+          std::vector<pGEdge>& edges);
       void create_face(
           std::vector<double*> u_points,
           std::vector<double*> v_points,
           pSurface surface,
+          std::vector<pGEdge>& edges,
           pGFace& face);
           
 
