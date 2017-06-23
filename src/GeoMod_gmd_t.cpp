@@ -79,10 +79,9 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, double refine)
+  void gmd_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, double refine, pGEdge& edge)
   {
     check_spline_params( order, points, knots, weights);
-    pGEdge edge;
     modeler->place_edge( order, points, knots, weights, edge);
     if( refine > 0.0)
     { mesher->refine_edge( refine, edge);}

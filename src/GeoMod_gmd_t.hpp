@@ -32,7 +32,18 @@ namespace GMD
           std::vector<double*> points, 
           std::vector<double> knots,
           std::vector<double> weights,
-          double refine);
+          double refine,
+          pGEdge& edge);
+      void place_surface_by_spline(
+          int order, 
+          int periodicity, 
+            // 0=none, 1=u periodic, 2=v periodic, 3=u&&v peridoic
+          std::vector<double*> u_points,
+          std::vector<double*> v_points,
+          std::vector<double> u_knots,
+          std::vector<double> v_knots,
+          std::vector<double> weights);
+      void place_surface_by_loops( std::vector<pGEdge> edges);
 
       // Methods for only meshing
       void set_global_mesh_params( int order_in, double refine_in, double grad_rate_in);

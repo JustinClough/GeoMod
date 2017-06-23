@@ -191,8 +191,9 @@ void test6()
   std::vector<double> weights;
   weights.push_back(0.0);
 
+  pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine);
+  gmd.place_edge( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -246,8 +247,9 @@ void test7()
   std::vector<double> weights;
   weights.push_back(0.0);
 
+  pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine);
+  gmd.place_edge( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -300,8 +302,9 @@ void test8()
   std::vector<double> weights;
   weights.push_back(0.0);
 
+  pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine);
+  gmd.place_edge( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -355,8 +358,9 @@ void test9()
   std::vector<double> weights;
   weights.push_back(0.0);
 
+  pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine);
+  gmd.place_edge( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -364,5 +368,32 @@ void test9()
   gmd.write_mesh();
 
   cout << "\n\nPassed test9\n\n";
+  return;
+}
+
+/* test10();
+ *     - Create a 3D model
+ *     - Create a face completely internal to the region
+ *     - Write Model
+ *     - Create Mesh
+ *     - Write Mesh
+ */
+void test10()
+{
+
+  return;
+}
+
+/* test11();
+ *     - Create a 3D model
+ *     - Create a face completely internal to the region expect for one point
+ *        which is on a pre-existing surface
+ *     - Write Model
+ *     - Create Mesh
+ *     - Write Mesh
+ */
+void test11()
+{
+
   return;
 }
