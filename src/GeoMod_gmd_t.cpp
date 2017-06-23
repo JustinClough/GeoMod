@@ -79,6 +79,9 @@ namespace GMD
         print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
       }
     }
+
+    if(weights.size() != 1 && weights.size() != points.size())
+    { print_error("Mismatch between weight vector size and number of points.");}
     return;
   }
 
