@@ -12,3 +12,7 @@ density_tests/
 
 #Ignore vim's session files
 **.vim
+
+#Ignore Latex support files
+**.aux
+**.log
