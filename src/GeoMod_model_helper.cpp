@@ -302,19 +302,18 @@ namespace GMD
 
     double u_points[num_points*3] = {0.0};
     double u_knots[knots.size()] = {0.0};
-    double u_weights[weights.size()] = {0.0};
+    double un_weights[weights.size()] = {0.0};
     unpack_vector_spline_points( points, u_points);
     unpack_vector( knots, u_knots);
+
     if(weightLess)
     {
       curve = SCurve_createBSpline( order, num_points, u_points, u_knots, NULL);
     }
     else
     {
-      unpack_vector( weights, u_weights);
-      curve = SCurve_createBSpline( order, num_points, u_points, u_knots, u_weights);
-      if( curve == NULL)
-      { print_error("Curve is NULL HERE");}
+      unpack_vector( weights, un_weights);
+      curve = SCurve_createBSpline( order, num_points, u_points, u_knots, un_weights);
     }
     return;
   }
@@ -441,7 +440,7 @@ namespace GMD
       pGFace& face)
   {
 
-    
+    print_warning("func not written");
     return;
   }
 
@@ -457,8 +456,64 @@ namespace GMD
       pSurface& surface,
       std::vector<pGEdge>& edges)
   {
+    int u_per = 0;
+    int v_per = 0;
+    if (periodicity == 0)
+    { // No chages from default
+    }
+    else if (periodicity == 1)
+    {
+      u_per = 1;
+    }
+    else if (periodicity == 2)
+    {
+      v_per = 1;
+    }
+    else if (periodicity == 3)
+    {
+      u_per = 1;
+      v_per = 1;
+    }
 
-    print_warning("func not written");
+    bool weightLess = false;
+    if(weights.size() == 1 && weights[0] == 0.0)
+    { weightLess = true;}
+
+    int num_u_points = u_points.size();
+    int num_v_points = v_points.size();
+    int num_points = num_u_points*num_v_points;
+    
+    double unp_u_points[num_u_points*3] = {0.0};
+    double unp_u_knots[u_knots.size()] = {0.0};
+    double unp_u_weights[weights.size()] = {0.0};
+    unpack_vector_spline_points( u_points, unp_u_points);
+    unpack_vector( u_knots, unp_u_knots);
+
+    double unp_v_points[num_v_points*3] = {0.0};
+    double unp_v_knots[v_knots.size()] = {0.0};
+    double unp_v_weights[weights.size()] = {0.0};
+    unpack_vector_spline_points( v_points, unp_v_points);
+    unpack_vector( v_knots, unp_v_knots);
+
+    if(weightLess)
+    {
+      surface = SSurface_createBSpline( 
+        u_order, v_order, 
+        num_u_points, num_v_points, 
+        u_per, v_per,
+        all_points, NULL,
+        u_knots, v_knots);
+    }
+    else
+    {
+      unpack_vector( weights, un_weights);
+      surface = SSurface_createBSpline( 
+        u_order, v_order, 
+        num_u_points, num_v_points, 
+        u_per, v_per,
+        all_points, un_weights,
+        u_knots, v_knots);
+    }
     return;
   }
 
