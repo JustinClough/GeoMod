@@ -162,14 +162,14 @@ namespace GMD
     return ans;
   }
 
-  void model_helper_t::put_point_outside( double coords[3], pGVertex vert)
+  void model_helper_t::put_point_outside( double coords[3], pGVertex& vert)
   {
     pGRegion out_region = GIP_outerRegion( part);
     vert = GIP_insertVertexInRegion( part, coords, out_region);
     return;
   }
 
-  void model_helper_t::put_point_in_line( double coords[3], pGVertex vert)
+  void model_helper_t::put_point_in_line( double coords[3], pGVertex& vert)
   {
     bool placed = false;
     GEIter e_it = GM_edgeIter( model);
@@ -194,7 +194,7 @@ namespace GMD
     return;
   }
   
-  void model_helper_t::put_point_in_face( double coords[3], pGVertex vert)
+  void model_helper_t::put_point_in_face( double coords[3], pGVertex& vert)
   {
     bool placed = false;
     GFIter f_it = GM_faceIter( model);
@@ -218,7 +218,7 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::put_point_in_region( double coords[3], pGVertex vert)
+  void model_helper_t::put_point_in_region( double coords[3], pGVertex& vert)
   {
     bool placed = false;
     GRIter r_it = GM_regionIter( model);
@@ -235,7 +235,7 @@ namespace GMD
     return;
   }
 
-  bool model_helper_t::place_point( double coords[3], pGVertex vert, bool abort_on_fail)
+  bool model_helper_t::place_point( double coords[3], pGVertex& vert, bool abort_on_fail)
   {
     bool updateMesh = true;
     int location = point_location(coords);
@@ -285,16 +285,30 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::create_curve( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve curve)
+  void model_helper_t::create_curve( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve& curve)
   {
     int num_points = points.size();
+    bool weightLess = false;
+    if(weights.size() == 1 && weights[0] == 0.0)
+    { weightLess = true;}
+
     double u_points[num_points*3] = {0.0};
     double u_knots[knots.size()] = {0.0};
     double u_weights[weights.size()] = {0.0};
     unpack_vector_spline_points( points, u_points);
     unpack_vector( knots, u_knots);
-    unpack_vector( weights, u_weights);
-    curve = SCurve_createBSpline( order, num_points, u_points, u_knots, u_weights);
+    if(weightLess)
+    {
+      std::cout << "Creating weightLess curve." << std::endl;
+      curve = SCurve_createBSpline( order, num_points, u_points, u_knots, NULL);
+    }
+    else
+    {
+      unpack_vector( weights, u_weights);
+      curve = SCurve_createBSpline( order, num_points, u_points, u_knots, u_weights);
+      if( curve == NULL)
+      { print_error("Curve is NULL HERE");}
+    }
     return;
   }
 
@@ -341,19 +355,31 @@ namespace GMD
     }
   }
 
-  void model_helper_t::create_edge( int order, std::vector<double*> points, pCurve curve, pGEdge edge)
+  void model_helper_t::create_edge( int order, std::vector<double*> points, pCurve curve, pGEdge& edge)
   {
     double* start_point = points[0];
-    pGVertex start_vert;
+    pGVertex start_vert = NULL;
     place_point( start_point, start_vert, false);
 
     double* end_point = points[points.size()-1];
-    pGVertex end_vert;
+    pGVertex end_vert = NULL;
     place_point( end_point, end_vert, false);
 
     pGIPart part = GM_part( model);
     GRIter r_it = GM_regionIter( model);
     pGRegion region = GRIter_next( r_it);
+
+    if( part == NULL)
+    { print_error("part is NULL");}
+    if( start_vert == NULL)
+    { print_error("start_vert is NULL");}
+    if( end_vert == NULL)
+    { print_error("end_vert is NULL");}
+    if( curve == NULL)
+    { print_error("curve is NULL");}
+    if( region == NULL)
+    { print_error("region is NULL");}
+
     edge = GIP_insertEdgeInRegion( part, start_vert, end_vert, curve, 1, region);
     GRIter_delete( r_it);
 
@@ -374,7 +400,7 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pGEdge edge)
+  void model_helper_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pGEdge& edge)
   {
     pCurve curve;
     create_curve( order, points, knots, weights, curve);

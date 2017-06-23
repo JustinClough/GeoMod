@@ -31,15 +31,15 @@ namespace GMD
       bool Written;
 
       // Methods to place a point
-      bool place_point( double coords[3], pGVertex vert, bool abort_on_fail);
+      bool place_point( double coords[3], pGVertex& vert, bool abort_on_fail);
       bool point_on_dim( int dim, double coords[3]);
       int point_location( double coords[3]);
       bool PointOnFace( double coords[3], pGFace face);
       bool PointOnEdge( double coords[3], pGEdge edge);
-      void put_point_outside( double coords[3], pGVertex vert);
-      void put_point_in_line( double coords[3], pGVertex vert);
-      void put_point_in_face( double coords[3], pGVertex vert);
-      void put_point_in_region( double coords[3], pGVertex vert);
+      void put_point_outside( double coords[3], pGVertex& vert);
+      void put_point_in_line( double coords[3], pGVertex& vert);
+      void put_point_in_face( double coords[3], pGVertex& vert);
+      void put_point_in_region( double coords[3], pGVertex& vert);
 
       // Methods to place an edge
       void place_edge( 
@@ -47,18 +47,18 @@ namespace GMD
           std::vector<double*> points, 
           std::vector<double> knots,
           std::vector<double> weights,
-          pGEdge edge);
+          pGEdge& edge);
       void create_curve( 
           int order, 
           std::vector<double*> points, 
           std::vector<double> knots,
           std::vector<double> weights,
-          pCurve curve);
+          pCurve& curve);
       void create_edge( 
           int order, 
           std::vector<double*> points, 
           pCurve curve,
-          pGEdge edge);
+          pGEdge& edge);
       bool PointsOnSameFace( std::vector<double*> points);
 
       // Methods to place a surface

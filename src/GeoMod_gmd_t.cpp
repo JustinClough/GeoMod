@@ -63,7 +63,7 @@ namespace GMD
       if( i<(knots.size() -1) )
       { 
         double tmp2 = knots[i+1];
-        if (tmp2 > tmp1)
+        if (tmp2 < tmp1)
         { print_error("Knots must be in accending order");}
       }
       if( i<order && tmp1 != 0.0)
