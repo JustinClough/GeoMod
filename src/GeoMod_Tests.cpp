@@ -322,5 +322,47 @@ void test8()
  */
 void test9()
 {
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd( cube);
+  std::string name = "test9_cube";
+  gmd.set_name( name);
+
+  int order = 4;
+
+  double p1[3] = {1.0, 1.0, 0.9};
+  double p2[3] = {0.1, 0.6, 0.0};
+  double p3[3] = {0.3, 0.0, -0.9};
+  double p4[3] = {0.0, -0.3, 0.0};
+  double p5[3] = {0.0, 0.0, 0.4};
+  std::vector<double*> points;
+  points.push_back(p1); 
+  points.push_back(p2);
+  points.push_back(p3);
+  points.push_back(p4);
+  points.push_back(p5);
+
+  std::vector<double> knots;
+  knots.push_back(0.0);
+  knots.push_back(0.0);
+  knots.push_back(0.0);
+  knots.push_back(0.0);
+  knots.push_back(0.5);
+  knots.push_back(1.0);
+  knots.push_back(1.0);
+  knots.push_back(1.0);
+  knots.push_back(1.0);
+
+  std::vector<double> weights;
+  weights.push_back(0.0);
+
+  double refine = 0.1;
+  gmd.place_edge( order, points, knots, weights, refine);
+
+  gmd.write_model();
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  cout << "\n\nPassed test9\n\n";
   return;
 }

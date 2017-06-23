@@ -155,11 +155,12 @@ namespace GMD
 
   bool model_helper_t::PointOnEdge( double coords[3], pGEdge edge)
   {
+    double tol = GM_tolerance( model);
     bool ans = false;
     double cp[] = {0.0, 0.0, 0.0};
     double para[] = {0.0, 0.0, 0.0};
     GE_closestPoint( edge, coords, cp, para);
-    compare_coords(coords, cp, ans);
+    compare_coords(coords, cp, ans, tol);
 
     return ans;
   }
