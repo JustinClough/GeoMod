@@ -362,7 +362,11 @@ namespace GMD
     }
   }
 
-  void model_helper_t::create_edge( int order, std::vector<double*> points, pCurve& curve, pGEdge& edge)
+  void model_helper_t::create_edge( 
+      int order, 
+      std::vector<double*> points, 
+      pCurve& curve, 
+      pGEdge& edge)
   {
     double* start_point = points[0];
     pGVertex start_vert = NULL;
@@ -436,7 +440,8 @@ namespace GMD
       std::vector<pGEdge>& edges,
       pGFace& face)
   {
-    print_warning("func not written");
+
+    
     return;
   }
 
