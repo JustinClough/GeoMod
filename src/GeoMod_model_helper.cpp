@@ -288,7 +288,12 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::create_curve( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pCurve& curve)
+  void model_helper_t::create_curve( 
+      int order, 
+      std::vector<double*> points, 
+      std::vector<double> knots, 
+      std::vector<double> weights, 
+      pCurve& curve)
   {
     int num_points = points.size();
     bool weightLess = false;
@@ -393,7 +398,12 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, pGEdge& edge)
+  void model_helper_t::place_edge( 
+      int order, 
+      std::vector<double*> points, 
+      std::vector<double> knots, 
+      std::vector<double> weights, 
+      pGEdge& edge)
   {
     pCurve curve;
     create_curve( order, points, knots, weights, curve);
@@ -401,7 +411,15 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::place_surface_by_spline( int order, int periodicity, std::vector<double*> u_points, std::vector<double*> v_points, std::vector<double> u_knots, std::vector<double> v_knots, std::vector<double> weights, pGFace& face)
+  void model_helper_t::place_surface_by_spline( 
+      int order, 
+      int periodicity, 
+      std::vector<double*> u_points, 
+      std::vector<double*> v_points, 
+      std::vector<double> u_knots, 
+      std::vector<double> v_knots, 
+      std::vector<double> weights, 
+      pGFace& face)
   {
     pSurface surf;
     create_surface( order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf);
@@ -409,12 +427,25 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::create_face( std::vector<double*> u_points, std::vector<double*> v_points, pSurface surface, pGFace& face)
+  void model_helper_t::create_face( 
+      std::vector<double*> u_points, 
+      std::vector<double*> v_points, 
+      pSurface surface, 
+      pGFace& face)
   {
     print_warning("func not written");
     return;
   }
-  void model_helper_t::create_surface( int order, int periodicity, std::vector<double*> u_points, std::vector<double*> v_points, std::vector<double> u_knots, std::vector<double> v_knots, std::vector<double> weights, pSurface& surface)
+
+  void model_helper_t::create_surface( 
+      int order, 
+      int periodicity, 
+      std::vector<double*> u_points, 
+      std::vector<double*> v_points, 
+      std::vector<double> u_knots, 
+      std::vector<double> v_knots, 
+      std::vector<double> weights, 
+      pSurface& surface)
   {
 
     print_warning("func not written");

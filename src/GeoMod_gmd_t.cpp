@@ -47,7 +47,11 @@ namespace GMD
     return;
   }
 
-  void gmd_t::check_spline_params( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights)
+  void gmd_t::check_spline_params( 
+      int order, 
+      std::vector<double*> points, 
+      std::vector<double> knots, 
+      std::vector<double> weights)
   {
     if( order <=1)
     { print_error("Spline order too low. Must be polnomial order + 1.");}
@@ -78,7 +82,13 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_edge( int order, std::vector<double*> points, std::vector<double> knots, std::vector<double> weights, double refine, pGEdge& edge)
+  void gmd_t::place_edge( 
+      int order, 
+      std::vector<double*> points, 
+      std::vector<double> knots, 
+      std::vector<double> weights, 
+      double refine, 
+      pGEdge& edge)
   {
     check_spline_params( order, points, knots, weights);
     modeler->place_edge( order, points, knots, weights, edge);
@@ -148,7 +158,8 @@ namespace GMD
       pGFace& face)
   {
     check_surface_params( order, periodicity, u_points, v_points, u_knots, v_knots, weights);
-    modeler->place_surface_by_spline( order, periodicity, u_points, v_points, u_knots, v_knots, weights, face);
+    modeler->place_surface_by_spline( 
+        order, periodicity, u_points, v_points, u_knots, v_knots, weights, face);
     mesher->refine_face( refine, face);
 
     return;
@@ -162,7 +173,14 @@ namespace GMD
     return;
   }
 
-  void gmd_t::check_surface_params( int order, int periodicity, std::vector<double*> u_points, std::vector<double*>  v_points, std::vector<double> u_knots, std::vector<double> v_knots, std::vector<double> weights)
+  void gmd_t::check_surface_params( 
+      int order, 
+      int periodicity, 
+      std::vector<double*> u_points, 
+      std::vector<double*>  v_points, 
+      std::vector<double> u_knots, 
+      std::vector<double> v_knots, 
+      std::vector<double> weights)
   {
 
     print_warning("func not written");

@@ -91,7 +91,11 @@ namespace GMD
     return;
   }
 
-  void mesh_helper_t::place_point( double coords[3], double refine, double radius, bool abort_on_fail)
+  void mesh_helper_t::place_point( 
+      double coords[3], 
+      double refine, 
+      double radius, 
+      bool abort_on_fail)
   {
     if (refine >0.0)
     {
@@ -128,8 +132,7 @@ namespace GMD
 
   void mesh_helper_t::refine_face( double refine, pGFace face)
   {
-
-    print_warning("func not written");
+    MS_setMeshSize(m_case, face, 2, refine, NULL);
     return;
   }
 }

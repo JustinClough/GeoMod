@@ -22,7 +22,9 @@ namespace GMD
       void write( std::string name);
       bool isValid();
       bool isWritten();
-      void unpack_vector_spline_points( std::vector<double*> vec, double* x);
+      void unpack_vector_spline_points( 
+          std::vector<double*> vec, 
+          double* x);
       void unpack_vector( std::vector<double> vec, double* x);
 
       // Members
