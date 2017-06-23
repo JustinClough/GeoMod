@@ -26,7 +26,11 @@ namespace GMD
       void write_mesh();
 
       // Methods to modify the geometry
-      void place_point( double coords[3], double refine, double radius);
+      void place_point( 
+          double coords[3], 
+          double refine, 
+          double radius, 
+          pGVertex& vert);
       void place_edge( 
           int order,
           std::vector<double*> points, 

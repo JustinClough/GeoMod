@@ -81,7 +81,8 @@ void test3()
   double coords[3] = {0.0, 0.0, 0.0};
   double refine = 0.1;
   double radius = 1;
-  gmd.place_point( coords, refine, radius);
+  pGVertex vert;
+  gmd.place_point( coords, refine, radius, vert);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -109,7 +110,8 @@ void test4()
   double coords[3] = {1.0, 0.0, 0.0};
   double refine = 0.1;
   double radius = 0.5;
-  gmd.place_point( coords, refine, radius);
+  pGVertex vert;
+  gmd.place_point( coords, refine, radius, vert);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -137,7 +139,8 @@ void test5()
   double coords[3] = {1.0, 1.0, 0.0};
   double refine = 0.1;
   double radius = 0.5;
-  gmd.place_point( coords, refine, radius);
+  pGVertex vert;
+  gmd.place_point( coords, refine, radius, vert);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);

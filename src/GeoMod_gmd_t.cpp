@@ -30,9 +30,8 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_point( double coords[3], double refine, double radius)
+  void gmd_t::place_point( double coords[3], double refine, double radius, pGVertex& vert)
   {
-    pGVertex vert;
     bool updateMesh = modeler->place_point( coords, vert, panicStatus);
     if( updateMesh)
     {
