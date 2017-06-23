@@ -33,7 +33,10 @@ namespace GMD
       bool Written;
 
       // Methods to place a point
-      bool place_point( double coords[3], pGVertex& vert, bool abort_on_fail);
+      bool place_point( 
+          double coords[3], 
+          pGVertex& vert, 
+          bool abort_on_fail);
       bool point_on_dim( int dim, double coords[3]);
       int point_location( double coords[3]);
       bool PointOnFace( double coords[3], pGFace face);
@@ -92,7 +95,6 @@ namespace GMD
           std::vector<pGEdge>& edges,
           pGFace& face);
           
-
   };
 
 }
