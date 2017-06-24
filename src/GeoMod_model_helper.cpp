@@ -428,7 +428,9 @@ namespace GMD
   {
     pSurface surf;
     std::vector<pGEdge> edges;
-    create_surface( u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights, surf, edges);
+
+    create_surface( 
+      u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights, surf, edges);
     create_face( surf, edges, face);
     return;
   }
@@ -440,14 +442,6 @@ namespace GMD
   {
 
     print_warning("func not written");
-    return;
-  }
-
-  void model_helper_t::unpack_surface_vector( 
-      std::vector<double*> points, 
-      double* all_points)
-  {
-    print_error("not written");
     return;
   }
 
@@ -465,9 +459,97 @@ namespace GMD
     // Since GeomSim needs splines surface to be four sided
     // and have a regular control point spacing (X by Y),
     // the edges need can be infered from the surface points
-    
-    
-  
+
+    int N = u_num;
+    int M = v_num;
+    pGEdge tmp_edge0;
+    bool weightLess = false;
+    if(weights.size() == 1 && weights[0] == 0.0)
+    { weightLess = true;}
+
+    std::vector<double*> edge_points;
+    std::vector<double> edge_weights;
+    for( int n = 0; n<N; n++)
+    {
+      edge_points.push_back( points[n] );
+      if(!weightLess)
+      {
+        edge_weights.push_back( weights[n]);
+      }
+    }
+
+    if(weightLess)
+    {
+      edge_weights.push_back( 0.0);
+    }
+    place_edge( u_order, edge_points, u_knots, edge_weights, tmp_edge0);
+    edges.push_back(tmp_edge0);
+    edge_points.clear();
+    edge_weights.clear();
+
+    pGEdge tmp_edge1;
+    for( int m=0; m<M; m++)
+    {
+      int ind = (N-1)+m*N;
+      edge_points.push_back( points[ind] );
+      if(!weightLess)
+      {
+        edge_weights.push_back( weights[ind]);
+      }
+    }
+      
+    if(weightLess)
+    {
+      edge_weights.push_back( 0.0);
+    }
+    place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge1);
+    edges.push_back(tmp_edge1);
+
+    edge_points.clear();
+    edge_weights.clear();
+
+    pGEdge tmp_edge2;
+    for( int n=(N-1); n<0; n++)
+    {
+      int ind = n+(M-1)*N;
+      edge_points.push_back( points[ind] );
+      if(!weightLess)
+      {
+        edge_weights.push_back( weights[ind]);
+      }
+    }
+      
+    if(weightLess)
+    {
+      edge_weights.push_back( 0.0);
+    }
+    place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge2);
+    edges.push_back(tmp_edge2);
+
+    edge_points.clear();
+    edge_weights.clear();
+
+    pGEdge tmp_edge3;
+    for( int m=(M-1); m<0; m++)
+    {
+      int ind = N*m;
+      edge_points.push_back( points[ind] );
+      if(!weightLess)
+      {
+        edge_weights.push_back( weights[ind]);
+      }
+    }
+      
+    if(weightLess)
+    {
+      edge_weights.push_back( 0.0);
+    }
+    place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge3);
+    edges.push_back(tmp_edge3);
+
+    edge_points.clear();
+    edge_weights.clear();
+
     return;
   }
 
@@ -518,7 +600,7 @@ namespace GMD
     unpack_vector( v_knots, unp_v_knots);
 
     double all_points[3*num_points] = {0.0};
-    unpack_surface_vector( points, all_points);
+    unpack_vector_spline_points( points, all_points);
 
     create_bounding_edges( 
       u_order, v_order, u_num, v_num, points, u_knots, v_knots, weights, edges);
