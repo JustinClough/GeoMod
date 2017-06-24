@@ -449,13 +449,40 @@ namespace GMD
     return;
   }
 
+  void model_helper_t::unpack_bounding_edges( 
+      std::vector<pGEdge>& edges, 
+      pGEdge* bounding_edges)
+  {
+    for( int i=0; i<edges.size(); i++)
+    {
+      bounding_edges[i] = edges[i];
+    }
+    return;
+  }
+
   void model_helper_t::create_face( 
       pSurface& surface, 
       std::vector<pGEdge>& edges,
       pGFace& face)
   {
 
-    print_warning("func not written");
+    pGIPart part = GM_part( model);
+    int numEdges = edges.size();
+    pGEdge bounding_edges[numEdges] = {NULL};
+    unpack_bounding_edges( edges, bounding_edges);
+    int dirs[numEdges] = {1};
+    int numLoops = 1;
+    int indLoop[numLoops] = {0};
+    int normal = 1;
+
+    GRIter r_it = GM_regionIter( model);
+    pGRegion region = GRIter_next( r_it);
+
+    face = GIP_insertFaceInRegion( 
+        part, numEdges, bounding_edges, dirs, 
+        numLoops, indLoop, surface, normal, region);
+
+    GRIter_delete( r_it);
     return;
   }
 

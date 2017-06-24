@@ -39,6 +39,9 @@ namespace GMD
           std::vector<double> v_knots, 
           std::vector<double> weights,
           std::vector<pGEdge>& edges);
+      void unpack_bounding_edges( 
+          std::vector<pGEdge>& edges, 
+          pGEdge* bounding_edges);
 
       // Members
       pGModel model;
