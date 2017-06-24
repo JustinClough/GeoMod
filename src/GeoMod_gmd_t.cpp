@@ -206,6 +206,8 @@ namespace GMD
 
     if(weights.size() != 1 && weights.size() != (u_num*v_num))
     { print_error("Mismatched number of weights and declared control points.");}
+    if(weights.size() == 1 && weights[0] != 0.0)
+    { print_error("Bad weights vector.");}
 
     if( u_knots.size() != (u_num+u_order))
     { print_error("Mismatch between number of u_knots and u_order+u_num.");}
