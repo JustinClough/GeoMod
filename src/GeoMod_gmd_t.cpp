@@ -193,15 +193,24 @@ namespace GMD
       std::vector<double> v_knots, 
       std::vector<double> weights)
   {
-    if (periodicity < 0 || periodicity > 4)
+    if( periodicity < 0 || periodicity > 4)
     { print_error("Bad periodicity.");}
 
-    // Need to check weights together, pass tmp to spline check
-    std::vector<double> tmp;
-    tmp.push_back(0.0);
+    if( u_order<= 1 )
+    { print_error("u_order too low.");}
+    if( v_order<= 1 )
+    { print_error("v_order too low.");}
 
-    print_error("Needs rewriting");
+    if( points.size() != (u_num*v_num))
+    { print_error("Mismatched number of declared and given control points.");} 
 
+    if(weights.size() != 1 && weights.size() != (u_num*v_num))
+    { print_error("Mismatched number of weights and declared control points.");}
+
+    if( u_knots.size() != (u_num+u_order))
+    { print_error("Mismatch between number of u_knots and u_order+u_num.");}
+    if( v_knots.size() != (v_num+v_order))
+    { print_error("Mismatch between number of v_knots and v_order+v_num.");}
 
     return;
   }
