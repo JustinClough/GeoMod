@@ -174,14 +174,6 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_surface_by_loops( pSurface& surface, std::vector<pGEdge> edges, pGFace& face)
-  {
-
-    print_warning("func not written");
-
-    return;
-  }
-
   void gmd_t::check_surface_params( 
       int u_order, 
       int v_order, 

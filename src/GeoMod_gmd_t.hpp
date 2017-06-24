@@ -51,10 +51,6 @@ namespace GMD
           std::vector<double> weights,
           double refine,
           pGFace& face);
-      void place_surface_by_loops(
-          pSurface& surface,
-          std::vector<pGEdge> edges, 
-          pGFace& face);
 
       // Methods for only meshing
       void set_global_mesh_params( 
