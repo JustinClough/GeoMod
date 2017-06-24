@@ -149,27 +149,32 @@ namespace GMD
     mesher->set_global( order_in, refine_in, grad_rate_in);
     return;
   }
+
   void gmd_t::place_surface_by_spline(
       int u_order, 
       int v_order, 
+      int u_num,
+      int v_num,
       int periodicity, 
-      std::vector<double*> u_points,
-      std::vector<double*> v_points,
+      std::vector<double*> points,
       std::vector<double> u_knots,
       std::vector<double> v_knots,
       std::vector<double> weights,
       double refine,
       pGFace& face)
   {
-    check_surface_params( u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights);
+    check_surface_params( 
+        u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights);
+
     modeler->place_surface_by_spline( 
-        u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights, face);
+        u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights, face);
+
     mesher->refine_face( refine, face);
 
     return;
   }
 
-  void gmd_t::place_surface_by_loops( std::vector<pGEdge> edges, pGFace& face)
+  void gmd_t::place_surface_by_loops( pSurface& surface, std::vector<pGEdge> edges, pGFace& face)
   {
 
     print_warning("func not written");
@@ -180,9 +185,10 @@ namespace GMD
   void gmd_t::check_surface_params( 
       int u_order, 
       int v_order, 
+      int u_num,
+      int v_num,
       int periodicity, 
-      std::vector<double*> u_points, 
-      std::vector<double*>  v_points, 
+      std::vector<double*> points, 
       std::vector<double> u_knots, 
       std::vector<double> v_knots, 
       std::vector<double> weights)
@@ -193,11 +199,9 @@ namespace GMD
     // Need to check weights together, pass tmp to spline check
     std::vector<double> tmp;
     tmp.push_back(0.0);
-    check_spline_params( u_order, u_points, u_knots, tmp);
-    check_spline_params( v_order, v_points, v_knots, tmp);
 
-    if(weights.size() != 0 && weights.size() != (u_points.size()*v_points.size()))
-    { print_error("Mismatch between weights size and u_points & v_points vectors.");} 
+    print_error("Needs rewriting");
+
 
     return;
   }

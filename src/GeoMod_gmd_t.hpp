@@ -41,16 +41,18 @@ namespace GMD
       void place_surface_by_spline(
           int u_order, 
           int v_order, 
+          int u_num,
+          int v_num,
           int periodicity, 
             // 0=none, 1=u periodic, 2=v periodic, 3=u&&v periodic
-          std::vector<double*> u_points,
-          std::vector<double*> v_points,
+          std::vector<double*> points,
           std::vector<double> u_knots,
           std::vector<double> v_knots,
           std::vector<double> weights,
           double refine,
           pGFace& face);
-      void place_surface_by_loops( 
+      void place_surface_by_loops(
+          pSurface& surface,
           std::vector<pGEdge> edges, 
           pGFace& face);
 
@@ -74,9 +76,10 @@ namespace GMD
       void check_surface_params( 
           int u_order, 
           int v_order, 
+          int u_num,
+          int v_num,
           int periodicity, 
-          std::vector<double*> u_points,
-          std::vector<double*>  v_points, 
+          std::vector<double*> points,
           std::vector<double> u_knots, 
           std::vector<double> v_knots, 
           std::vector<double> weights);

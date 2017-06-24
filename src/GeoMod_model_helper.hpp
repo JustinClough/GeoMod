@@ -26,6 +26,19 @@ namespace GMD
           std::vector<double*> vec,
           double* x);
       void unpack_vector( std::vector<double> vec, double* x);
+      void unpack_surface_vector( 
+          std::vector<double*> points, 
+          double* all_points);
+      void create_bounding_edges( 
+          int u_order, 
+          int v_order, 
+          int u_num,
+          int v_num,
+          std::vector<double*> points, 
+          std::vector<double> u_knots, 
+          std::vector<double> v_knots, 
+          std::vector<double> weights,
+          std::vector<pGEdge>& edges);
 
       // Members
       pGModel model;
@@ -70,9 +83,10 @@ namespace GMD
       void place_surface_by_spline( 
           int u_order, 
           int v_order, 
+          int u_num,
+          int v_num,
           int periodicity, 
-          std::vector<double*> u_points,
-          std::vector<double*> v_points,
+          std::vector<double*> points,
           std::vector<double> u_knots,
           std::vector<double> v_knots,
           std::vector<double> weights,
@@ -80,18 +94,17 @@ namespace GMD
       void create_surface( 
           int u_order, 
           int v_order, 
+          int u_num,
+          int v_num,
           int periodicity, 
-          std::vector<double*> u_points,
-          std::vector<double*> v_points,
+          std::vector<double*> points,
           std::vector<double> u_knots,
           std::vector<double> v_knots,
           std::vector<double> weights,
           pSurface& surface,
           std::vector<pGEdge>& edges);
       void create_face(
-          std::vector<double*> u_points,
-          std::vector<double*> v_points,
-          pSurface surface,
+          pSurface& surface,
           std::vector<pGEdge>& edges,
           pGFace& face);
           

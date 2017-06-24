@@ -417,9 +417,10 @@ namespace GMD
   void model_helper_t::place_surface_by_spline( 
       int u_order, 
       int v_order, 
+      int u_num,
+      int v_num,
       int periodicity, 
-      std::vector<double*> u_points, 
-      std::vector<double*> v_points, 
+      std::vector<double*> points, 
       std::vector<double> u_knots, 
       std::vector<double> v_knots, 
       std::vector<double> weights, 
@@ -427,15 +428,13 @@ namespace GMD
   {
     pSurface surf;
     std::vector<pGEdge> edges;
-    create_surface( u_order, v_order, periodicity, u_points, v_points, u_knots, v_knots, weights, surf, edges);
-    create_face( u_points, v_points, surf, edges, face);
+    create_surface( u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights, surf, edges);
+    create_face( surf, edges, face);
     return;
   }
 
   void model_helper_t::create_face( 
-      std::vector<double*> u_points, 
-      std::vector<double*> v_points, 
-      pSurface surface, 
+      pSurface& surface, 
       std::vector<pGEdge>& edges,
       pGFace& face)
   {
@@ -444,12 +443,41 @@ namespace GMD
     return;
   }
 
+  void model_helper_t::unpack_surface_vector( 
+      std::vector<double*> points, 
+      double* all_points)
+  {
+    print_error("not written");
+    return;
+  }
+
+  void model_helper_t::create_bounding_edges( 
+      int u_order, 
+      int v_order, 
+      int u_num,
+      int v_num,
+      std::vector<double*> points, 
+      std::vector<double> u_knots, 
+      std::vector<double> v_knots, 
+      std::vector<double> weights,
+      std::vector<pGEdge>& edges)
+  {
+    // Since GeomSim needs splines surface to be four sided
+    // and have a regular control point spacing (X by Y),
+    // the edges need can be infered from the surface points
+    
+    
+  
+    return;
+  }
+
   void model_helper_t::create_surface( 
       int u_order, 
       int v_order, 
+      int u_num,
+      int v_num,
       int periodicity, 
-      std::vector<double*> u_points, 
-      std::vector<double*> v_points, 
+      std::vector<double*> points, 
       std::vector<double> u_knots, 
       std::vector<double> v_knots, 
       std::vector<double> weights, 
@@ -479,40 +507,41 @@ namespace GMD
     if(weights.size() == 1 && weights[0] == 0.0)
     { weightLess = true;}
 
-    int num_u_points = u_points.size();
-    int num_v_points = v_points.size();
-    int num_points = num_u_points*num_v_points;
+    int num_points = points.size();
     
-    double unp_u_points[num_u_points*3] = {0.0};
     double unp_u_knots[u_knots.size()] = {0.0};
     double unp_u_weights[weights.size()] = {0.0};
-    unpack_vector_spline_points( u_points, unp_u_points);
     unpack_vector( u_knots, unp_u_knots);
 
-    double unp_v_points[num_v_points*3] = {0.0};
     double unp_v_knots[v_knots.size()] = {0.0};
     double unp_v_weights[weights.size()] = {0.0};
-    unpack_vector_spline_points( v_points, unp_v_points);
     unpack_vector( v_knots, unp_v_knots);
+
+    double all_points[3*num_points] = {0.0};
+    unpack_surface_vector( points, all_points);
+
+    create_bounding_edges( 
+      u_order, v_order, u_num, v_num, points, u_knots, v_knots, weights, edges);
 
     if(weightLess)
     {
       surface = SSurface_createBSpline( 
         u_order, v_order, 
-        num_u_points, num_v_points, 
+        u_num, v_num, 
         u_per, v_per,
         all_points, NULL,
-        u_knots, v_knots);
+        unp_u_knots, unp_v_knots);
     }
     else
     {
-      unpack_vector( weights, un_weights);
+      double unp_weights[num_points] = {0.0};
+      unpack_vector( weights, unp_weights);
       surface = SSurface_createBSpline( 
         u_order, v_order, 
-        num_u_points, num_v_points, 
-        u_per, v_per,
-        all_points, un_weights,
-        u_knots, v_knots);
+        u_num,   v_num,
+        u_per,   v_per,
+        all_points, unp_weights,
+        unp_u_knots, unp_v_knots);
     }
     return;
   }
