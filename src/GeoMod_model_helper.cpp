@@ -37,7 +37,7 @@ namespace GMD
     else
     { return false; }
   }
-    
+
   void model_helper_t::write( std::string name)
   {
     name = name + ".smd";
@@ -58,7 +58,10 @@ namespace GMD
       Written = true;
     }
     else
-    { std::cout << "Model " << name << " failed to be written." << std::endl; }
+    { 
+      std::cout << "Model " << name 
+        << " failed to be written." << std::endl;
+    }
 
     return;
   }
@@ -196,7 +199,7 @@ namespace GMD
     }
     return;
   }
-  
+
   void model_helper_t::put_point_in_face( double coords[3], pGVertex& vert)
   {
     bool placed = false;
@@ -217,11 +220,13 @@ namespace GMD
       print_warning("Failed to place point in face at");
       print_coords( coords);
     }
-    
+
     return;
   }
 
-  void model_helper_t::put_point_in_region( double coords[3], pGVertex& vert)
+  void model_helper_t::put_point_in_region( 
+      double coords[3], 
+      pGVertex& vert)
   {
     bool placed = false;
     GRIter r_it = GM_regionIter( model);
@@ -238,7 +243,10 @@ namespace GMD
     return;
   }
 
-  bool model_helper_t::place_point( double coords[3], pGVertex& vert, bool abort_on_fail)
+  bool model_helper_t::place_point( 
+      double coords[3], 
+      pGVertex& vert, 
+      bool abort_on_fail)
   {
     bool updateMesh = true;
     int location = point_location(coords);
@@ -263,7 +271,9 @@ namespace GMD
     return updateMesh;
   }
 
-  void model_helper_t::unpack_vector_spline_points( std::vector<double*> vec, double* x)
+  void model_helper_t::unpack_vector_spline_points( 
+      std::vector<double*> vec, 
+      double* x)
   {
     int pos = 0;
     double* tmp = vec[0];
@@ -308,12 +318,14 @@ namespace GMD
 
     if(weightLess)
     {
-      curve = SCurve_createBSpline( order, num_points, u_points, u_knots, NULL);
+      curve = SCurve_createBSpline( 
+        order, num_points, u_points, u_knots, NULL);
     }
     else
     {
       unpack_vector( weights, un_weights);
-      curve = SCurve_createBSpline( order, num_points, u_points, u_knots, un_weights);
+      curve = SCurve_createBSpline( 
+        order, num_points, u_points, u_knots, un_weights);
     }
     return;
   }
@@ -380,7 +392,8 @@ namespace GMD
     GRIter r_it = GM_regionIter( model);
     pGRegion region = GRIter_next( r_it);
 
-    edge = GIP_insertEdgeInRegion( part, start_vert, end_vert, curve, 1, region);
+    edge = GIP_insertEdgeInRegion( 
+        part, start_vert, end_vert, curve, 1, region);
     GRIter_delete( r_it);
 
     bool onSameFace = PointsOnSameFace( points);
@@ -430,7 +443,8 @@ namespace GMD
     std::vector<pGEdge> edges;
 
     create_surface( 
-      u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights, surf, edges);
+        u_order, v_order, u_num, v_num, periodicity, 
+        points, u_knots, v_knots, weights, surf, edges);
     create_face( surf, edges, face);
     return;
   }
@@ -497,7 +511,7 @@ namespace GMD
         edge_weights.push_back( weights[ind]);
       }
     }
-      
+
     if(weightLess)
     {
       edge_weights.push_back( 0.0);
@@ -518,7 +532,7 @@ namespace GMD
         edge_weights.push_back( weights[ind]);
       }
     }
-      
+
     if(weightLess)
     {
       edge_weights.push_back( 0.0);
@@ -539,7 +553,7 @@ namespace GMD
         edge_weights.push_back( weights[ind]);
       }
     }
-      
+
     if(weightLess)
     {
       edge_weights.push_back( 0.0);
@@ -590,7 +604,7 @@ namespace GMD
     { weightLess = true;}
 
     int num_points = points.size();
-    
+
     double unp_u_knots[u_knots.size()] = {0.0};
     double unp_u_weights[weights.size()] = {0.0};
     unpack_vector( u_knots, unp_u_knots);
@@ -603,27 +617,28 @@ namespace GMD
     unpack_vector_spline_points( points, all_points);
 
     create_bounding_edges( 
-      u_order, v_order, u_num, v_num, points, u_knots, v_knots, weights, edges);
+        u_order, v_order, u_num, v_num, 
+        points, u_knots, v_knots, weights, edges);
 
     if(weightLess)
     {
       surface = SSurface_createBSpline( 
-        u_order, v_order, 
-        u_num, v_num, 
-        u_per, v_per,
-        all_points, NULL,
-        unp_u_knots, unp_v_knots);
+          u_order, v_order, 
+          u_num, v_num, 
+          u_per, v_per,
+          all_points, NULL,
+          unp_u_knots, unp_v_knots);
     }
     else
     {
       double unp_weights[num_points] = {0.0};
       unpack_vector( weights, unp_weights);
       surface = SSurface_createBSpline( 
-        u_order, v_order, 
-        u_num,   v_num,
-        u_per,   v_per,
-        all_points, unp_weights,
-        unp_u_knots, unp_v_knots);
+          u_order, v_order, 
+          u_num,   v_num,
+          u_per,   v_per,
+          all_points, unp_weights,
+          unp_u_knots, unp_v_knots);
     }
     return;
   }
