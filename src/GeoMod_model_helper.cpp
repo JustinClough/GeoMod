@@ -189,7 +189,15 @@ namespace GMD
         vert = GM_splitEdge( edge, param);
         if(vert == NULL)
         {
-// NEED TO RETRIVE THE CONFLICTING VERTEX HERE
+          pPList vert_list = PList_new();
+          vert_list = GE_vertices( edge);
+          pGVertex tmp_vert;
+          void* iter = 0;
+          while(( tmp_vert = (pGVertex) PList_next( vert_list, &iter)))
+          {
+          }
+          
+          PList_delete( vert_list);
         }
         placed = true;
       }
