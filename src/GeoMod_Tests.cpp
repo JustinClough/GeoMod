@@ -394,7 +394,7 @@ void test10()
   int v_num = 3;
   int periodicity = 0;
 
-  // first 'row'     x    y    z
+  // first 'row'     x     y    z
   double p1[3]  = {-5.0, -3.0, 0.0};
   double p2[3]  = {-2.0, -3.0, 0.0};
   double p3[3]  = { 3.0, -3.0, 0.0};

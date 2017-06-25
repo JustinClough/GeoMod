@@ -187,6 +187,10 @@ namespace GMD
         double param = 0.0;
         GE_closestPoint( edge, coords, NULL, &param);
         vert = GM_splitEdge( edge, param);
+        if(vert == NULL)
+        {
+// NEED TO RETRIVE THE CONFLICTING VERTEX HERE
+        }
         placed = true;
       }
     }
@@ -268,6 +272,15 @@ namespace GMD
     {
       put_point_in_region( coords, vert);
     }
+
+    std::cout << "location = " << location << std::endl;
+    std::cout << "Point to Place at "; print_coords( coords);
+
+    if ( vert == NULL)
+    { std::cout << "NULL here" << std::endl;}
+    else
+    { std::cout << "NOT NULL here" << std::endl;}
+
     return updateMesh;
   }
 
@@ -381,6 +394,8 @@ namespace GMD
   {
     double* start_point = points[0];
     pGVertex start_vert = NULL;
+    if( start_point == NULL)
+    { print_error(" start_point is NULL ");}
     place_point( start_point, start_vert, false);
 
     double* end_point = points[points.size()-1];
@@ -392,8 +407,21 @@ namespace GMD
     GRIter r_it = GM_regionIter( model);
     pGRegion region = GRIter_next( r_it);
 
+    if( part == NULL)
+    { print_error("Part is NULL");}
+    if( start_vert == NULL)
+    { print_error("start_vert is NULL");}
+    if( end_vert == NULL)
+    { print_error("end_vert is NULL");}
+    if( curve == NULL)
+    { print_error("curve is NULL");}
+    if( region == NULL)
+    { print_error("region is NULL");}
+
+    std::cout << "HERE1" << std::endl;
     edge = GIP_insertEdgeInRegion( 
         part, start_vert, end_vert, curve, 1, region);
+    std::cout << "HERE2" << std::endl;
     GRIter_delete( r_it);
 
     bool onSameFace = PointsOnSameFace( points);
@@ -423,6 +451,7 @@ namespace GMD
   {
     pCurve curve;
     create_curve( order, points, knots, weights, curve);
+    std::cout << "between create_curve and create_edge" << std::endl;
     create_edge( order, points, curve, edge);
     return;
   }
@@ -543,6 +572,7 @@ namespace GMD
     {
       edge_weights.push_back( 0.0);
     }
+
     place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge1);
     edges.push_back(tmp_edge1);
 
