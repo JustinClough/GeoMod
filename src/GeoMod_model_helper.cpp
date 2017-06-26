@@ -193,10 +193,20 @@ namespace GMD
           vert_list = GE_vertices( edge);
           pGVertex tmp_vert;
           void* iter = 0;
-          while(( tmp_vert = (pGVertex) PList_next( vert_list, &iter)))
+          bool found = false;
+          while((!found) && ( tmp_vert = (pGVertex) PList_next( vert_list, &iter)))
           {
+            bool areSame = false;
+            double tol = GM_tolerance( model);
+            double conf_coords[3] = {0.0};
+            GV_point( tmp_vert, conf_coords);
+            compare_coords( coords, conf_coords, areSame, tol);
+            if( areSame)
+            {
+              found = true;
+              vert = tmp_vert;
+            }
           }
-          
           PList_delete( vert_list);
         }
         placed = true;
@@ -280,14 +290,6 @@ namespace GMD
     {
       put_point_in_region( coords, vert);
     }
-
-    std::cout << "location = " << location << std::endl;
-    std::cout << "Point to Place at "; print_coords( coords);
-
-    if ( vert == NULL)
-    { std::cout << "NULL here" << std::endl;}
-    else
-    { std::cout << "NOT NULL here" << std::endl;}
 
     return updateMesh;
   }
@@ -426,10 +428,8 @@ namespace GMD
     if( region == NULL)
     { print_error("region is NULL");}
 
-    std::cout << "HERE1" << std::endl;
     edge = GIP_insertEdgeInRegion( 
         part, start_vert, end_vert, curve, 1, region);
-    std::cout << "HERE2" << std::endl;
     GRIter_delete( r_it);
 
     bool onSameFace = PointsOnSameFace( points);
@@ -459,7 +459,6 @@ namespace GMD
   {
     pCurve curve;
     create_curve( order, points, knots, weights, curve);
-    std::cout << "between create_curve and create_edge" << std::endl;
     create_edge( order, points, curve, edge);
     return;
   }
@@ -507,9 +506,17 @@ namespace GMD
     int numEdges = edges.size();
     pGEdge bounding_edges[numEdges] = {NULL};
     unpack_bounding_edges( edges, bounding_edges);
-    int dirs[numEdges] = {1};
+    int dirs[numEdges] = {0};
+    for( int i = 0; i< numEdges; i++)
+    {
+      dirs[i] = 1;
+    }
     int numLoops = 1;
     int indLoop[numLoops] = {0};
+    for( int i = 0; i< numLoops; i++)
+    {
+      indLoop[i] = 0;
+    }
     int normal = 1;
 
     GRIter r_it = GM_regionIter( model);
@@ -563,7 +570,6 @@ namespace GMD
     place_edge( u_order, edge_points, u_knots, edge_weights, tmp_edge0);
     edges.push_back(tmp_edge0);
     edge_points.clear();
-    edge_weights.clear();
 
     pGEdge tmp_edge1;
     for( int m=0; m<M; m++)
@@ -576,19 +582,13 @@ namespace GMD
       }
     }
 
-    if(weightLess)
-    {
-      edge_weights.push_back( 0.0);
-    }
-
     place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge1);
     edges.push_back(tmp_edge1);
 
     edge_points.clear();
-    edge_weights.clear();
 
     pGEdge tmp_edge2;
-    for( int n=(N-1); n<0; n++)
+    for( int n=(N-1); n>(-1); n--)
     {
       int ind = n+(M-1)*N;
       edge_points.push_back( points[ind] );
@@ -598,18 +598,12 @@ namespace GMD
       }
     }
 
-    if(weightLess)
-    {
-      edge_weights.push_back( 0.0);
-    }
-    place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge2);
+    place_edge( u_order, edge_points, u_knots, edge_weights, tmp_edge2);
     edges.push_back(tmp_edge2);
-
     edge_points.clear();
-    edge_weights.clear();
 
     pGEdge tmp_edge3;
-    for( int m=(M-1); m<0; m++)
+    for( int m=(M-1); m>(-1); m--)
     {
       int ind = N*m;
       edge_points.push_back( points[ind] );
@@ -619,10 +613,6 @@ namespace GMD
       }
     }
 
-    if(weightLess)
-    {
-      edge_weights.push_back( 0.0);
-    }
     place_edge( v_order, edge_points, v_knots, edge_weights, tmp_edge3);
     edges.push_back(tmp_edge3);
 
