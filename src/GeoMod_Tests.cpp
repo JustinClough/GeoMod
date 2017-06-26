@@ -78,14 +78,14 @@ void test3()
   std::string name = "test3_cube";
   gmd.set_name( name);
 
+  gmd.set_global_mesh_params( 1, 0.5, 0.3);
   double coords[3] = {0.0, 0.0, 0.0};
-  double refine = 0.1;
-  double radius = 1;
+  double refine = 0.01;
+  double radius = 0.01;
   pGVertex vert;
   gmd.place_point( coords, refine, radius, vert);
 
   gmd.write_model();
-  gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
 

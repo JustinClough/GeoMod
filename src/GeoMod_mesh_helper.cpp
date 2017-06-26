@@ -91,6 +91,12 @@ namespace GMD
     return;
   }
 
+  void mesh_helper_t::refine_vertex( double refine, pGVertex vert)
+  {
+    MS_setMeshSize(m_case, vert, 2, refine, NULL);
+    return;
+  }
+
   void mesh_helper_t::place_point( 
       double coords[3], 
       double refine, 
