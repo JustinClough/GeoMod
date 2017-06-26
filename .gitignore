@@ -16,3 +16,6 @@ density_tests/
 #Ignore Latex support files
 **.aux
 **.log
+
+#Ignore pdf of write up
+write_up/GeoMod.pdf
