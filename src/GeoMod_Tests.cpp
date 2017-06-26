@@ -555,6 +555,78 @@ void test11()
  */
 void test12()
 {
+  pGModel cube = GMD::create_cube( 20.0);
+  GMD::gmd_t gmd( cube);
+  std::string name = "test12_cube";
+  gmd.set_name( name);
 
+  int u_order = 3;
+  int v_order = 2;
+  int u_num = 4;
+  int v_num = 3;
+  int periodicity = 0;
+
+  // first 'row'     x     y    z
+  double p1[3]  = {-10.0, -7.0, 3.0};
+  double p2[3]  = {-2.0, -4.0, 0.0};
+  double p3[3]  = { 3.0, -3.0, 1.0};
+  double p4[3]  = { 7.0, -5.0, -3.0}; 
+  // second 'row'               
+  double p5[3]  = {-10.0, 0.0, -1.0};
+  double p6[3]  = {-2.0, 0.0, 3.0};
+  double p7[3]  = { 3.0, 1.0, -7.0};
+  double p8[3]  = { 7.0, 0.0, 2.0}; 
+  // third 'row'            
+  double p9[3]  = {-10.0, 4.0, 1.0};
+  double p10[3] = {-5.0, 2.0, 0.0};
+  double p11[3] = { 3.0, 4.0, -3.0};
+  double p12[3] = { 7.0, 3.0, 0.0};
+
+  std::vector<double*> points;
+  points.push_back(p1); 
+  points.push_back(p2);
+  points.push_back(p3);
+  points.push_back(p4);
+  points.push_back(p5);
+  points.push_back(p6);
+  points.push_back(p7);
+  points.push_back(p8);
+  points.push_back(p9);
+  points.push_back(p10);
+  points.push_back(p11);
+  points.push_back(p12);
+
+  std::vector<double> u_knots;
+  u_knots.push_back(0.0);
+  u_knots.push_back(0.0);
+  u_knots.push_back(0.0);
+  u_knots.push_back(0.5);
+  u_knots.push_back(1.0);
+  u_knots.push_back(1.0);
+  u_knots.push_back(1.0);
+
+  std::vector<double> v_knots;
+  v_knots.push_back(0.0);
+  v_knots.push_back(0.0);
+  v_knots.push_back(0.5);
+  v_knots.push_back(1.0);
+  v_knots.push_back(1.0);
+
+  std::vector<double> weights;
+  weights.push_back(0.0);
+
+  pGFace face;
+  double refine = 0.1;
+  gmd.place_surface_by_spline( 
+      u_order, v_order, u_num, v_num, periodicity,
+      points, u_knots, v_knots, weights, 
+      refine, face);
+
+  gmd.write_model();
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  cout << "\n\nPassed test12\n\n";
   return;
 }
