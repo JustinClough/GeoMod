@@ -1,4 +1,4 @@
-#include <GeoMod_Tests.hpp>
+#include "GeoMod_Tests.hpp"
 #include <string>
 
 using std::cout;

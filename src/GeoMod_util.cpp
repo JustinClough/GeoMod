@@ -1,5 +1,5 @@
 // This File's Header
-#include <GeoMod_util.hpp>
+#include "GeoMod_util.hpp"
 // NOTE: All needed headers belong in GeoMod_util.hpp
 
 namespace GMD
@@ -183,12 +183,10 @@ namespace GMD
 
     // Create Face
     pSurface plane;
-    pGFace face;
     int face_dirs[4] = {1,1,1,1};
     int loopDef[1] = {0};
     plane = SSurface_createPlane(vert_xyz[0], vert_xyz[1], vert_xyz[2]);
-    face = 
-      GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
+    GIP_insertFaceInRegion(part, 4, edges, face_dirs, 1, loopDef, plane, 1, outRegion);
 
     return model;
   }

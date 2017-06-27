@@ -1,4 +1,4 @@
-#include <GeoMod_mesh_helper.hpp>
+#include "GeoMod_mesh_helper.hpp"
 
 namespace GMD
 {
@@ -113,9 +113,13 @@ namespace GMD
       {
         MS_addSphereRefinement( m_case, refine, radius, coords);
       }
-      else
+      else if(abort_on_fail)
       { 
         print_error( "Refinement radius must be zero or greater");
+      }
+      else
+      { 
+        print_warning( "Refinement radius must be zero or greater");
       }
     }
     return;

@@ -2,7 +2,7 @@
 #define GEOMOD_HPP
 
 // Simmetrix Headers
-#include <GeoMod_SIM.hpp>
+#include "GeoMod_SIM.hpp"
 
 // Standard C++ Headers
 #include <cstdlib>
@@ -15,9 +15,9 @@
 #include <apfSIM.h>
 
 // GeoMod Headers
-#include <GeoMod_printer.hpp>
-#include <GeoMod_coords.hpp>
-#include <GeoMod_gmd_t.hpp>
-#include <GeoMod_util.hpp>
+#include "GeoMod_printer.hpp"
+#include "GeoMod_coords.hpp"
+#include "GeoMod_gmd_t.hpp"
+#include "GeoMod_util.hpp"
 
 #endif

@@ -1,4 +1,4 @@
-#include <GeoMod_model_helper.hpp>
+#include "GeoMod_model_helper.hpp"
 
 namespace GMD
 {
@@ -290,7 +290,7 @@ namespace GMD
     {
       put_point_in_region( coords, vert);
     }
-
+    (void) abort_on_fail;
     return updateMesh;
   }
 
@@ -300,7 +300,7 @@ namespace GMD
   {
     int pos = 0;
     double* tmp = vec[0];
-    for( int i=0; i<vec.size(); i++)
+    for( int i=0; i<(int)vec.size(); i++)
     {
       tmp = vec[i];
       for( int j=0; j<3; j++)
@@ -314,7 +314,7 @@ namespace GMD
 
   void model_helper_t::unpack_vector( std::vector<double> vec, double* x)
   {
-    for (int i=0; i<vec.size(); i++)
+    for (int i=0; i<(int)vec.size(); i++)
     {
       x[i] = vec[i];
     }
@@ -328,14 +328,14 @@ namespace GMD
       std::vector<double> weights, 
       pCurve& curve)
   {
-    int num_points = points.size();
+    int num_points = (int)points.size();
     bool weightLess = false;
-    if(weights.size() == 1 && weights[0] == 0.0)
+    if((int)weights.size() == 1 && weights[0] == 0.0)
     { weightLess = true;}
 
     double u_points[num_points*3] = {0.0};
-    double u_knots[knots.size()] = {0.0};
-    double un_weights[weights.size()] = {0.0};
+    double u_knots[(int)knots.size()] = {0.0};
+    double un_weights[(int)weights.size()] = {0.0};
     unpack_vector_spline_points( points, u_points);
     unpack_vector( knots, u_knots);
 
@@ -356,7 +356,7 @@ namespace GMD
   bool model_helper_t::PointsOnSameFace( std::vector<double*> points)
   {
     bool onFace = true;
-    for( int i=0; i<points.size(); i++)
+    for( int i=0; i<(int)points.size(); i++)
     { // Check if all points are on any face
       if( !point_on_dim( 2, points[i]))
       {
@@ -372,7 +372,7 @@ namespace GMD
       GFIter f_it = GM_faceIter( model);
       while(( face = GFIter_next(f_it)))
       {
-        for(int i=0; i<points.size(); i++)
+        for(int i=0; i<(int)points.size(); i++)
         {
           if( (i==0) && PointOnFace( points[i], face))
           {
@@ -408,7 +408,7 @@ namespace GMD
     { print_error(" start_point is NULL ");}
     place_point( start_point, start_vert, false);
 
-    double* end_point = points[points.size()-1];
+    double* end_point = points[(int)points.size()-1];
     pGVertex end_vert = NULL;
     place_point( end_point, end_vert, false);
 
@@ -447,6 +447,8 @@ namespace GMD
       pGFace new_faces[2] = {NULL, NULL};
       GM_insertEdgeOnFace( face, edge, new_faces);
     }
+
+    (void) order;
     return;
   }
 
@@ -489,7 +491,7 @@ namespace GMD
       std::vector<pGEdge>& edges, 
       pGEdge* bounding_edges)
   {
-    for( int i=0; i<edges.size(); i++)
+    for( int i=0; i<(int)edges.size(); i++)
     {
       bounding_edges[i] = edges[i];
     }
@@ -503,7 +505,7 @@ namespace GMD
   {
 
     pGIPart part = GM_part( model);
-    int numEdges = edges.size();
+    int numEdges = (int)edges.size();
     pGEdge bounding_edges[numEdges] = {NULL};
     unpack_bounding_edges( edges, bounding_edges);
     int dirs[numEdges] = {0};
@@ -549,7 +551,7 @@ namespace GMD
     int M = v_num;
     pGEdge tmp_edge0;
     bool weightLess = false;
-    if(weights.size() == 1 && weights[0] == 0.0)
+    if((int)weights.size() == 1 && weights[0] == 0.0)
     { weightLess = true;}
 
     std::vector<double*> edge_points;
@@ -655,17 +657,15 @@ namespace GMD
     }
 
     bool weightLess = false;
-    if(weights.size() == 1 && weights[0] == 0.0)
+    if((int)weights.size() == 1 && weights[0] == 0.0)
     { weightLess = true;}
 
-    int num_points = points.size();
+    int num_points = (int)points.size();
 
-    double unp_u_knots[u_knots.size()] = {0.0};
-    double unp_u_weights[weights.size()] = {0.0};
+    double unp_u_knots[(int)u_knots.size()] = {0.0};
     unpack_vector( u_knots, unp_u_knots);
 
-    double unp_v_knots[v_knots.size()] = {0.0};
-    double unp_v_weights[weights.size()] = {0.0};
+    double unp_v_knots[(int)v_knots.size()] = {0.0};
     unpack_vector( v_knots, unp_v_knots);
 
     double all_points[3*num_points] = {0.0};

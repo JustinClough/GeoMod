@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-#include <GeoMod_SIM.hpp>
-#include <GeoMod_printer.hpp>
+#include "GeoMod_SIM.hpp"
+#include "GeoMod_printer.hpp"
 
 namespace GMD
 {

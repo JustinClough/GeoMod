@@ -1,4 +1,4 @@
-#include <GeoMod_gmd_t.hpp>
+#include "GeoMod_gmd_t.hpp"
 
 namespace GMD
 {
@@ -55,15 +55,15 @@ namespace GMD
   {
     if( order <=1)
     { print_error("Spline order too low. Must be polnomial order + 1.");}
-    if( points.size() < order)
+    if( (int)points.size() < order)
     { print_error("Spline order too high for number of given control points.");}
-    if( (points.size()+order) != knots.size())
+    if( ((int)points.size()+order) != (int)knots.size())
     { print_error("Mismatch between knot vector size and sum of order with control point size.");}
 
-    for( int i=0; i<knots.size(); i++)
+    for( int i=0; i<(int)knots.size(); i++)
     {
       double tmp1 = knots[i];
-      if( i<(knots.size() -1) )
+      if( i<((int)knots.size() -1) )
       { 
         double tmp2 = knots[i+1];
         if (tmp2 < tmp1)
@@ -71,7 +71,7 @@ namespace GMD
       }
       if( i<order && tmp1 != 0.0)
       { print_error("First order_number of knots must be zero.");}
-      if( i>(knots.size()-order) && tmp1 != 1.0)
+      if( i>((int)knots.size()-order) && tmp1 != 1.0)
       { print_error("Last order_number of knots must be one.");}
 
       if( tmp1 > 1.0 || tmp1 < 0.0)
@@ -80,7 +80,7 @@ namespace GMD
       }
     }
 
-    if(weights.size() != 1 && weights.size() != points.size())
+    if( (int) weights.size() != 1 && (int) weights.size() != (int) points.size())
     { print_error("Mismatch between weight vector size and number of points.");}
     return;
   }
@@ -193,17 +193,17 @@ namespace GMD
     if( v_order<= 1 )
     { print_error("v_order too low.");}
 
-    if( points.size() != (u_num*v_num))
+    if( (int)points.size() != (u_num*v_num))
     { print_error("Mismatched number of declared and given control points.");} 
 
-    if(weights.size() != 1 && weights.size() != (u_num*v_num))
+    if( (int)weights.size() != 1 &&  (int)weights.size() != (u_num*v_num))
     { print_error("Mismatched number of weights and declared control points.");}
-    if(weights.size() == 1 && weights[0] != 0.0)
+    if( (int)weights.size() == 1 && weights[0] != 0.0)
     { print_error("Bad weights vector.");}
 
-    if( u_knots.size() != (u_num+u_order))
+    if(  (int)u_knots.size() != (u_num+u_order))
     { print_error("Mismatch between number of u_knots and u_order+u_num.");}
-    if( v_knots.size() != (v_num+v_order))
+    if(  (int)v_knots.size() != (v_num+v_order))
     { print_error("Mismatch between number of v_knots and v_order+v_num.");}
 
     return;

@@ -1,7 +1,7 @@
 #ifndef GEOMOD_TESTS_HPP
 #define GEOMOD_TESTS_HPP
 
-#include <GeoMod.hpp>
+#include "GeoMod.hpp"
 
 
 void test0();

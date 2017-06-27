@@ -3,9 +3,9 @@
 
 #include <string>
 #include <vector>
-#include <GeoMod_SIM.hpp>
-#include <GeoMod_printer.hpp>
-#include <GeoMod_coords.hpp>
+#include "GeoMod_SIM.hpp"
+#include "GeoMod_printer.hpp"
+#include "GeoMod_coords.hpp"
 
 pGVertex GIP_insertVertexInFace(pGIPart part, double* xyz, pGFace face);
 
