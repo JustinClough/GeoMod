@@ -25,7 +25,57 @@ abstract text goes here.
 Introduction text goes here.
 
 \section{Code Design} \label{sec:design}
-Introduction text goes here.
+The user interacts with the code by constructing a \emph{gmd}
+object based on an existing in-memory Simmetrix geometric model that they 
+wish to modify. The header and source files for the gmd class 
+are shown in Appendices \ref{subsec:gmd_hpp} and \ref{subsec:gmd_cpp}, respectively.
+The user can then modify the model by 
+creating model vertices, edges, and faces by calling
+gmd member functions. Mesh case information for these 
+modifications is also specified by the user at this time. 
+The gmd class is primarily a wrapper around two other classes. It also
+has member functions that check the validity of user input for creating 
+edges and faces. The two classes that it wraps inturn wrap around Simmetrix APIs.
+
+The first class is the \emph{model\_helper} class 
+which handles all model interactions. This includes making modifications to
+the model, checking its validity, and writing it to disk. The header and source file the 
+model\_helper class are shown in Appendidices \ref{subsec:model_hpp} and 
+\ref{subsec:model_cpp}, respectively. The APIs used are from Simmetrix's 
+GeoSim Core and Advanced libraries \cite{Simmetrix}. 
+
+The second class wrapped within the gmd class is the
+\emph{mesh\_helper} class which handles all mesh interactions. This includes
+defining global and local mesh parameters, checking for validity, and writing the
+mesh. The header and source file for the mesh\_helper class are shown in 
+Appendices \ref{subsec:mesh_hpp} and \ref{subsec:mesh_cpp}, respectively.
+
+Model entities are always created on the lowest possible 
+dimension. This ensures correct classification when model
+or mesh entities are later interrogated. For example, say the
+user wants to create a vertex whose coordinates lie upon an edge
+which bounds a face of a region. The vertex will be created and 
+classified as a entity on the edge as opposed to only the face or region. 
+This is demonstrated in subsection \ref{subsec:vertexTest}.
+
+Mesh case information, such as local refinement level, are
+specified at during model modification by the user; the finer
+spcification is always used. For example, if the user 
+creates an edge with a relative local refinement of 0.1
+and creates a vertex on that edge with a refinement of 0.5, 
+then only a refinement level of 0.1 will be used throughout 
+the whole edge. Alternatively, if a refinement level of 0.5 
+is specified for the edge and 0.1 specifed for a vertex on that
+edge, then a refinement level of 0.5 will be used throughout the 
+edge except for space near the vertex. The rate at which the 
+refinement level decreases from 0.5 to 0.1 for this case is controlled
+by the gradation rate. A rate of 2/3 is used by default 
+but can be changed by the user. 
+
+Details regarding model vertex, edge, and face placement are 
+discussed is subsections \ref{subsec:vertex}, \ref{subsec:edge}, 
+and \ref{subsec:face}, respectively. Testing and results of testing
+are presented in section \ref{sec:testing}.
 
 \subsection{Vertex Placement} \label{subsec:vertex}
 Vertex placement text.
@@ -57,8 +107,14 @@ Future work text.
 \newpage
 \begin{thebibliography}{99}
 
+\bibitem{Simmetrix}
+Simmetrix Inc., 
+"The simulation modeling suite."
+\textit{[Online]. Available: http://www.simmetrix.com/.}
+
+
 % The bibitem below is just an example!!!
-\bibitem{reference name} 
+\bibitem{referenceName} 
 Authors' Names. 
 Publication Title.
 Publisher Name, Publisher Location, Publication Year.
