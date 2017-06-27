@@ -28,8 +28,8 @@ Introduction text goes here.
 The user interacts with the code by constructing a \emph{gmd}
 object based on an existing in-memory Simmetrix geometric model that they 
 wish to modify. The header and source files for the gmd class 
-are shown in Appendices \ref{subsec:gmd_hpp} and \ref{subsec:gmd_cpp}, respectively.
-The user can then modify the model by 
+are shown in Appendices \ref{subsec:gmd_hpp} and \ref{subsec:gmd_cpp}, 
+respectively.  The user can then modify the model by 
 creating model vertices, edges, and faces by calling
 gmd member functions. Mesh case information for these 
 modifications is also specified by the user at this time. 
@@ -39,7 +39,8 @@ edges and faces. The two classes that it wraps inturn wrap around Simmetrix APIs
 
 The first class is the \emph{model\_helper} class 
 which handles all model interactions. This includes making modifications to
-the model, checking its validity, and writing it to disk. The header and source file the 
+the model, checking its validity, and writing it to disk. Its member variables
+include a pointer to the Simmetrix model. The header and source file the 
 model\_helper class are shown in Appendidices \ref{subsec:model_hpp} and 
 \ref{subsec:model_cpp}, respectively. The APIs used are from Simmetrix's 
 GeoSim Core and Advanced libraries \cite{Simmetrix}. 
@@ -47,16 +48,20 @@ GeoSim Core and Advanced libraries \cite{Simmetrix}.
 The second class wrapped within the gmd class is the
 \emph{mesh\_helper} class which handles all mesh interactions. This includes
 defining global and local mesh parameters, checking for validity, and writing the
-mesh. The header and source file for the mesh\_helper class are shown in 
+mesh. Its member include a pointer to a Simmmetrix mesh object and mesh case object. 
+The header and source file for the mesh\_helper class are shown in 
 Appendices \ref{subsec:mesh_hpp} and \ref{subsec:mesh_cpp}, respectively.
+The APIs used are from Simmetrix's MeshSim Core and Advanced libraries 
+\cite{Simmetrix}
 
-Model entities are always created on the lowest possible 
-dimension. This ensures correct classification when model
+Model entities are always created on the geometric entity with the
+lowest possible dimension when applicable. This ensures correct classification when model
 or mesh entities are later interrogated. For example, say the
 user wants to create a vertex whose coordinates lie upon an edge
 which bounds a face of a region. The vertex will be created and 
 classified as a entity on the edge as opposed to only the face or region. 
-This is demonstrated in subsection \ref{subsec:vertexTest}.
+This is detailed in subsection \ref{subsec:vertex} and  demonstrated 
+in subsection \ref{subsec:vertexTest}.
 
 Mesh case information, such as local refinement level, are
 specified at during model modification by the user; the finer
@@ -73,12 +78,27 @@ by the gradation rate. A rate of 2/3 is used by default
 but can be changed by the user. 
 
 Details regarding model vertex, edge, and face placement are 
-discussed is subsections \ref{subsec:vertex}, \ref{subsec:edge}, 
-and \ref{subsec:face}, respectively. Testing and results of testing
+discussed in subsections \ref{subsec:vertex}, \ref{subsec:edge}, 
+and \ref{subsec:face}, respectively. Testing and results of tests
 are presented in section \ref{sec:testing}.
 
 \subsection{Vertex Placement} \label{subsec:vertex}
-Vertex placement text.
+The gmd member function \emph{place\_point()} is used to create model
+vertices as well as define the local mesh refinement level for the created vertex.
+The user specifies the coordinates of the vertex they want to create, the 
+relative mesh refinement level, the radius of refinement, and a Simmetrix
+model vertex pointer that is overwritten to point to the created vertex. 
+The Simmetrix APIs \emph{GE\_closestPoint()}, \emph{GF\_closestPoint()}, 
+and \emph{GR\_containsPoint()} are used to determine whether a 3D coordinate 
+is in a model edge, face, or region, respectively. \emph{GR\_containsPoint()}
+returns an integer denoting if the point is inside or outside of the model region. 
+The functions \emph{GE\_closestPoint()} and \emph{GF\_closestPoint()} both return 
+pointers to the real and parametric coordinates closest to a given test coordinate. 
+The real coordinates of the closest point are then compared to the test point.
+If the magnitude of the distance between the two points is less then the 
+tolerance of the model, then a model vertex is created. 
+The value returned from the API \emph{GM\_tolerance()} is used as the 
+tolerance for all geometric comparisons.
 
 \subsection{Edge Placement} \label{subsec:edge}
 Edge placement text.
