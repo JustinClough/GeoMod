@@ -40,7 +40,7 @@ edges and faces. The two classes that it wraps in turn wrap around Simmetrix API
 The first class is the \emph{model\_helper} class 
 which handles all model interactions. This includes making modifications to
 the model, checking its validity, and writing it to disk. Its member variables
-include a pointer to the Simmetrix model. The header and source file the 
+include a pointer to the Simmetrix model. The header and source file of the 
 model\_helper class are shown in Appendices \ref{subsec:model_hpp} and 
 \ref{subsec:model_cpp}, respectively. The APIs used are from Simmetrix's 
 GeoSim Core and Advanced libraries \cite{Simmetrix}. 
@@ -48,7 +48,7 @@ GeoSim Core and Advanced libraries \cite{Simmetrix}.
 The second class wrapped within the gmd class is the
 \emph{mesh\_helper} class which handles all mesh interactions. This includes
 defining global and local mesh parameters, checking for validity, and writing the
-mesh. Its member include a pointer to a Simmetrix mesh object and mesh case object. 
+mesh. Its member variables include a pointer to a Simmetrix mesh object and mesh case object. 
 The header and source file for the mesh\_helper class are shown in 
 Appendices \ref{subsec:mesh_hpp} and \ref{subsec:mesh_cpp}, respectively.
 The APIs used are from Simmetrix's MeshSim Core and Advanced libraries 
@@ -64,7 +64,7 @@ This is detailed in subsection \ref{subsec:vertex} and  demonstrated
 in subsection \ref{subsec:vertexTest}.
 
 Mesh case information, such as local refinement level, are
-specified at during model modification by the user; the finer
+specified during model modification by the user; the finer
 specification is always used. For example, if the user 
 creates an edge with a relative local refinement of 0.1
 and creates a vertex on that edge with a refinement of 0.5, 
@@ -99,11 +99,17 @@ The real coordinates of the closest point are then compared to the test point.
 If the magnitude of the distance between the two points is less then the 
 tolerance of the model, then a model vertex is created. 
 The value returned from the API \emph{GM\_tolerance()} is used as the 
-tolerance for all geometric comparisons. If the user specifies coordinates
+tolerance for all geometric comparisons. 
+
+If the user specifies coordinates
 which are outside any model region, the vertex is created but either a 
 warning or error message is printed. By default, an error message is printed
-but this can be changed by the user. Examples of vertex placement
-are shown in subsection \ref{subsec:vertexTest}.
+but this can be changed by the user. If the user specifies coordinates 
+which are found to lie on a preexisting edge, then the point is created
+by splitting the edge into two. In this case, the model vertex pointer
+returned to the user is for the vertex at the split.
+Examples of vertex placement are shown in 
+subsection \ref{subsec:vertexTest}.
 
 \subsection{Edge Placement} \label{subsec:edge}
 The gmd member function \emph{place\_edge()} is used to create model edges and 
@@ -147,7 +153,7 @@ are shown in subsection \ref{subsec:edgeTest}.
 
 \subsection{Face Placement} \label{subsec:face}
 The gmd member function \emph{place\_face()} is used to create model 
-faces and define the local mesh refinement for the create face. The
+faces and define the local mesh refinement for the created face. The
 underlying API is the \emph{SSurface\_createBSpline()} function which creates 
 rational and non-rational basis surfaces based on a local $u$ and $v$ 
 coordinate system.  The user specifies the following to create a surface:
@@ -156,7 +162,7 @@ coordinate system.  The user specifies the following to create a surface:
   \item The number of control points in the $u$ and $v$ directions.
   \item The periodicity of the surface. In essence, whether the 
       surface is periodic in either, neither, or both the $u$ and $v$ directions.
-  \item The coordinates of the control points. This is specified as shown in table
+  \item The coordinates of the control points. This is specified as shown in
       Table \ref{table:cpNum}.
   \item The weights for each control point. The order of the weights must
       also follow the pattern shown in Table \ref{table:cpNum}.
@@ -205,8 +211,30 @@ following conditions:
       knots must equal zero and the last three knots must equal one.
 \end{enumerate}
 
+If the user's input does not meet all of the above conditions, then
+an error message is printed and the program aborts. Otherwise, 
+the program next creates a surface using the \emph{SSurface\_createBSpline()} 
+API. The bounding edges of the face are created next. 
+Each edge is created using the method described in 
+subsection \ref{subsec:edge}. Next, the edges and surfaces are used to 
+create a model face using the \emph{GIP\_insertFaceInRegion()} function. 
+The normal direction of the face is taken as the crossproduct of 
+the $u$ and $v$ directions (i.e., $n=u\times v$) for any given position. 
+
 \section{Testing} \label{sec:testing}
-Introduction text goes here.
+Each of the features described in section \ref{sec:design} were
+tested. In total, 13 tests were created; the header and
+source files for these tests are shown in 
+Appendix \ref{subsec:Tests_hpp} and \ref{subsec:Tests_cpp}. The first three
+tests (tests 0, 1, and 2) check for basic functionality such as proper linking 
+between classes and functions as well as creation and deletion of classes 
+without memory leaks. The next three tests (tests 3, 4, and 5) 
+exercise vertex placement. They and their results are discussed in detail
+in subsection \ref{subsec:vertexTest}. The next four tests (tests 6, 7, 8, and 9)
+exercise edge placement in different cases. These tests and their results 
+are shown in \ref{subsec:edgeTest}. The last three tests (tests 10, 11, and 12)
+check face placement functionality. They and their results are described in 
+subsection \ref{subsec:faceTest}.
 
 \subsection{Vertex Placement} \label{subsec:vertexTest}
 Test Vertex placement text.
