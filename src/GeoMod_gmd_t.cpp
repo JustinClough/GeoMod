@@ -201,10 +201,51 @@ namespace GMD
     if( (int)weights.size() == 1 && weights[0] != 0.0)
     { print_error("Bad weights vector.");}
 
-    if(  (int)u_knots.size() != (u_num+u_order))
+    if( (int)u_knots.size() != (u_num+u_order))
     { print_error("Mismatch between number of u_knots and u_order+u_num.");}
-    if(  (int)v_knots.size() != (v_num+v_order))
+
+    for( int i=0; i<(int)u_knots.size(); i++)
+    {
+      double tmp1 = u_knots[i];
+      if( i<((int)u_knots.size() -1) )
+      { 
+        double tmp2 = u_knots[i+1];
+        if (tmp2 < tmp1)
+        { print_error("Knots must be in accending u_order");}
+      }
+      if( i<u_order && tmp1 != 0.0)
+      { print_error("First u_order_number of u_knots must be zero.");}
+      if( i>((int)u_knots.size()-u_order) && tmp1 != 1.0)
+      { print_error("Last u_order_number of u_knots must be one.");}
+
+      if( tmp1 > 1.0 || tmp1 < 0.0)
+      { 
+        print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
+      }
+    }
+
+    if( (int)v_knots.size() != (v_num+v_order))
     { print_error("Mismatch between number of v_knots and v_order+v_num.");}
+
+    for( int i=0; i<(int)v_knots.size(); i++)
+    {
+      double tmp1 = v_knots[i];
+      if( i<((int)v_knots.size() -1) )
+      { 
+        double tmp2 = v_knots[i+1];
+        if (tmp2 < tmp1)
+        { print_error("Knots must be in accending v_order");}
+      }
+      if( i<v_order && tmp1 != 0.0)
+      { print_error("First v_order_number of v_knots must be zero.");}
+      if( i>((int)v_knots.size()-v_order) && tmp1 != 1.0)
+      { print_error("Last v_order_number of v_knots must be one.");}
+
+      if( tmp1 > 1.0 || tmp1 < 0.0)
+      { 
+        print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
+      }
+    }
 
     return;
   }
