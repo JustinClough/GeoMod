@@ -4,6 +4,7 @@
         GeoMod}
 \usepackage[margin=1.0in]{geometry}
 \usepackage{float}
+\usepackage{subfigure}
 \usepackage{enumerate}
 \usepackage{listings}
 \lstset{
@@ -237,10 +238,105 @@ check face placement functionality. They and their results are described in
 subsection \ref{subsec:faceTest}.
 
 \subsection{Vertex Placement} \label{subsec:vertexTest}
-Test Vertex placement text.
+Vertex placement was tested in three cases. For each test case, both
+the modified model and mesh were created and written to disk. Both 
+the model and mesh were then viewed in the Simmodeler GUI to visually confirm
+that the expected behavior was achieved. Classification was also confirmed
+through use of Simmetrix APIs and through the GUI part tree. 
+
+The first case placed a vertex in the center of a three dimensional
+model region. The global mesh refinement level was set to 0.9 and the 
+refinement level for the inserted vertex was 0.1.
+The resulting model is shown in Figure \ref{fig:vert1model}.
+The resulting mesh is shown in Figure \ref{fig:vert1mesh}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test3_smd}
+  \caption{Cube with vertex placed at center. Front face hidden to 
+        to show interior.}
+  \label{fig:vert1model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Exterior view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test3_sms}}
+  \subfigure[Clipped view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test3_sms_clipped}}
+  \caption{Mesh of cube with vertex placed at center.}
+  \label{fig:vert1mesh}
+\end{figure}
+
+The second case placed a vertex in the center of a face of a three dimensional 
+model. The global mesh refinement level was set to 0.9 and the refinement
+level of the vertex was set to 0.1. 
+The resulting model is shown in Figure \ref{fig:vert2model}.
+The resulting mesh is shown in Figure \ref{fig:vert2mesh}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test4_smd}
+  \caption{Cube with vertex placed at center of front face.}
+  \label{fig:vert2model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test4_sms}
+  \caption{Mesh of cube with vertex on center of front face.}
+  \label{fig:vert2mesh}
+\end{figure}
+
+The third case placed a vertex on a preexisting model edge. The global
+mesh refinement level was 0.9 and the local refinement level for the
+vertex was 0.1.
+The resulting model is shown in Figure \ref{fig:vert3model}.
+The resulting mesh is shown in Figure \ref{fig:vert3mesh}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test5_smd}
+  \caption{Cube with vertex placed at center of edge.}
+  \label{fig:vert3model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test5_sms}
+  \caption{Mesh of cube with vertex on center of edge.}
+  \label{fig:vert3mesh}
+\end{figure}
 
 \subsection{Edge Placement} \label{subsec:edgeTest}
-Test Edge placement text.
+Edge placement was tested in four cases. Similar to the vertex tests 
+presented in subsection \ref{subsec:vertexTest}, models and meshes
+were created and written to disk; expected behavior and classification
+was confirmed through both the Simmetrix APIs and the GUI.
+
+The first test placed a fully interior edge inside a model region. 
+The edge was created as a rational basis spline with five control points; 
+each control point was inside the model region.
+The global mesh refinement was set to 0.9 and the local set to 0.1. 
+A wire frame view of the created model is shown in Figure \ref{fig:edge1model}.
+A clipped view of the mesh is shown in Figure \ref{fig:edge1mesh}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test6_smd}
+  \caption{Cube with edge placed near center of region.}
+  \label{fig:edge1model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test6_sms}
+  \caption{Clipped view of mesh for cube with edge near center of region. 
+          The edge is highlight in yellow.}
+  \label{fig:edge1mesh}
+\end{figure}
+
+
 
 \subsection{Face Placement} \label{subsec:faceTest}
 Test Face placement text.
@@ -258,13 +354,6 @@ Future work text.
 Simmetrix Inc., 
 "The simulation modeling suite."
 \textit{[Online]. Available: http://www.simmetrix.com/.}
-
-
-% The bibitem below is just an example!!!
-\bibitem{referenceName} 
-Authors' Names. 
-Publication Title.
-Publisher Name, Publisher Location, Publication Year.
 
 \end{thebibliography}
 
