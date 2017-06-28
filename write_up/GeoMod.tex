@@ -180,6 +180,30 @@ coordinate system.  The user specifies the following to create a surface:
   \label{table:cpNum}
 \end{table}
 
+The \emph{place\_edge()} function first checks the user defined inputs
+for validity. The checks ensure that the user's input meets the 
+following conditions:
+\begin{enumerate}
+  \item The order in both the $u$ and $v$ is not less than one or greater than
+      the number of control points in the $u$ and $v$ directions respectively. 
+  \item The total number of control points equals to the product of 
+      declared control points in the $u$ and $v$ directions.
+  \item The weights meet one of the two conditions:
+  \begin{enumerate}
+    \item The number of weights control points equals to the product of 
+        declared control points in the $u$ and $v$ directions.
+    \item The number of weights in one and that one weight equals to zero. 
+        This condition dictates that a non-rational surface be created 
+        instead of a rational one.
+  \end{enumerate}
+  \item The number of knots is equal to the sum of the number of control points
+      and order in both the $u$ and $v$ directions.A
+  \item The knots are specified in a monotonically increasing order. 
+  \item The first order number of knots are equal to zero and the last order number 
+      of knots are equal to one for each direction. 
+      E.g., if order is three, then the first three
+      knots must equal zero and the last three knots must equal one.
+\end{enumerate}
 
 \section{Testing} \label{sec:testing}
 Introduction text goes here.
