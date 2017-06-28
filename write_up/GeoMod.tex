@@ -32,27 +32,27 @@ are shown in Appendices \ref{subsec:gmd_hpp} and \ref{subsec:gmd_cpp},
 respectively.  The user can then modify the model by 
 creating model vertices, edges, and faces by calling
 gmd member functions. Mesh case information for these 
-modifications is also specified by the user at this time. 
+modifications is also specified by the user at this time.
 The gmd class is primarily a wrapper around two other classes. It also
 has member functions that check the validity of user input for creating 
-edges and faces. The two classes that it wraps inturn wrap around Simmetrix APIs.
+edges and faces. The two classes that it wraps in turn wrap around Simmetrix APIs.
 
 The first class is the \emph{model\_helper} class 
 which handles all model interactions. This includes making modifications to
 the model, checking its validity, and writing it to disk. Its member variables
 include a pointer to the Simmetrix model. The header and source file the 
-model\_helper class are shown in Appendidices \ref{subsec:model_hpp} and 
+model\_helper class are shown in Appendices \ref{subsec:model_hpp} and 
 \ref{subsec:model_cpp}, respectively. The APIs used are from Simmetrix's 
 GeoSim Core and Advanced libraries \cite{Simmetrix}. 
 
 The second class wrapped within the gmd class is the
 \emph{mesh\_helper} class which handles all mesh interactions. This includes
 defining global and local mesh parameters, checking for validity, and writing the
-mesh. Its member include a pointer to a Simmmetrix mesh object and mesh case object. 
+mesh. Its member include a pointer to a Simmetrix mesh object and mesh case object. 
 The header and source file for the mesh\_helper class are shown in 
 Appendices \ref{subsec:mesh_hpp} and \ref{subsec:mesh_cpp}, respectively.
 The APIs used are from Simmetrix's MeshSim Core and Advanced libraries 
-\cite{Simmetrix}
+\cite{Simmetrix}.
 
 Model entities are always created on the geometric entity with the
 lowest possible dimension when applicable. This ensures correct classification when model
@@ -65,12 +65,12 @@ in subsection \ref{subsec:vertexTest}.
 
 Mesh case information, such as local refinement level, are
 specified at during model modification by the user; the finer
-spcification is always used. For example, if the user 
+specification is always used. For example, if the user 
 creates an edge with a relative local refinement of 0.1
 and creates a vertex on that edge with a refinement of 0.5, 
 then only a refinement level of 0.1 will be used throughout 
 the whole edge. Alternatively, if a refinement level of 0.5 
-is specified for the edge and 0.1 specifed for a vertex on that
+is specified for the edge and 0.1 specified for a vertex on that
 edge, then a refinement level of 0.5 will be used throughout the 
 edge except for space near the vertex. The rate at which the 
 refinement level decreases from 0.5 to 0.1 for this case is controlled
@@ -88,9 +88,10 @@ vertices as well as define the local mesh refinement level for the created verte
 The user specifies the coordinates of the vertex they want to create, the 
 relative mesh refinement level, the radius of refinement, and a Simmetrix
 model vertex pointer that is overwritten to point to the created vertex. 
+
 The Simmetrix APIs \emph{GE\_closestPoint()}, \emph{GF\_closestPoint()}, 
 and \emph{GR\_containsPoint()} are used to determine whether a 3D coordinate 
-is in a model edge, face, or region, respectively. \emph{GR\_containsPoint()}
+is in a model edge, face, or region, respectively. The function \emph{GR\_containsPoint()}
 returns an integer denoting if the point is inside or outside of the model region. 
 The functions \emph{GE\_closestPoint()} and \emph{GF\_closestPoint()} both return 
 pointers to the real and parametric coordinates closest to a given test coordinate. 
@@ -98,10 +99,39 @@ The real coordinates of the closest point are then compared to the test point.
 If the magnitude of the distance between the two points is less then the 
 tolerance of the model, then a model vertex is created. 
 The value returned from the API \emph{GM\_tolerance()} is used as the 
-tolerance for all geometric comparisons.
+tolerance for all geometric comparisons. If the user specifies coordinates
+which are outside any model region, the vertex is created but either a 
+warning or error message is printed. By default, an error message is printed
+but this can be changed by the user. 
 
 \subsection{Edge Placement} \label{subsec:edge}
-Edge placement text.
+The gmd member function \emph{place\_edge()} is used to create model edges and 
+define the local mesh refinement for the created edge. The underlying API used
+is the \emph{SCurve\_createBSpline()} which creates rational or non-rational
+basis splines. The user specifies the order of the curve, control points, knots,
+weights, mesh refinement level, and a Simmetrix model edge pointer which is 
+overwritten with the created edge. 
+
+The \emph{place\_edge()} function first checks the validity of the user's input.
+The checks ensure that the user defined input meets the following conditions:
+\begin{enumerate}
+  \item The order is not less than one or greater than the number of control points.
+  \item The sum of the number of control points and order is equal to 
+      the number of knots.
+  \item The first order number of knots are equal to zero and the last order number 
+      of knots are equal to one.
+  \item The knots are specified in a monotonically increasing order. 
+  \item The number of weights satisfies one of two conditions:
+    \begin{enumerate}
+      \item The number of weights is equal to the number of control points.
+      \item The number of weights is one and the weight is equal to zero. 
+          This condition dictates the construction of a non-rational curve
+          instead of a rational one.
+    \end{enumerate}
+\end{enumerate}
+
+If the user defined inputs do not meet the above conditions, then an error 
+message is printed and the program aborts.
 
 \subsection{Face Placement} \label{subsec:face}
 Face placement text.
