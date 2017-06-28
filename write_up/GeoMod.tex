@@ -539,7 +539,28 @@ able to change the local mesh refinement level to a user's specification.
 Conclusions text. 
 
 \subsection{Future Work} \label{subsec:future}
-Future work text.
+A possible improvement to the created code is to allow for parallel 
+model modification or model discretization. Currently, only one
+data structure that represents the model exists at any given time. 
+This then leads to one data structure that represents the mesh. 
+A parallel representation could use one common base model 
+with different modification happening on different processors. 
+Another possibility is to have a parallel mesh generated 
+instead of a serial one.
+
+The code currently can only handle native and non-manifold models, 
+not assembly models. Additional work could be done to allow
+for modification of theses types of models. This would mostly
+include changes to region and part based functions. These changes 
+include accounting for multiple parts and regions along with 
+their interactions.
+
+Work can be done that would allow for geometric entity deletion
+that preserves topological validity. For example, a user can 
+currently delete any edge. This will yield a topologically 
+invalid model if the edge was one of the bounding edge of a 
+model face. This addition of features could also
+include methods to trim or extend model entities as well. 
 
 \newpage
 \begin{thebibliography}{99}
