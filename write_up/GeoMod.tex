@@ -108,7 +108,7 @@ are shown in subsection \ref{subsec:vertexTest}.
 \subsection{Edge Placement} \label{subsec:edge}
 The gmd member function \emph{place\_edge()} is used to create model edges and 
 define the local mesh refinement for the created edge. The underlying API used
-is the \emph{SCurve\_createBSpline()} which creates rational and non-rational
+is the \emph{SCurve\_createBSpline()} function which creates rational and non-rational
 basis splines. The user specifies the order of the curve, control points, knots,
 weights, mesh refinement level, and a Simmetrix model edge pointer which is 
 overwritten with the created edge. 
@@ -146,7 +146,40 @@ edge is inserted onto the corresponding face using the
 are shown in subsection \ref{subsec:edgeTest}.
 
 \subsection{Face Placement} \label{subsec:face}
-Face placement text.
+The gmd member function \emph{place\_face()} is used to create model 
+faces and define the local mesh refinement for the create face. The
+underlying API is the \emph{SSurface\_createBSpline()} function which creates 
+rational and non-rational basis surfaces based on a local $u$ and $v$ 
+coordinate system.  The user specifies the following to create a surface:
+\begin{enumerate}
+  \item The order in both the $u$ and $v$ directions.
+  \item The number of control points in the $u$ and $v$ directions.
+  \item The periodicity of the surface. In essence, whether the 
+      surface is periodic in either, neither, or both the $u$ and $v$ directions.
+  \item The coordinates of the control points. This is specified as shown in table
+      Table \ref{table:cpNum}.
+  \item The weights for each control point. The order of the weights must
+      also follow the pattern shown in Table \ref{table:cpNum}.
+  \item The local mesh refinement on the face. 
+  \item The geometric face pointer to be overwritten with the newly created face.
+\end{enumerate}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{ c c c c}
+    0        & $N$     & \dots  & $N(M-1)$   \\
+    1        & $N+1$   & \dots  & $N(M-1)+1$ \\
+    2        & $N+2$   & \dots  & $N(M-1)+2$ \\
+    \vdots   & \vdots  & \dots  & \vdots     \\
+    $N-1$    & $2N-1$  & \dots  & $MN-1$     \\
+
+  \end{tabular}
+  \caption{Ordering for control points and weights for surface creation. $N$ is 
+    the number of control points in the $u$ direction. $M$ is the number of
+    control points in the $v$ direction.}
+  \label{table:cpNum}
+\end{table}
+
 
 \section{Testing} \label{sec:testing}
 Introduction text goes here.
