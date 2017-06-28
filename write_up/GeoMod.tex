@@ -102,12 +102,13 @@ The value returned from the API \emph{GM\_tolerance()} is used as the
 tolerance for all geometric comparisons. If the user specifies coordinates
 which are outside any model region, the vertex is created but either a 
 warning or error message is printed. By default, an error message is printed
-but this can be changed by the user. 
+but this can be changed by the user. Examples of vertex placement
+are shown in subsection \ref{subsec:vertexTest}.
 
 \subsection{Edge Placement} \label{subsec:edge}
 The gmd member function \emph{place\_edge()} is used to create model edges and 
 define the local mesh refinement for the created edge. The underlying API used
-is the \emph{SCurve\_createBSpline()} which creates rational or non-rational
+is the \emph{SCurve\_createBSpline()} which creates rational and non-rational
 basis splines. The user specifies the order of the curve, control points, knots,
 weights, mesh refinement level, and a Simmetrix model edge pointer which is 
 overwritten with the created edge. 
@@ -119,7 +120,8 @@ The checks ensure that the user defined input meets the following conditions:
   \item The sum of the number of control points and order is equal to 
       the number of knots.
   \item The first order number of knots are equal to zero and the last order number 
-      of knots are equal to one.
+      of knots are equal to one. E.g., if order is two, then the first two 
+      knots must equal zero and the last two knots must equal one.
   \item The knots are specified in a monotonically increasing order. 
   \item The number of weights satisfies one of two conditions:
     \begin{enumerate}
@@ -132,6 +134,16 @@ The checks ensure that the user defined input meets the following conditions:
 
 If the user defined inputs do not meet the above conditions, then an error 
 message is printed and the program aborts.
+
+First, the end points of edge are created as vertices using the 
+method described in subsection \ref{subsec:edge}. Next, a curve
+is created using the \emph{SCurve\_createBSpline()} API. This 
+curve is then used to create a geometric edge using the 
+\emph{GIP\_insertEdgeInRegion()} API. If all of the 
+control points are coincident with a preexisting face, then the
+edge is inserted onto the corresponding face using the 
+\emph{GM\_insertEdgeOnFace()} API. Examples of edge placement
+are shown in subsection \ref{subsec:edgeTest}.
 
 \subsection{Face Placement} \label{subsec:face}
 Face placement text.
