@@ -49,8 +49,8 @@ GeoSim Core and Advanced libraries \cite{Simmetrix}.
 
 The second class wrapped within the gmd class is the
 \emph{mesh\_helper} class which handles all mesh interactions. This includes
-defining global and local mesh parameters, checking for validity, and writing the
-mesh. Its member variables include a pointer to a Simmetrix mesh object and mesh case object. 
+defining global and local mesh parameters, checking for validity, and writing the mesh. 
+Its member variables include a pointer to a Simmetrix mesh object and mesh case object. 
 The header and source file for the mesh\_helper class are shown in 
 Appendices \ref{subsec:mesh_hpp} and \ref{subsec:mesh_cpp}, respectively.
 The APIs used are from Simmetrix's MeshSim Core and Advanced libraries 
@@ -188,7 +188,7 @@ coordinate system.  The user specifies the following to create a surface:
   \label{table:cpNum}
 \end{table}
 
-The \emph{place\_edge()} function first checks the user defined inputs
+The \emph{place\_face()} function first checks the user defined inputs
 for validity. The checks ensure that the user's input meets the 
 following conditions:
 \begin{enumerate}
@@ -311,6 +311,11 @@ The resulting mesh is shown in Figure \ref{fig:vert3mesh}.
   \label{fig:vert3mesh}
 \end{figure}
 
+As shown in Figures \ref{fig:vert1model} through \ref{fig:vert3mesh}, 
+the gmd method \emph{place\_point()} is able to correctly determine 
+the model classification given a user defined location. It is also 
+able to change the local mesh refinement level to a user's specification. 
+
 \subsection{Edge Placement} \label{subsec:edgeTest}
 Edge placement was tested in four cases. Similar to the vertex tests 
 presented in subsection \ref{subsec:vertexTest}, models and meshes
@@ -417,6 +422,11 @@ A external and clipped view of the mesh are shown in Figure \ref{fig:edge4mesh}.
   \label{fig:edge4mesh}
 \end{figure}
 
+As shown in Figures \ref{fig:edge1model} through \ref{fig:edge4mesh}, 
+the gmd method \emph{place\_edge()} is able to correctly determine 
+the model classification given user defined spline parameters. It is also 
+able to change the local mesh refinement level to a user's specification. 
+
 \subsection{Face Placement} \label{subsec:faceTest}
 Face placement was tested similarly to both the vertex and edge
 tests described in subsections \ref{subsec:vertexTest} and \ref{subsec:edgeTest}.
@@ -519,7 +529,10 @@ An external view of the mesh is shown in Appendix \ref{subsec:test12Img}.
   \label{fig:face3mesh}
 \end{figure}
 
-
+As shown in Figures \ref{fig:face1model} through \ref{fig:face3mesh}, 
+the gmd method \emph{place\_face()} is able to correctly determine 
+the model classification given user defined surface parameters. It is also 
+able to change the local mesh refinement level to a user's specification. 
 
 \section{Conclusion} \label{sec:conclusion}
 Conclusions text. 
@@ -612,6 +625,5 @@ Simmetrix Inc.,
   \centering
   \includegraphics[width=8cm, height=8cm]{test12_sms}
 \end{figure}
-
 
 \end{document}
