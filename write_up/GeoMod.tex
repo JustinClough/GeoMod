@@ -230,7 +230,9 @@ source files for these tests are shown in
 Appendix \ref{subsec:Tests_hpp} and \ref{subsec:Tests_cpp}. The first three
 tests (tests 0, 1, and 2) check for basic functionality such as proper linking 
 between classes and functions as well as creation and deletion of classes 
-without memory leaks. The next three tests (tests 3, 4, and 5) 
+without memory leaks. Theses tests are described in Appendix \ref{subsec:Tests_cpp}
+and their results are shown in Appendix \ref{subsec:test1Img} 
+and \ref{subsec:test2Img}. The next three tests (tests 3, 4, and 5) 
 exercise vertex placement. They and their results are discussed in detail
 in subsection \ref{subsec:vertexTest}. The next four tests (tests 6, 7, 8, and 9)
 exercise edge placement in different cases. These tests and their results 
@@ -416,7 +418,108 @@ A external and clipped view of the mesh are shown in Figure \ref{fig:edge4mesh}.
 \end{figure}
 
 \subsection{Face Placement} \label{subsec:faceTest}
-Test Face placement text.
+Face placement was tested similarly to both the vertex and edge
+tests described in subsections \ref{subsec:vertexTest} and \ref{subsec:edgeTest}.
+In total, three tests were performed. For each test, the created 
+models and meshes were written to disk and viewed in the Simmetrix GUI.
+Classifications of model entities were confirmed through both the GUI and 
+APIs where applicable.
+
+The first face placement test created a model face that was completely interior
+to a model region.
+The face, and its bounding edges,  were created as 
+as a rational basis surface and splines. In total, 12 control points were 
+defined; each control point was inside the model region and created a $4\times3$
+grid. The global mesh refinement was set to 0.9 and the local set to 0.1. 
+A face view of the created model is shown in Figure \ref{fig:face1model}.
+The face and clipped view of the mesh are shown in Figure \ref{fig:face1mesh}.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test10_smd_seeThrough}
+  \caption{Cube with face created within the model region. Forward three face
+        were made transparent to show in the internal face.}
+  \label{fig:face1model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Face view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test10_sms_seeThrough}}
+  \subfigure[Clipped view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test10_sms_clipped}}
+  \caption{Mesh of model with interior face.
+        Yellow mesh element faces indicate the mesh face is coplanar with the
+        model face. Note the view is rotated right by $90^{\circ}$ with respect 
+        to Figure \ref{fig:face1model}.}
+  \label{fig:face1mesh}
+\end{figure}
+
+The second face placement test created a model face that was completely 
+interior to a model region except for one corner vertex. 
+The face, and its bounding edges,  were created as 
+as a rational basis surface and splines. In total, 12 control points were 
+defined; all but one control point was inside the model region and created a $4\times3$
+grid. The global mesh refinement was set to 0.9 and the local set to 0.1. 
+A front and face view of the created model are shown in Figure \ref{fig:face2model}.
+The face and clipped view of the mesh are shown in Figure \ref{fig:face2mesh}.
+An external view of the mesh is shown in Appendix \ref{subsec:test11Img}.
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Solid view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_smd}}
+  \subfigure[Face view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_smd_seeThrough}}
+  \caption{Model with face inserted. Face is fully interior except for one point.
+        The point is shown on the leftmost face in (a).}
+  \label{fig:face2model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Face view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_sms_seeThrough}}
+  \subfigure[Clipped view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_sms_clipped}}
+  \caption{Mesh of model with interior face except for one point.}
+  \label{fig:face2mesh}
+\end{figure}
+
+The third face placement test created a model face that was completely 
+interior to a model region except for one edge.
+The face, and its bounding edges,  were created as 
+as a rational basis surface and splines. In total, 12 control points were 
+defined; the control points created a $4\times3$
+grid. The global mesh refinement was set to 0.9 and the local set to 0.1. 
+A front and face view of the created model are shown in Figure \ref{fig:face3model}.
+The face and clipped view of the mesh are shown in Figure \ref{fig:face3mesh}.
+An external view of the mesh is shown in Appendix \ref{subsec:test12Img}.
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Solid view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_smd}}
+  \subfigure[Face view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_smd_seeThrough}}
+  \caption{Model with face inserted. Face is fully interior except for one edge.
+        The edge is shown on the leftmost face in (a).}
+  \label{fig:face3model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Face view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_sms_seeThrough}}
+  \subfigure[Clipped view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_sms_clipped}}
+  \caption{Mesh of model with interior face except for one edge. 
+        Yellow mesh element faces indicate the mesh face is coplanar with the
+        model face.}
+  \label{fig:face3mesh}
+\end{figure}
+
+
 
 \section{Conclusion} \label{sec:conclusion}
 Conclusions text. 
@@ -478,5 +581,37 @@ Simmetrix Inc.,
 
 \subsection{GeoMod\_SIM.hpp} \label{subsec:SIM_hpp}
 \lstinputlisting{/lore/clougj/GeoMod/src/GeoMod_SIM.hpp}
+
+\section{Supplementary Images} \label{sec:img}
+\subsection{Model and Mesh of Test 1} \label{subsec:test1Img}
+\begin{figure}[H]
+  \centering
+  \subfigure[]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test1_smd}}
+  \subfigure[]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test1_sms}}
+\end{figure}
+
+\subsection{Model and Mesh of Test 2} \label{subsec:test2Img}
+\begin{figure}[H]
+  \centering
+  \subfigure[]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test2_smd}}
+  \subfigure[]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test2_sms}}
+\end{figure}
+
+\subsection{Mesh of Test 11} \label{subsec:test11Img}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test11_sms}
+\end{figure}
+
+\subsection{Mesh of Test 12} \label{subsec:test12Img}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test12_sms}
+\end{figure}
+
 
 \end{document}
