@@ -7,6 +7,7 @@
 \usepackage{subfigure}
 \usepackage[justification=centering]{caption}
 \usepackage{enumerate}
+\usepackage{multirow}
 \usepackage{listings}
 \lstset{
     frame=single,
@@ -175,13 +176,16 @@ coordinate system.  The user specifies the following to create a surface:
 
 \begin{table}[H]
   \centering
-  \begin{tabular}{ c c c c}
-    0        & $N$     & \dots  & $N(M-1)$   \\
-    1        & $N+1$   & \dots  & $N(M-1)+1$ \\
-    2        & $N+2$   & \dots  & $N(M-1)+2$ \\
-    \vdots   & \vdots  & \dots  & \vdots     \\
-    $N-1$    & $2N-1$  & \dots  & $MN-1$     \\
-
+  \begin{tabular}{l |c c c c |}
+    \multicolumn{1}{c}{} & \multicolumn{4}{l}{ $v\longrightarrow$}\\
+    \cline{2-5}
+    \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=t]{90}{$\longleftarrow u$}}} 
+    &0        & $N$     & \dots  & $N(M-1)$   \\
+    &1        & $N+1$   & \dots  & $N(M-1)+1$ \\
+    &2        & $N+2$   & \dots  & $N(M-1)+2$ \\
+    &\vdots   & \vdots  & \dots  & \vdots     \\
+    &$N-1$    & $2N-1$  & \dots  & $MN-1$     \\
+    \cline{2-5}
   \end{tabular}
   \caption{Ordering for control points and weights for surface creation. $N$ is 
     the number of control points in the $u$ direction. $M$ is the number of
@@ -206,7 +210,7 @@ following conditions:
         instead of a rational one.
   \end{enumerate}
   \item The number of knots is equal to the sum of the number of control points
-      and order in both the $u$ and $v$ directions.A
+      and order in both the $u$ and $v$ directions.
   \item The knots are specified in a monotonically increasing order. 
   \item The first order number of knots are equal to zero and the last order number 
       of knots are equal to one for each direction. 
@@ -536,7 +540,26 @@ the model classification given user defined surface parameters. It is also
 able to change the local mesh refinement level to a user's specification. 
 
 \section{Conclusion} \label{sec:conclusion}
-Conclusions text. 
+The purpose of this project was to create an interface to the 
+Simmetrix APIs that allows for model and mesh modification. This
+was to include placement of vertices, edges, and surfaces. The 
+interface was to be general enough to allow for the edges not be limited
+to straight lines and the surfaces not to be limited to flat planes. 
+Additionally, the modified model was to remain topologically valid
+to allow for proper discretization and interrogation. 
+
+These features were completed in the project.
+Vertex placement is described in subsection \ref{subsec:vertex}
+and is demonstrated in three examples in subsection \ref{subsec:vertexTest}.
+Edge placement is described in subsection \ref{subsec:edge}
+and is demonstrated in four examples in subsection \ref{subsec:edgeTest}.
+Face placement is described in subsection \ref{subsec:face}
+and is demonstrated in three examples in subsection \ref{subsec:faceTest}.
+The topology of the lower order entities is also valid since 
+higher order geometric features make use of lower order ones.
+For example, if the method which placed vertices did not reliably create
+topologically valid vertices, then neither the \emph{place\_edge()} or 
+\emph{place\_face()} would work properly. 
 
 \subsection{Future Work} \label{subsec:future}
 A possible improvement to the created code is to allow for parallel 
