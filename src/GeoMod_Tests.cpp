@@ -209,7 +209,7 @@ void test6()
 
 /* test7():
  *     - Create a 3D model
- *     - Create one spline based on-face edge defined by three points
+ *     - Create one spline based on-face edge defined by five points
  *     - Write model
  *     - Create mesh
  *     - Write mesh
