@@ -5,6 +5,7 @@
 \usepackage[margin=1.0in]{geometry}
 \usepackage{float}
 \usepackage{subfigure}
+\usepackage[justification=centering]{caption}
 \usepackage{enumerate}
 \usepackage{listings}
 \lstset{
@@ -330,13 +331,89 @@ A clipped view of the mesh is shown in Figure \ref{fig:edge1mesh}.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=8cm, height=8cm]{test6_sms}
+  \includegraphics[width=8cm, height=8cm]{test6_sms_clipped}
   \caption{Clipped view of mesh for cube with edge near center of region. 
-          The edge is highlight in yellow.}
+          The edge is highlighted in yellow.}
   \label{fig:edge1mesh}
 \end{figure}
 
+The second test placed an edge whose control points all laid on the same 
+model face. 
+The edge was created as a rational basis spline with five control points.
+The global mesh refinement was set to 0.9 and the local set to 0.1. 
+The created model is shown in Figure \ref{fig:edge2model}.
+A view of the mesh is shown in Figure \ref{fig:edge2mesh}.
 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test7_smd}
+  \caption{Cube with edge placed on model front face.}
+  \label{fig:edge2model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=8cm, height=8cm]{test7_sms}
+  \caption{Clipped view of mesh for cube with edge on face. 
+          The edge is highlighted in yellow.}
+  \label{fig:edge2mesh}
+\end{figure}
+
+The third test placed an edge that started on a model face and 
+terminated in the interior of the model region. 
+The edge was created as a rational basis spline with five control points.
+The global mesh refinement was set to 0.9 and the local set to 0.1. 
+Two images of the created model are shown in Figure \ref{fig:edge3model}.
+A external and clipped view of the mesh are shown in Figure \ref{fig:edge3mesh}.
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Solid view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_smd}}
+  \subfigure[Wire frame view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_smd_wire}}
+  \caption{Model with edge inserted. Edge begins on front face and terminates 
+        with in the model region.}
+  \label{fig:edge3model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[External view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_sms}}
+  \subfigure[Clipped view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_sms_clipped}}
+  \caption{Mesh of model with edge from face to region inserted.}
+  \label{fig:edge3mesh}
+\end{figure}
+
+The fourth test placed an edge that started on a model edge and terminated 
+with in the model region. 
+The edge was created as a rational basis spline with five control points.
+The global mesh refinement was set to 0.9 and the local set to 0.1. 
+Two images of the created model are shown in Figure \ref{fig:edge4model}.
+A external and clipped view of the mesh are shown in Figure \ref{fig:edge4mesh}.
+
+\begin{figure}[H]
+  \centering
+  \subfigure[Solid view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_smd}}
+  \subfigure[Wire frame view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_smd_wire}}
+  \caption{Model with edge inserted. Edge begins on left-most vertical model edge
+        and terminates within the model region.}
+  \label{fig:edge4model}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \subfigure[External view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_sms}}
+  \subfigure[Clipped view.]
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_sms_clipped}}
+  \caption{Mesh of model with edge from edge to region inserted.}
+  \label{fig:edge4mesh}
+\end{figure}
 
 \subsection{Face Placement} \label{subsec:faceTest}
 Test Face placement text.
