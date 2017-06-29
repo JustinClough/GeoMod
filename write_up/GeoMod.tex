@@ -24,15 +24,17 @@
 \maketitle
 
 \begin{abstract}
-abstract text goes here.
-
+The use of non-manifold models can allow for better approximation of
+phyiscal problems.
 \end{abstract}
 
 \newpage
 \section{Introduction} \label{sec:intro}
-Non-manifold models can allow for better approximations of physical scenarios. 
+Non-manifold models can allow for better approximations 
+of physical scenarios. 
 In the scope of this report, a non-manifold model is taken to mean 
-a model in which every point on a surface need not be two dimensional \cite{weiler86}. 
+a model in which every point on a surface need not be 
+two dimensional \cite{weiler86}. 
 This allows for the creation of models where, for example, three
 dimensional regions need only share a vertex or an edge. This also 
 supports geometric entities containing lower entities. E.g., a vertex
@@ -88,11 +90,13 @@ gmd member functions. Mesh case information for these
 modifications is also specified by the user at this time.
 The gmd class is primarily a wrapper around two other classes. It also
 has member functions that check the validity of user input for creating 
-edges and faces. The two classes that it wraps in turn wrap around Simmetrix APIs.
+edges and faces. The two classes that it 
+wraps in turn wrap around Simmetrix APIs.
 
 The first class is the \emph{model\_helper} class 
 which handles all model interactions. This includes making modifications to
-the model, checking its validity, and writing it to disk. Its member variables
+the model, checking its validity, and writing it to disk. 
+Its member variables
 include a pointer to the Simmetrix model. The header and source file of the 
 model\_helper class are shown in Appendices \ref{subsec:model_hpp} and 
 \ref{subsec:model_cpp}, respectively. The APIs used are from Simmetrix's 
@@ -100,15 +104,18 @@ GeoSim Core and Advanced libraries \cite{Simmetrix}.
 
 The second class wrapped within the gmd class is the
 \emph{mesh\_helper} class which handles all mesh interactions. This includes
-defining global and local mesh parameters, checking for validity, and writing the mesh. 
-Its member variables include a pointer to a Simmetrix mesh object and mesh case object. 
+defining global and local mesh parameters, checking for validity, 
+and writing the mesh. 
+Its member variables include a pointer to a Simmetrix mesh object 
+and mesh case object. 
 The header and source file for the mesh\_helper class are shown in 
 Appendices \ref{subsec:mesh_hpp} and \ref{subsec:mesh_cpp}, respectively.
 The APIs used are from Simmetrix's MeshSim Core and Advanced libraries 
 \cite{Simmetrix}.
 
 Model entities are always created on the geometric entity with the
-lowest possible dimension when applicable. This ensures correct classification when model
+lowest possible dimension when applicable. This ensures 
+correct classification when model
 or mesh entities are later interrogated. For example, say the
 user wants to create a vertex whose coordinates lie upon an edge
 which bounds a face of a region. The vertex will be created and 
@@ -137,18 +144,24 @@ are presented in section \ref{sec:testing}.
 
 \subsection{Vertex Placement} \label{subsec:vertex}
 The gmd member function \emph{place\_point()} is used to create model
-vertices as well as define the local mesh refinement level for the created vertex.
+vertices as well as define the local mesh refinement level
+for the created vertex.
 The user specifies the coordinates of the vertex they want to create, the 
 relative mesh refinement level, the radius of refinement, and a Simmetrix
 model vertex pointer that is overwritten to point to the created vertex. 
 
 The Simmetrix APIs \emph{GE\_closestPoint()}, \emph{GF\_closestPoint()}, 
-and \emph{GR\_containsPoint()} are used to determine whether a 3D coordinate 
-is in a model edge, face, or region, respectively. The function \emph{GR\_containsPoint()}
-returns an integer denoting if the point is inside or outside of the model region. 
-The functions \emph{GE\_closestPoint()} and \emph{GF\_closestPoint()} both return 
-pointers to the real and parametric coordinates closest to a given test coordinate. 
-The real coordinates of the closest point are then compared to the test point.
+and \emph{GR\_containsPoint()} are used to determine whether 
+a 3D coordinate is in a model edge, face, or region, respectively. 
+The function \emph{GR\_containsPoint()}
+returns an integer denoting if the point 
+is inside or outside of the model region. 
+The functions \emph{GE\_closestPoint()} 
+and \emph{GF\_closestPoint()} both return 
+pointers to the real and parametric coordinates closest
+to a given test coordinate. 
+The real coordinates of the closest point are 
+then compared to the test point.
 If the magnitude of the distance between the two points is less then the 
 tolerance of the model, then a model vertex is created. 
 The value returned from the API \emph{GM\_tolerance()} is used as the 
@@ -165,20 +178,28 @@ Examples of vertex placement are shown in
 subsection \ref{subsec:vertexTest}.
 
 \subsection{Edge Placement} \label{subsec:edge}
-The gmd member function \emph{place\_edge()} is used to create model edges and 
-define the local mesh refinement for the created edge. The underlying API used
-is the \emph{SCurve\_createBSpline()} function which creates rational and non-rational
-basis splines. The user specifies the order of the curve, control points, knots,
-weights, mesh refinement level, and a Simmetrix model edge pointer which is 
+The gmd member function \emph{place\_edge()} is used
+to create model edges and define the local mesh refinement 
+for the created edge.  The underlying API used
+is the \emph{SCurve\_createBSpline()} function which 
+creates rational and non-rational
+basis splines. The user specifies the order of the curve, 
+control points, knots,
+weights, mesh refinement level, and a Simmetrix model 
+edge pointer which is 
 overwritten with the created edge. 
 
-The \emph{place\_edge()} function first checks the validity of the user's input.
-The checks ensure that the user defined input meets the following conditions:
+The \emph{place\_edge()} function first checks the 
+validity of the user's input.
+The checks ensure that the user defined input meets 
+the following conditions:
 \begin{enumerate}
-  \item The order is not less than one or greater than the number of control points.
+  \item The order is not less than one or greater than the number 
+      of control points.
   \item The sum of the number of control points and order is equal to 
       the number of knots.
-  \item The first order number of knots are equal to zero and the last order number 
+  \item The first order number of knots are equal to zero and 
+      the last order number 
       of knots are equal to one. E.g., if order is two, then the first two 
       knots must equal zero and the last two knots must equal one.
   \item The knots are specified in a monotonically increasing order. 
@@ -207,20 +228,23 @@ are shown in subsection \ref{subsec:edgeTest}.
 \subsection{Face Placement} \label{subsec:face}
 The gmd member function \emph{place\_face()} is used to create model 
 faces and define the local mesh refinement for the created face. The
-underlying API is the \emph{SSurface\_createBSpline()} function which creates 
-rational and non-rational basis surfaces based on a local $u$ and $v$ 
+underlying API is the \emph{SSurface\_createBSpline()} function which
+creates rational and non-rational basis surfaces 
+based on a local $u$ and $v$ 
 coordinate system.  The user specifies the following to create a surface:
 \begin{enumerate}
   \item The order in both the $u$ and $v$ directions.
   \item The number of control points in the $u$ and $v$ directions.
   \item The periodicity of the surface. In essence, whether the 
-      surface is periodic in either, neither, or both the $u$ and $v$ directions.
+      surface is periodic in either, neither, 
+      or both the $u$ and $v$ directions.
   \item The coordinates of the control points. This is specified as shown in
       Table \ref{table:cpNum}.
   \item The weights for each control point. The order of the weights must
       also follow the pattern shown in Table \ref{table:cpNum}.
   \item The local mesh refinement on the face. 
-  \item The geometric face pointer to be overwritten with the newly created face.
+  \item The geometric face pointer to be overwritten
+       with the newly created face.
 \end{enumerate}
 
 \begin{table}[H]
@@ -228,7 +252,8 @@ coordinate system.  The user specifies the following to create a surface:
   \begin{tabular}{l |c c c c |}
     \multicolumn{1}{c}{} & \multicolumn{4}{l}{ $v\longrightarrow$}\\
     \cline{2-5}
-    \parbox[t]{2mm}{\multirow{6}{*}{\rotatebox[origin=t]{90}{$\longleftarrow u$}}} 
+    \parbox[t]{2mm}{\multirow{6}{*}
+        {\rotatebox[origin=t]{90}{$\longleftarrow u$}}} 
     &0        & $N$     & \dots  & $N(M-1)$   \\
     &1        & $N+1$   & \dots  & $N(M-1)+1$ \\
     &2        & $N+2$   & \dots  & $N(M-1)+2$ \\
@@ -236,7 +261,8 @@ coordinate system.  The user specifies the following to create a surface:
     &$N-1$    & $2N-1$  & \dots  & $MN-1$     \\
     \cline{2-5}
   \end{tabular}
-  \caption{Ordering for control points and weights for surface creation. $N$ is 
+  \caption{Ordering for control points and 
+    weights for surface creation. $N$ is 
     the number of control points in the $u$ direction. $M$ is the number of
     control points in the $v$ direction.}
   \label{table:cpNum}
@@ -246,8 +272,10 @@ The \emph{place\_face()} function first checks the user defined inputs
 for validity. The checks ensure that the user's input meets the 
 following conditions:
 \begin{enumerate}
-  \item The order in both the $u$ and $v$ is not less than one or greater than
-      the number of control points in the $u$ and $v$ directions respectively. 
+  \item The order in both the $u$ and $v$ is not less than one 
+      or greater than
+      the number of control points in the $u$ and $v$ 
+      directions respectively. 
   \item The total number of control points equals to the product of 
       declared control points in the $u$ and $v$ directions.
   \item The weights meet one of the two conditions:
@@ -258,10 +286,12 @@ following conditions:
         This condition dictates that a non-rational surface be created 
         instead of a rational one.
   \end{enumerate}
-  \item The number of knots is equal to the sum of the number of control points
+  \item The number of knots is equal to the sum of the number of 
+      control points
       and order in both the $u$ and $v$ directions.
   \item The knots are specified in a monotonically increasing order. 
-  \item The first order number of knots are equal to zero and the last order number 
+  \item The first order number of knots are equal to zero and 
+      the last order number 
       of knots are equal to one for each direction. 
       E.g., if order is three, then the first three
       knots must equal zero and the last three knots must equal one.
@@ -269,7 +299,8 @@ following conditions:
 
 If the user's input does not meet all of the above conditions, then
 an error message is printed and the program aborts. Otherwise, 
-the program next creates a surface using the \emph{SSurface\_createBSpline()} 
+the program next creates a surface using the 
+\emph{SSurface\_createBSpline()} 
 API. The bounding edges of the face are created next. 
 Each edge is created using the method described in 
 subsection \ref{subsec:edge}. Next, the edges and surfaces are used to 
@@ -282,22 +313,27 @@ Each of the features described in section \ref{sec:design} were
 tested. In total, 13 tests were created; the header and
 source files for these tests are shown in 
 Appendix \ref{subsec:Tests_hpp} and \ref{subsec:Tests_cpp}. The first three
-tests (tests 0, 1, and 2) check for basic functionality such as proper linking 
+tests (tests 0, 1, and 2) check for basic functionality 
+such as proper linking 
 between classes and functions as well as creation and deletion of classes 
-without memory leaks. Theses tests are described in Appendix \ref{subsec:Tests_cpp}
+without memory leaks. Theses tests are described in 
+Appendix \ref{subsec:Tests_cpp}
 and their results are shown in Appendix \ref{subsec:test1Img} 
 and \ref{subsec:test2Img}. The next three tests (tests 3, 4, and 5) 
 exercise vertex placement. They and their results are discussed in detail
-in subsection \ref{subsec:vertexTest}. The next four tests (tests 6, 7, 8, and 9)
+in subsection \ref{subsec:vertexTest}. 
+The next four tests (tests 6, 7, 8, and 9)
 exercise edge placement in different cases. These tests and their results 
-are shown in \ref{subsec:edgeTest}. The last three tests (tests 10, 11, and 12)
+are shown in \ref{subsec:edgeTest}. The last three 
+tests (tests 10, 11, and 12)
 check face placement functionality. They and their results are described in 
 subsection \ref{subsec:faceTest}.
 
 \subsection{Vertex Placement} \label{subsec:vertexTest}
 Vertex placement was tested in three cases. For each test case, both
 the modified model and mesh were created and written to disk. Both 
-the model and mesh were then viewed in the Simmodeler GUI to visually confirm
+the model and mesh were then viewed in the Simmodeler GUI 
+to visually confirm
 that the expected behavior was achieved. Classification was also confirmed
 through use of Simmetrix APIs and through the GUI part tree. 
 
@@ -318,14 +354,17 @@ The resulting mesh is shown in Figure \ref{fig:vert1mesh}.
 \begin{figure}[H]
   \centering
   \subfigure[Exterior view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test3_sms}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test3_sms}}
   \subfigure[Clipped view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test3_sms_clipped}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test3_sms_clipped}}
   \caption{Mesh of cube with vertex placed at center.}
   \label{fig:vert1mesh}
 \end{figure}
 
-The second case placed a vertex in the center of a face of a three dimensional 
+The second case placed a vertex in the center of a face of 
+a three dimensional 
 model. The global mesh refinement level was set to 0.9 and the refinement
 level of the vertex was set to 0.1. 
 The resulting model is shown in Figure \ref{fig:vert2model}.
@@ -380,7 +419,8 @@ The first test placed a fully interior edge inside a model region.
 The edge was created as a rational basis spline with five control points; 
 each control point was inside the model region.
 The global mesh refinement was set to 0.9 and the local set to 0.1. 
-A wire frame view of the created model is shown in Figure \ref{fig:edge1model}.
+A wire frame view of the created model is
+shown in Figure \ref{fig:edge1model}.
 A clipped view of the mesh is shown in Figure \ref{fig:edge1mesh}.
 
 \begin{figure}[H]
@@ -425,15 +465,19 @@ terminated in the interior of the model region.
 The edge was created as a rational basis spline with five control points.
 The global mesh refinement was set to 0.9 and the local set to 0.1. 
 Two images of the created model are shown in Figure \ref{fig:edge3model}.
-A external and clipped view of the mesh are shown in Figure \ref{fig:edge3mesh}.
+A external and clipped view of the mesh are 
+shown in Figure \ref{fig:edge3mesh}.
 
 \begin{figure}[H]
   \centering
   \subfigure[Solid view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_smd}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test8_smd}}
   \subfigure[Wire frame view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_smd_wire}}
-  \caption{Model with edge inserted. Edge begins on front face and terminates 
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test8_smd_wire}}
+  \caption{Model with edge inserted. 
+      Edge begins on front face and terminates 
         with in the model region.}
   \label{fig:edge3model}
 \end{figure}
@@ -441,9 +485,11 @@ A external and clipped view of the mesh are shown in Figure \ref{fig:edge3mesh}.
 \begin{figure}[H]
   \centering
   \subfigure[External view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_sms}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test8_sms}}
   \subfigure[Clipped view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test8_sms_clipped}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test8_sms_clipped}}
   \caption{Mesh of model with edge from face to region inserted.}
   \label{fig:edge3mesh}
 \end{figure}
@@ -453,15 +499,19 @@ with in the model region.
 The edge was created as a rational basis spline with five control points.
 The global mesh refinement was set to 0.9 and the local set to 0.1. 
 Two images of the created model are shown in Figure \ref{fig:edge4model}.
-A external and clipped view of the mesh are shown in Figure \ref{fig:edge4mesh}.
+A external and clipped view of the mesh are
+shown in Figure \ref{fig:edge4mesh}.
 
 \begin{figure}[H]
   \centering
   \subfigure[Solid view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_smd}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test9_smd}}
   \subfigure[Wire frame view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_smd_wire}}
-  \caption{Model with edge inserted. Edge begins on left-most vertical model edge
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test9_smd_wire}}
+  \caption{Model with edge inserted. 
+        Edge begins on left-most vertical model edge
         and terminates within the model region.}
   \label{fig:edge4model}
 \end{figure}
@@ -469,9 +519,11 @@ A external and clipped view of the mesh are shown in Figure \ref{fig:edge4mesh}.
 \begin{figure}[H]
   \centering
   \subfigure[External view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_sms}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test9_sms}}
   \subfigure[Clipped view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test9_sms_clipped}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test9_sms_clipped}}
   \caption{Mesh of model with edge from edge to region inserted.}
   \label{fig:edge4mesh}
 \end{figure}
@@ -483,25 +535,30 @@ able to change the local mesh refinement level to a user's specification.
 
 \subsection{Face Placement} \label{subsec:faceTest}
 Face placement was tested similarly to both the vertex and edge
-tests described in subsections \ref{subsec:vertexTest} and \ref{subsec:edgeTest}.
+tests described in subsections 
+\ref{subsec:vertexTest} and \ref{subsec:edgeTest}.
 In total, three tests were performed. For each test, the created 
 models and meshes were written to disk and viewed in the Simmetrix GUI.
 Classifications of model entities were confirmed through both the GUI and 
 APIs where applicable.
 
-The first face placement test created a model face that was completely interior
+The first face placement test created a model face that was 
+completely interior
 to a model region.
 The face, and its bounding edges,  were created as 
 as a rational basis surface and splines. In total, 12 control points were 
-defined; each control point was inside the model region and created a $4\times3$
+defined; each control point was inside the model region 
+and created a $4\times3$
 grid. The global mesh refinement was set to 0.9 and the local set to 0.1. 
 A face view of the created model is shown in Figure \ref{fig:face1model}.
-The face and clipped view of the mesh are shown in Figure \ref{fig:face1mesh}.
+The face and clipped view of the mesh are 
+shown in Figure \ref{fig:face1mesh}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=8cm, height=8cm]{test10_smd_seeThrough}
-  \caption{Cube with face created within the model region. Forward three face
+  \caption{Cube with face created within the model region. 
+        Forward three faces
         were made transparent to show in the internal face.}
   \label{fig:face1model}
 \end{figure}
@@ -509,13 +566,15 @@ The face and clipped view of the mesh are shown in Figure \ref{fig:face1mesh}.
 \begin{figure}[H]
   \centering
   \subfigure[Face view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test10_sms_seeThrough}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test10_sms_seeThrough}}
   \subfigure[Clipped view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test10_sms_clipped}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test10_sms_clipped}}
   \caption{Mesh of model with interior face.
-        Yellow mesh element faces indicate the mesh face is coplanar with the
-        model face. Note the view is rotated right by $90^{\circ}$ with respect 
-        to Figure \ref{fig:face1model}.}
+        Yellow mesh element faces indicate the mesh face is 
+        coplanar with the model face. Note the view is rotated 
+        right by $90^{\circ}$ with respect to Figure \ref{fig:face1model}.}
   \label{fig:face1mesh}
 \end{figure}
 
@@ -523,19 +582,25 @@ The second face placement test created a model face that was completely
 interior to a model region except for one corner vertex. 
 The face, and its bounding edges,  were created as 
 as a rational basis surface and splines. In total, 12 control points were 
-defined; all but one control point was inside the model region and created a $4\times3$
+defined; all but one control point was inside the model 
+region and created a $4\times3$
 grid. The global mesh refinement was set to 0.9 and the local set to 0.1. 
-A front and face view of the created model are shown in Figure \ref{fig:face2model}.
-The face and clipped view of the mesh are shown in Figure \ref{fig:face2mesh}.
+A front and face view of the created model 
+are shown in Figure \ref{fig:face2model}.
+The face and clipped view of the mesh are shown 
+in Figure \ref{fig:face2mesh}.
 An external view of the mesh is shown in Appendix \ref{subsec:test11Img}.
 
 \begin{figure}[H]
   \centering
   \subfigure[Solid view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_smd}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test11_smd}}
   \subfigure[Face view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_smd_seeThrough}}
-  \caption{Model with face inserted. Face is fully interior except for one point.
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test11_smd_seeThrough}}
+  \caption{Model with face inserted. 
+        Face is fully interior except for one point.
         The point is shown on the leftmost face in (a).}
   \label{fig:face2model}
 \end{figure}
@@ -543,9 +608,11 @@ An external view of the mesh is shown in Appendix \ref{subsec:test11Img}.
 \begin{figure}[H]
   \centering
   \subfigure[Face view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_sms_seeThrough}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test11_sms_seeThrough}}
   \subfigure[Clipped view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test11_sms_clipped}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test11_sms_clipped}}
   \caption{Mesh of model with interior face except for one point.}
   \label{fig:face2mesh}
 \end{figure}
@@ -556,17 +623,22 @@ The face, and its bounding edges,  were created as
 as a rational basis surface and splines. In total, 12 control points were 
 defined; the control points created a $4\times3$
 grid. The global mesh refinement was set to 0.9 and the local set to 0.1. 
-A front and face view of the created model are shown in Figure \ref{fig:face3model}.
-The face and clipped view of the mesh are shown in Figure \ref{fig:face3mesh}.
+A front and face view of the created model 
+are shown in Figure \ref{fig:face3model}.
+The face and clipped view of the mesh 
+are shown in Figure \ref{fig:face3mesh}.
 An external view of the mesh is shown in Appendix \ref{subsec:test12Img}.
 
 \begin{figure}[H]
   \centering
   \subfigure[Solid view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_smd}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test12_smd}}
   \subfigure[Face view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_smd_seeThrough}}
-  \caption{Model with face inserted. Face is fully interior except for one edge.
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test12_smd_seeThrough}}
+  \caption{Model with face inserted. 
+        Face is fully interior except for one edge.
         The edge is shown on the leftmost face in (a).}
   \label{fig:face3model}
 \end{figure}
@@ -574,12 +646,14 @@ An external view of the mesh is shown in Appendix \ref{subsec:test12Img}.
 \begin{figure}[H]
   \centering
   \subfigure[Face view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_sms_seeThrough}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test12_sms_seeThrough}}
   \subfigure[Clipped view.]
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test12_sms_clipped}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test12_sms_clipped}}
   \caption{Mesh of model with interior face except for one edge. 
-        Yellow mesh element faces indicate the mesh face is coplanar with the
-        model face.}
+        Yellow mesh element faces indicate the mesh face is 
+        coplanar with the model face.}
   \label{fig:face3mesh}
 \end{figure}
 
@@ -646,7 +720,8 @@ Topological Structures for Geometric Modeling.
 \bibitem{zhangThesis}
 Zhang, Lijuan.
 (2013).
-Microstructural modeling of cross-linked fiber network embedded in continuous matrix.
+Microstructural modeling of cross-linked 
+fiber network embedded in continuous matrix.
 (Doctoral dissertation).
 
 \bibitem{askeland}
@@ -715,18 +790,22 @@ Simmetrix Inc.,
 \begin{figure}[H]
   \centering
   \subfigure
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test1_smd}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test1_smd}}
   \subfigure
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test1_sms}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test1_sms}}
 \end{figure}
 
 \subsection{Model and Mesh of Test 2} \label{subsec:test2Img}
 \begin{figure}[H]
   \centering
   \subfigure
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test2_smd}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test2_smd}}
   \subfigure
-    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]{test2_sms}}
+    { \includegraphics[width=0.45\textwidth, height=0.45\textwidth]
+      {test2_sms}}
 \end{figure}
 
 \subsection{Mesh of Test 11} \label{subsec:test11Img}
