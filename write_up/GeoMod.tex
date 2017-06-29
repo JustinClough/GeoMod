@@ -24,8 +24,27 @@
 \maketitle
 
 \begin{abstract}
-The use of non-manifold models can allow for better approximation of
-phyiscal problems.
+The use of non-manifold models can allow for better approximations of
+physical problems.
+This has been shown in previous research of matrix-fiber composites
+as well as on going work in coupled finite element-dislocation 
+dynamics. 
+The code created in this project allows users to make 
+modifications to a preexisting model and define meshing attributes. 
+The modifications include placement of model vertices, edges, and surfaces. 
+When the user places these entities in the model, they also 
+specify the local mesh refinement.
+Model entities are always created such that the topology of the model
+remains valid.
+Mesh refinement information is only updated if the new refinement
+level is finer than the current.
+Thirteen tests were created to confirm that expected behavior 
+was achieved. 
+Of these tests, three focus on vertex placement, 
+four on edge placement, and three on surface placement. 
+The results of each test are presented as evidence of passing the test. 
+Possible future work include parallelization, handling of assembly
+models, and inclusion of deletion features.
 \end{abstract}
 
 \newpage
@@ -682,7 +701,7 @@ The topology of the lower order entities is also valid since
 higher order geometric features make use of lower order ones.
 For example, if the method which placed vertices did not reliably create
 topologically valid vertices, then neither the \emph{place\_edge()} or 
-\emph{place\_face()} would work properly. 
+\emph{place\_face()} methods would work properly. 
 
 \subsection{Future Work} \label{subsec:future}
 A possible improvement to the created code is to allow for parallel 
