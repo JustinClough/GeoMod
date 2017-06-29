@@ -254,8 +254,11 @@ message is printed and the program aborts.
 
 First, the end points of edge are created as vertices using the 
 method described in subsection \ref{subsec:edge}. Next, a curve
-is created using the \emph{SCurve\_createBSpline()} API. This 
-curve is then used to create a geometric edge using the 
+is created using the \emph{SCurve\_createBSpline()} API. 
+The end points of the edge, the first and last control points, 
+are created as model vertices using the method described 
+subsection \ref{subsec:vertex}.
+This curve and two vertices are then used to create a geometric edge using the 
 \emph{GIP\_insertEdgeInRegion()} API. If all of the 
 control points are coincident with a preexisting face, then the
 edge is inserted onto the corresponding face using the 
@@ -270,7 +273,7 @@ creates rational and non-rational basis surfaces
 based on a local $u$ and $v$ 
 coordinate system.  The user specifies the following to create a surface:
 \begin{enumerate}
-  \item The order in both the $u$ and $v$ directions.
+  \item The order of the surface in both the $u$ and $v$ directions.
   \item The number of control points in the $u$ and $v$ directions.
   \item The periodicity of the surface. In essence, whether the 
       surface is periodic in either, neither, 
@@ -309,7 +312,7 @@ The \emph{place\_face()} function first checks the user defined inputs
 for validity. The checks ensure that the user's input meets the 
 following conditions:
 \begin{enumerate}
-  \item The order in both the $u$ and $v$ is not less than one 
+  \item The order in both the $u$ and $v$ directions is not less than one 
       or greater than
       the number of control points in the $u$ and $v$ 
       directions respectively. 
@@ -741,7 +744,7 @@ their interactions.
 Work can be done that would allow for geometric entity deletion
 that preserves topological validity. For example, a user can 
 currently delete any edge. This will yield a topologically 
-invalid model if the edge was one of the bounding edge of a 
+invalid model if the edge was one of the bounding edges of a 
 model face. This addition of features could also
 include methods to trim or extend model entities as well. 
 
