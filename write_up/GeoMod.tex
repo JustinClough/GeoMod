@@ -30,7 +30,52 @@ abstract text goes here.
 
 \newpage
 \section{Introduction} \label{sec:intro}
+Non-manifold models can allow for better approximations of physical scenarios. 
+In the scope of this report, a non-manifold model is taken to mean 
+a model in which every point on a surface need not be two dimensional \cite{weiler86}. 
+This allows for the creation of models where, for example, three
+dimensional regions need only share a vertex or an edge. This also 
+supports geometric entities containing lower entities. E.g., a vertex
+can be placed in a region, surface, or edge; a edge may be placed in
+a region or surface; a surface can be placed with in a region.
 
+An example of how non-manifold models are used is in 
+the modeling of the micro structure of cross-linked 
+fiber networks embedded in a continuous matrix \cite{zhangThesis}. 
+In this dissertation, a three dimensional region was used to represent 
+a continuous matrix; one dimensional edges were used to represent collagen 
+network fibers. The fibers were able to begin and terminate on either a 
+model face or in the model region. The resulting model was then discretized 
+such that volumetric elements represented the matrix 
+and beam elements represented the collagen fibers.
+
+Another example of how a non-manifold model can be used is in the 
+modeling of coupled finite element analysis with dislocation dynamics. 
+In this scenario, a crystalline solid is represented as a three dimensional 
+region. Within this region, edge and screw dislocations are represented
+as two dimensional edges. These dislocation both create and are acted on
+by the stress field around them \cite{askeland}. Similar to the collagen 
+fibers, the edges with represent the dislocations may begin and end in
+any model surface or region. The discretized model is comprised of 
+volumetric finite elements. The edges of the elements near the dislocation 
+are collinear with the dislocation; the vertices of the element are also
+coincident with the nodes of the dislocation. Additionally, the mesh near
+the dislocation needs to be finer to better approximate stress at the
+dislocation.
+
+The goal of this project is to create an interface to the Simmetrix 
+modeling and meshing Application Program Interfaces (APIs). This 
+interface will allow the user to add non-manifold geometric features
+to a base geometric model. Additionally, the user needs to be able
+to define local mesh characteristics for the created geometry. 
+The created geometry can include model vertices, edges, and faces.
+The edges and faces cannot be limited to straight lines and flat 
+planes, respectively. During model modification, the validity of 
+the topology must be maintained. This will allow for correct 
+discretization of the model and interrogation of both the model and mesh.
+During mesh case specification, updated refinement criteria must be merged 
+with the existing information. For these cases,
+finer level of refinement must always be used. 
 
 \section{Code Design} \label{sec:design}
 The user interacts with the code by constructing a \emph{gmd}
@@ -591,6 +636,26 @@ include methods to trim or extend model entities as well.
 
 \newpage
 \begin{thebibliography}{99}
+
+\bibitem{weiler86}
+Weiler, Kevin J.
+(1986).
+Topological Structures for Geometric Modeling.
+(Doctoral dissertation).
+
+\bibitem{zhangThesis}
+Zhang, Lijuan.
+(2013).
+Microstructural modeling of cross-linked fiber network embedded in continuous matrix.
+(Doctoral dissertation).
+
+\bibitem{askeland}
+Askeland, Donald R., Fulay, Pradeep P., Wright, Wendelin J.
+(2011).
+The Science and Engineering of Materials.
+Sixth ed.
+Stamford, CT: Cengage Learning.
+Print.
 
 \bibitem{Simmetrix}
 Simmetrix Inc., 
