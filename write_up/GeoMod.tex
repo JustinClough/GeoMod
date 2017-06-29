@@ -39,12 +39,13 @@ remains valid.
 Mesh refinement information is only updated if the new refinement
 level is finer than the current.
 Thirteen tests were created to confirm that expected behavior 
-was achieved. 
+of the code was achieved. 
 Of these tests, three focus on vertex placement, 
 four on edge placement, and three on surface placement. 
 The results of each test are presented as evidence of passing the test. 
 Possible future work include parallelization, handling of assembly
-models, and inclusion of deletion features.
+models, and inclusion of features that can delete or modify
+existing model entities.
 \end{abstract}
 
 \newpage
@@ -54,10 +55,11 @@ of physical scenarios.
 In the scope of this report, a non-manifold model is taken to mean 
 a model in which every point on a surface need not be 
 two dimensional \cite{weiler86}. 
-This allows for the creation of models where, for example, three
-dimensional regions need only share a vertex or an edge. This also 
+This allows for the creation of models where, for example, two 
+or more three dimensional regions need only share a vertex or an edge.
+This also 
 supports geometric entities containing lower entities. E.g., a vertex
-can be placed in a region, surface, or edge; a edge may be placed in
+can be placed in a region, surface, or edge; an edge may be placed in
 a region or surface; a surface can be placed with in a region.
 
 An example of how non-manifold models are used is in 
@@ -76,7 +78,7 @@ In this scenario, a crystalline solid is represented as a three dimensional
 region. Within this region, edge and screw dislocations are represented
 as two dimensional edges. These dislocation both create and are acted on
 by the stress field around them \cite{askeland}. Similar to the collagen 
-fibers, the edges with represent the dislocations may begin and end in
+fibers, the edges that represent the dislocations may begin and end in
 any model surface or region. The discretized model is comprised of 
 volumetric finite elements. The edges of the elements near the dislocation 
 are collinear with the dislocation; the vertices of the element are also
@@ -97,6 +99,22 @@ discretization of the model and interrogation of both the model and mesh.
 During mesh case specification, updated refinement criteria must be merged 
 with the existing information. For these cases,
 finer level of refinement must always be used. 
+
+The remainder of this report is organized in the following manner.
+The general design of the code is presented in 
+section \ref{sec:design}; 
+the specifics of the implementation for vertex, edge, and face placement
+is discussed in the subsections \ref{subsec:vertex},
+\ref{subsec:edge}, and \ref{subsec:face}, respectively.
+Testing is presented in \ref{sec:testing} with test cases and their results
+for vertex, edge, and face placement discussed in subsections
+\ref{subsec:vertexTest}, \ref{subsec:edgeTest}, and \ref{subsec:faceTest}, 
+respectively. 
+Conclusions are drawn and possible future work is presented in 
+section \ref{sec:conclusion}. 
+Finally, the source code for the project is appended in
+Appendix \ref{sec:code}.
+
 
 \section{Code Design} \label{sec:design}
 The user interacts with the code by constructing a \emph{gmd}
