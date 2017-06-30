@@ -8,7 +8,7 @@
 build/
 
 #Ignore the density_tests directory
-density_tests/
+**density_tests/
 
 #Ignore vim's session files
 **.vim
