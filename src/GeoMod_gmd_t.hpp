@@ -13,12 +13,19 @@ namespace GMD
   class gmd_t
   {
     public:
-      // Util methods
+      // Basic methods
       gmd_t( pGModel in_model);
       ~gmd_t();
       void set_abort_on_fail( bool abort_on_fail);
       void test_printers();
+
+      // Util Methods
+      void verify_model();
+      void release_model();
+      pGModel get_model();
       void verify_mesh();
+      pMesh get_mesh();
+      void release_mesh();
 
       // Writing methods
       void set_name( std::string file_name);

@@ -20,6 +20,13 @@ namespace GMD
 
   model_helper_t::~model_helper_t()
   {
+    // Assumes the user will delete the model 
+    //  when they are done with it.
+    return;
+  }
+
+  void model_helper_t::release()
+  {
     GM_release( model);
     return;
   }

@@ -19,6 +19,7 @@ namespace GMD
       model_helper_t (pGModel& in_model);
       ~model_helper_t();
       void model_print();
+      void release();
       void write( std::string name);
       bool isValid();
       bool isWritten();

@@ -13,6 +13,13 @@ namespace GMD
 
   mesh_helper_t::~mesh_helper_t()
   {
+    // Assumes the user will delete the mesh and
+    //  mesh case when they are done with them.
+    return;
+  }
+
+  void mesh_helper_t::release()
+  {
     MS_deleteMeshCase(m_case);
     M_release( mesh);
     return;

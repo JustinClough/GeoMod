@@ -15,6 +15,9 @@ void test0()
   GMD::gmd_t gmd( cube);
   gmd.test_printers();
 
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test0\n\n" ;
   return;
 }
@@ -38,6 +41,9 @@ void test1()
   gmd.create_mesh();
   gmd.write_mesh();
   
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test1\n\n";
   return;
 }
@@ -59,6 +65,9 @@ void test2()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
 
   cout << "\n\nPassed test2\n\n";
   return;
@@ -89,6 +98,9 @@ void test3()
   gmd.create_mesh();
   gmd.write_mesh();
 
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test3\n\n";
   return;
 }
@@ -118,6 +130,9 @@ void test4()
   gmd.create_mesh();
   gmd.write_mesh();
 
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test4\n\n";
   return;
 }
@@ -146,6 +161,9 @@ void test5()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
 
   cout << "\n\nPassed test5\n\n";
   return;
@@ -203,6 +221,9 @@ void test6()
   gmd.create_mesh();
   gmd.write_mesh();
 
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test6\n\n";
   return;
 }
@@ -259,6 +280,9 @@ void test7()
   gmd.create_mesh();
   gmd.write_mesh();
 
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test7\n\n";
   return;
 }
@@ -313,6 +337,9 @@ void test8()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
 
   cout << "\n\nPassed test8\n\n";
   return;
@@ -369,6 +396,9 @@ void test9()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
 
   cout << "\n\nPassed test9\n\n";
   return;
@@ -454,6 +484,9 @@ void test10()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
 
   cout << "\n\nPassed test10\n\n";
   return;
@@ -541,6 +574,9 @@ void test11()
   gmd.create_mesh();
   gmd.write_mesh();
 
+  gmd.release_model();
+  gmd.release_mesh();
+
   cout << "\n\nPassed test11\n\n";
   return;
 }
@@ -626,6 +662,9 @@ void test12()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
 
   cout << "\n\nPassed test12\n\n";
   return;

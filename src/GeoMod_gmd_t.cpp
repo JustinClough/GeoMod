@@ -17,6 +17,35 @@ namespace GMD
     return;
   }
 
+  void gmd_t::verify_model()
+  {
+    if(!(modeler->isValid()))
+    { print_warning("Model Not Valid. ");}
+    return;
+  }
+
+  void gmd_t::release_model()
+  {
+    modeler->release();
+    return;
+  }
+
+  pGModel gmd_t::get_model()
+  {
+    return modeler->model;
+  }
+
+  pMesh gmd_t::get_mesh()
+  {
+    return mesher->mesh;
+  }
+
+  void gmd_t::release_mesh()
+  {
+    mesher->release();
+    return;
+  }
+
   void gmd_t::set_abort_on_fail( bool abort_on_fail)
   {
     panicStatus = abort_on_fail;

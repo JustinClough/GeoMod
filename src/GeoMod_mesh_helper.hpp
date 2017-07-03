@@ -19,6 +19,7 @@ namespace GMD
       void write( std::string name);
       bool isValid();
       void create();
+      void release();
 
       // Members
       pMesh mesh;
