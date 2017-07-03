@@ -14,7 +14,7 @@ namespace GMD
   {
     public:
       // Basic methods
-      gmd_t( pGModel in_model);
+      gmd_t( pGModel in_model, int numParts = 1);
       ~gmd_t();
       void set_abort_on_fail( bool abort_on_fail);
       void test_printers();
@@ -25,6 +25,7 @@ namespace GMD
       pGModel get_model();
       void verify_mesh();
       pMesh get_mesh();
+      pParMesh get_par_mesh();
       void release_mesh();
 
       // Writing methods

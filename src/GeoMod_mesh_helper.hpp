@@ -13,7 +13,7 @@ namespace GMD
     friend class gmd_t;
     private:
       // Util methods
-      mesh_helper_t( pGModel in_model);
+      mesh_helper_t( pGModel in_model, int numParts);
       ~mesh_helper_t();
       void mesh_print();
       void write( std::string name);
@@ -22,7 +22,9 @@ namespace GMD
       void release();
 
       // Members
+      bool isPar;
       pMesh mesh;
+      pParMesh parMesh;
       pACase m_case;
       bool globalSet;
       double order;

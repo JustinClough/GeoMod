@@ -2,11 +2,11 @@
 
 namespace GMD
 {
-  gmd_t::gmd_t( pGModel in_model)
+  gmd_t::gmd_t( pGModel in_model, int numParts)
   {
     panicStatus = true;
     modeler = new model_helper_t( in_model);
-    mesher = new mesh_helper_t ( in_model);
+    mesher = new mesh_helper_t ( in_model, numParts);
     return;
   }
 
@@ -150,6 +150,11 @@ namespace GMD
       print_error("Invalid model. No mesh created");
     }
     return;
+  }
+
+  pParMesh gmd_t::get_par_mesh()
+  {
+    return mesher->parMesh;
   }
 
   void gmd_t::verify_mesh()

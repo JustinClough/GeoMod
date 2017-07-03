@@ -2,9 +2,20 @@
 
 namespace GMD
 {
-  mesh_helper_t::mesh_helper_t( pGModel in_model)
+  mesh_helper_t::mesh_helper_t( pGModel in_model, int numParts)
   {
-    mesh = M_new( 0, in_model);
+    if( numParts == 1)
+    {
+      mesh = M_new( 0, in_model);
+      isPar = false;
+      parMesh = NULL;
+    }
+    else if ( numParts > 1)
+    {
+      mesh = NULL;
+      parMesh = PM_new( 0, in_model, numParts);
+      isPar = true;
+    }
     m_case = MS_newMeshCase( in_model);
     globalSet = false;
 
@@ -21,8 +32,15 @@ namespace GMD
   void mesh_helper_t::release()
   {
     MS_deleteMeshCase(m_case);
-    M_release( mesh);
-    return;
+    if(isPar)
+    {
+      M_release( parMesh);
+    }
+    else
+    {
+      M_release( mesh);
+    }
+    return; 
   }
 
   void mesh_helper_t::mesh_print()
@@ -55,6 +73,7 @@ namespace GMD
   {
     if(!globalSet)
     { print_error("Global Mesh Parameters not set.");}
+
     pModelItem domain = GM_domain( M_model(mesh));
     MS_setMeshSize(m_case, domain, 2, refine, NULL);
 
