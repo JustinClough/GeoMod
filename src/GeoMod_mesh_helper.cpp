@@ -52,20 +52,31 @@ namespace GMD
   bool mesh_helper_t::isValid()
   { // Only validates serial meshes for now
     bool ans = false;
-    pGModel model = M_model( mesh);
-    pPList mesh_list = PList_new();
-    PList_append( mesh_list, mesh);
-    pParMesh par_mesh = PM_createFromMesh(
-        model, 
-        M_representation(mesh), 
-        mesh_list, NULL, NULL, NULL);
+    pParMesh tmp;
+    if (!isPar)
+    {
+      pGModel model = M_model( mesh);
+      pPList mesh_list = PList_new();
+      PList_append( mesh_list, mesh);
+      tmp = PM_createFromMesh(
+          model, 
+          M_representation(mesh), 
+          mesh_list, NULL, NULL, NULL);
+      PList_delete( mesh_list);
+    }
+    else
+    {
+      tmp = parMesh;
+    }
 
-    int status = PM_verify(par_mesh, 0, NULL);
+    int status = PM_verify(tmp, 0, NULL);
     if (status == 1)
     { ans = true;}
 
-    M_release(par_mesh);
-    PList_delete( mesh_list);
+    if(!isPar)
+    {
+      M_release( tmp);
+    }
     return ans;
   }
 
