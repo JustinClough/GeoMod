@@ -85,7 +85,16 @@ namespace GMD
     if(!globalSet)
     { print_error("Global Mesh Parameters not set.");}
 
-    pModelItem domain = GM_domain( M_model(mesh));
+    pModelItem domain;
+    if(!isPar)
+    {
+      domain = GM_domain( M_model(mesh));
+    }
+    else
+    {
+      domain = GM_domain( M_model(parMesh));
+    }
+
     MS_setMeshSize(m_case, domain, 2, refine, NULL);
 
     if( grad_rate > 0.0)
@@ -105,6 +114,34 @@ namespace GMD
     return;
   }
 
+  void mesh_helper_t::print_mesh_info()
+  {
+    int partCount = 0;
+    pMesh tmp;
+    if(!isPar)
+    {
+      partCount = 1;
+      tmp = mesh;
+    }
+    else 
+    {
+      partCount = PM_totalNumParts( parMesh);
+    }
+    for( int i = 0; i < partCount; ++i)
+    {
+      if(isPar)
+      {
+        tmp = PM_mesh( parMesh, i);
+      }
+      std::cout << "MESH INFORMATION of part: " << i 
+        << "\nVertices: "<< M_numVertices(mesh)
+        << "\nEdges: "<< M_numEdges(mesh)
+        << "\nFaces: "<< M_numFaces(mesh)
+        << "\nRegions: "<< M_numRegions(mesh) << std::endl;
+    }
+    return;
+  }
+
   void mesh_helper_t::write( std::string name)
   {
     std::string tmp_name = name + ".sms";
@@ -112,19 +149,29 @@ namespace GMD
     if( !isValid())
     { print_warning("Attempting to write invalid mesh.");}
 
-    std::cout << "MESH INFORMATION: "
-      << "\nVertices: "<< M_numVertices(mesh)
-      << "\nEdges: "<< M_numEdges(mesh)
-      << "\nFaces: "<< M_numFaces(mesh)
-      << "\nRegions: "<< M_numRegions(mesh) << std::endl;
+    print_mesh_info();
 
-    int writestat = M_write(mesh, name_c, 0,0);
+    int writestat = 1;
+    if(!isPar)
+    {
+      writestat = M_write(mesh, name_c, 0,0);
+    }
+    else
+    {
+      PM_write( parMesh, name_c, NULL);
+      // Since no status is reported, we'll
+      // just assume everything went well
+      // if we made it this far.
+      writestat = 0;
+    }
+
     if(writestat == 0)
     { 
       std::cout << "Mesh " << name << " written." << std::endl; 
     }
     else
     { std::cout << "Mesh " << name << " failed to be written." << std::endl; }
+
     return;
   }
 

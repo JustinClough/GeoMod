@@ -37,6 +37,8 @@ namespace GMD
 
   pMesh gmd_t::get_mesh()
   {
+    if(mesher->isPar)
+    { print_error("Cannot retrieve parallel mesh with this method.");}
     return mesher->mesh;
   }
 
@@ -154,6 +156,8 @@ namespace GMD
 
   pParMesh gmd_t::get_par_mesh()
   {
+    if( !(mesher->isPar))
+    { print_error("Cannot retrieve serial mesh with this method.");}
     return mesher->parMesh;
   }
 

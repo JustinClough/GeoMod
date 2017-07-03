@@ -20,6 +20,7 @@ namespace GMD
       bool isValid();
       void create();
       void release();
+      void print_mesh_info();
 
       // Members
       bool isPar;
