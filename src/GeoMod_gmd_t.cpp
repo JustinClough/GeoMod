@@ -287,4 +287,11 @@ namespace GMD
 
     return;
   }
+
+  void gmd_t::force_surf_quads()
+  {
+    mesher->force_surf_quad(); 
+    return;
+  }
+  
 }

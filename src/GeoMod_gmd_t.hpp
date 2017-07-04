@@ -66,6 +66,7 @@ namespace GMD
           double refine_in, 
           double grad_rate_in);
       void create_mesh();
+      void force_surf_quads();
     
     private:
       bool panicStatus;

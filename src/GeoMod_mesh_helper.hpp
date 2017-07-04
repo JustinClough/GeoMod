@@ -42,6 +42,7 @@ namespace GMD
       void refine_vertex( double refine, pGVertex vert);
       void refine_edge( double refine, pGEdge edge);
       void refine_face( double refine, pGFace face);
+      void force_surf_quad();
 
   };
 

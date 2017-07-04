@@ -2,6 +2,7 @@
 
 namespace GMD
 {
+
   mesh_helper_t::mesh_helper_t( pGModel in_model, int numParts)
   {
     if( numParts == 1)
@@ -215,6 +216,12 @@ namespace GMD
     order = order_in;
     refine = refine_in;
     grad_rate = grad_rate_in;
+    return;
+  }
+
+  void mesh_helper_t::force_surf_quad()
+  {
+    MS_setSurfaceMeshType( m_case, GM_domain( M_model(mesh)), 3);
     return;
   }
 
