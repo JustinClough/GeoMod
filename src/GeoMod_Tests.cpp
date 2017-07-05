@@ -214,7 +214,7 @@ void test6()
 
   pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine, edge);
+  gmd.place_edge_spline( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -273,7 +273,7 @@ void test7()
 
   pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine, edge);
+  gmd.place_edge_spline( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -331,7 +331,7 @@ void test8()
 
   pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine, edge);
+  gmd.place_edge_spline( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -390,7 +390,7 @@ void test9()
 
   pGEdge edge;
   double refine = 0.1;
-  gmd.place_edge( order, points, knots, weights, refine, edge);
+  gmd.place_edge_spline( order, points, knots, weights, refine, edge);
 
   gmd.write_model();
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
@@ -667,5 +667,38 @@ void test12()
   gmd.release_mesh();
 
   cout << "\n\nPassed test12\n\n";
+  return;
+}
+
+/* test13();
+ *     - Create a 3D model
+ *     - Add a straight edge
+ *     - Write Model
+ *     - Create Mesh
+ *     - Write Mesh
+ */
+void test13()
+{
+  pGModel cube = GMD::create_cube( 2.0);
+  GMD::gmd_t gmd( cube);
+
+  double start[3] = {0.5, 0.5, 0.5};
+  double end[3] = {-0.5, -0.5, -0.5};
+  double refine = 0.1;
+  pGEdge edge;
+  gmd.place_edge_line( start, end, refine, edge);
+
+  char name[] = "test13_cube";
+  gmd.set_name( name);
+
+  gmd.write_model();
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
+  gmd.create_mesh();
+  gmd.write_mesh();
+
+  gmd.release_model();
+  gmd.release_mesh();
+
+  cout << "\n\nPassed test13\n\n";
   return;
 }

@@ -39,11 +39,16 @@ namespace GMD
           double refine, 
           double radius, 
           pGVertex& vert);
-      void place_edge( 
+      void place_edge_spline( 
           int order,
           std::vector<double*> points, 
           std::vector<double> knots,
           std::vector<double> weights,
+          double refine,
+          pGEdge& edge);
+      void place_edge_line(
+          double* start,
+          double* end,
           double refine,
           pGEdge& edge);
       void place_surface_by_spline(
