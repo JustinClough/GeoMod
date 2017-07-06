@@ -281,7 +281,14 @@ namespace GMD
     int location = point_location(coords);
     if( location == 0)
     {
-      print_warning("Point outside of known regions.");
+      if(abort_on_fail)
+      {
+        print_error("Point outside of known regions.");
+      }
+      else
+      {
+        print_warning("Point outside of known regions.");
+      }
       updateMesh = false;
       put_point_outside( coords, vert);
     }
@@ -297,7 +304,6 @@ namespace GMD
     {
       put_point_in_region( coords, vert);
     }
-    (void) abort_on_fail;
     return updateMesh;
   }
 
@@ -404,7 +410,6 @@ namespace GMD
   }
 
   void model_helper_t::create_edge( 
-      int order, 
       std::vector<double*> points, 
       pCurve& curve, 
       pGEdge& edge)
@@ -455,7 +460,6 @@ namespace GMD
       GM_insertEdgeOnFace( face, edge, new_faces);
     }
 
-    (void) order;
     return;
   }
 
@@ -468,7 +472,7 @@ namespace GMD
   {
     pCurve curve;
     create_curve( order, points, knots, weights, curve);
-    create_edge( order, points, curve, edge);
+    create_edge( points, curve, edge);
     return;
   }
 
