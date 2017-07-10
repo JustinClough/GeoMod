@@ -9,4 +9,4 @@ module load mpich3/3.1.2-thread-multiple
 module load simmetrix/simModSuite
 module load simmetrix/simModeler/6.0-170515dev
 module load parmetis/mpich3.1.2/4.0.3
-module load pumi
+module load trilinos
