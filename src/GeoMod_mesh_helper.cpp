@@ -118,7 +118,7 @@ namespace GMD
   void mesh_helper_t::print_mesh_info()
   {
     int partCount = 0;
-    pMesh tmp;
+    pMesh tmp = NULL;
     if(!isPar)
     {
       partCount = 1;
@@ -135,10 +135,10 @@ namespace GMD
         tmp = PM_mesh( parMesh, i);
       }
       std::cout << "MESH INFORMATION of part: " << i 
-        << "\nVertices: "<< M_numVertices(mesh)
-        << "\nEdges: "<< M_numEdges(mesh)
-        << "\nFaces: "<< M_numFaces(mesh)
-        << "\nRegions: "<< M_numRegions(mesh) << std::endl;
+        << "\nVertices: "<< M_numVertices(tmp)
+        << "\nEdges: "<< M_numEdges(tmp)
+        << "\nFaces: "<< M_numFaces(tmp)
+        << "\nRegions: "<< M_numRegions(tmp) << std::endl;
     }
     return;
   }

@@ -381,7 +381,7 @@ namespace GMD
     {
       bool answer = false;
       pGFace face;
-      pGFace conFace;
+      pGFace conFace = NULL;
       GFIter f_it = GM_faceIter( model);
       while(( face = GFIter_next(f_it)))
       {
