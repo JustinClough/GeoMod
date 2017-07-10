@@ -702,3 +702,22 @@ void test13()
   cout << "\n\nPassed test13\n\n";
   return;
 }
+
+/* test14()
+ *     - Construct a gmd by loading from file
+ *     - Test printer features 
+ *     - Implicitly destroy the gmd object
+ */
+void test14()
+{
+  std::string fileName = "test2_cube.smd";
+  GMD::gmd_t gmd( fileName, 1);
+  gmd.test_printers();
+
+  gmd.release_model();
+  gmd.release_mesh();
+
+  cout << "\n\nPassed test14\n\n";
+  return;
+}
+

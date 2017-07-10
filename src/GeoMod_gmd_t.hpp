@@ -15,10 +15,16 @@ namespace GMD
     public:
       // Basic methods
 
-      /// @brief Constructor.
+      /// @brief Constructor for models already in memory.
       /// @param in_model A pointer to a preexisting Simmetrix model.
       /// @param numParts The number of parts to partition mesh. 
       gmd_t( pGModel in_model, int numParts = 1);
+
+      /// @brief Constructor for models loaded from file.
+      /// @param fileName Filename, including relative path, of the model.
+      ///                 Must end with '.smd'.
+      /// @param numParts Number of parallel components. 
+      gmd_t( std::string fileName, int numParts = 1);
 
       /// @brief Destructor.
       ~gmd_t();

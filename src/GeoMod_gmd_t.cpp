@@ -10,6 +10,16 @@ namespace GMD
     return;
   }
 
+  gmd_t::gmd_t( std::string fileName, int numParts)
+  {
+    panicStatus = true;
+    const char* name = fileName.c_str();
+    pGModel tmp = GM_load( name, NULL, NULL);
+    modeler = new model_helper_t ( tmp);
+    mesher = new mesh_helper_t ( tmp, numParts);
+    return;
+  }
+
   gmd_t::~gmd_t()
   {
     delete modeler;
