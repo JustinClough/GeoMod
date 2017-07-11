@@ -40,6 +40,10 @@ namespace GMD
 
   bool model_helper_t::isValid()
   {
+    if(model == NULL)
+    {
+      print_warning("Attempting to validate NULL model.");
+    }
     if(GM_isValid( model, 1, NULL) == 1)
     { return true; }
     else
