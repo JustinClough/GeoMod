@@ -8,7 +8,7 @@ namespace GMD
 {
   void print_error( std::string message, bool abort_on_fail)
   {
-    std::cout << "Error: " <<  message << std::endl;
+    std::cout << "GeoMod Error: " <<  message << std::endl;
     if( abort_on_fail)
     {
       std::abort();
@@ -18,7 +18,7 @@ namespace GMD
 
   void print_warning( std::string message)
   {
-    std::cout << "Warning: " << message << std::endl;
+    std::cout << "GeoMod Warning: " << message << std::endl;
     return;
   }
 
