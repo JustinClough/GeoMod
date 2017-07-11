@@ -1,8 +1,11 @@
 #ifndef GEOMOD_GMD_T_HPP
 #define GEOMOD_GMD_T_HPP
 
+// Standard Library
 #include <string>
 #include <vector>
+
+// GeoMod Headers
 #include "GeoMod_printer.hpp"
 #include "GeoMod_model_helper.hpp"
 #include "GeoMod_mesh_helper.hpp"

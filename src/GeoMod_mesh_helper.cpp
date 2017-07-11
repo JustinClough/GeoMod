@@ -1,3 +1,4 @@
+// This file's header
 #include "GeoMod_mesh_helper.hpp"
 
 namespace GMD

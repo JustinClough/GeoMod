@@ -1,3 +1,4 @@
+// This files's header
 #include "GeoMod_gmd_t.hpp"
 
 namespace GMD

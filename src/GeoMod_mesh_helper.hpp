@@ -1,8 +1,11 @@
 #ifndef GEOMOD_MESH_HELPER_HPP
 #define GEOMOD_MESH_HELPER_HPP
 
+// Standard Library
 #include <string>
 #include <vector>
+
+// GeoMod Headers
 #include "GeoMod_SIM.hpp"
 #include "GeoMod_printer.hpp"
 
