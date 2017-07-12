@@ -23,3 +23,7 @@ cmake \
 
 make
 make install
+
+cd $GM_DIR
+
+echo $'\nGeoMod built and installed.\n'
