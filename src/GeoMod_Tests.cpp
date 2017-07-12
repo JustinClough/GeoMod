@@ -3,7 +3,7 @@
 
 using std::cout;
 
-/* test0(): 
+/* test0():
  *     - Create a 3D model
  *     - Create a gmd object
  *     - Test printing features
@@ -22,7 +22,7 @@ void test0()
   return;
 }
 
-/* test1(): 
+/* test1():
  *     - Create 2D model
  *     - Create gmd_t instance with model
  *     - Write model
@@ -30,7 +30,7 @@ void test0()
  *     - Write mesh
  */
 void test1()
-{ 
+{
   pGModel rectangle = GMD::create_2D_rectangle( 5.0, 7.0);
   GMD::gmd_t gmd( rectangle);
 
@@ -40,7 +40,7 @@ void test1()
   gmd.set_global_mesh_params( 1, 0.9, 0.0);
   gmd.create_mesh();
   gmd.write_mesh();
-  
+
   gmd.release_model();
   gmd.release_mesh();
 
@@ -48,7 +48,7 @@ void test1()
   return;
 }
 
-/* test2(): 
+/* test2():
  *     - Create a 3D model
  *     - Create gmd_t instance with model
  *     - Write model
@@ -170,7 +170,7 @@ void test5()
 }
 
 /* test6():
- *     - Create a 3D model 
+ *     - Create a 3D model
  *     - Place a fully interior edge define by three points
  *     - Write model
  *     - Do not assign name so auto-nameing feature is checked
@@ -192,7 +192,7 @@ void test6()
   double p4[3] = {0.0, -0.3, 0.0};
   double p5[3] = {-0.7, 0.0, 0.0};
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -251,7 +251,7 @@ void test7()
   double p4[3] = {1.0, -0.3, 0.0};
   double p5[3] = {1.0, 0.0, 0.4};
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -309,7 +309,7 @@ void test8()
   double p4[3] = {0.0, -0.3, 0.0};
   double p5[3] = {0.0, 0.0, 0.4};
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -368,7 +368,7 @@ void test9()
   double p4[3] = {0.0, -0.3, 0.0};
   double p5[3] = {0.0, 0.0, 0.4};
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -428,20 +428,20 @@ void test10()
   double p1[3]  = {-6.0, -7.0, 3.0};
   double p2[3]  = {-2.0, -4.0, 0.0};
   double p3[3]  = { 3.0, -3.0, 1.0};
-  double p4[3]  = { 7.0, -5.0, -3.0}; 
-  // second 'row'               
+  double p4[3]  = { 7.0, -5.0, -3.0};
+  // second 'row'
   double p5[3]  = {-5.0, 0.0, -1.0};
   double p6[3]  = {-2.0, 0.0, 3.0};
   double p7[3]  = { 3.0, 1.0, -7.0};
-  double p8[3]  = { 7.0, 0.0, 2.0}; 
-  // third 'row'            
+  double p8[3]  = { 7.0, 0.0, 2.0};
+  // third 'row'
   double p9[3]  = {-6.0, 4.0, 1.0};
   double p10[3] = {-2.0, 2.0, 0.0};
   double p11[3] = { 3.0, 4.0, -3.0};
   double p12[3] = { 7.0, 3.0, 0.0};
 
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -475,9 +475,9 @@ void test10()
 
   pGFace face;
   double refine = 0.1;
-  gmd.place_surface_by_spline( 
+  gmd.place_surface_by_spline(
       u_order, v_order, u_num, v_num, periodicity,
-      points, u_knots, v_knots, weights, 
+      points, u_knots, v_knots, weights,
       refine, face);
 
   gmd.write_model();
@@ -517,20 +517,20 @@ void test11()
   double p1[3]  = {-6.0, -7.0, 3.0};
   double p2[3]  = {-2.0, -4.0, 0.0};
   double p3[3]  = { 3.0, -3.0, 1.0};
-  double p4[3]  = { 7.0, -5.0, -3.0}; 
-  // second 'row'               
+  double p4[3]  = { 7.0, -5.0, -3.0};
+  // second 'row'
   double p5[3]  = {-5.0, 0.0, -1.0};
   double p6[3]  = {-2.0, 0.0, 3.0};
   double p7[3]  = { 3.0, 1.0, -7.0};
-  double p8[3]  = { 7.0, 0.0, 2.0}; 
-  // third 'row'            
+  double p8[3]  = { 7.0, 0.0, 2.0};
+  // third 'row'
   double p9[3]  = {-10.0, 4.0, 1.0};
   double p10[3] = {-2.0, 2.0, 0.0};
   double p11[3] = { 3.0, 4.0, -3.0};
   double p12[3] = { 7.0, 3.0, 0.0};
 
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -564,9 +564,9 @@ void test11()
 
   pGFace face;
   double refine = 0.1;
-  gmd.place_surface_by_spline( 
+  gmd.place_surface_by_spline(
       u_order, v_order, u_num, v_num, periodicity,
-      points, u_knots, v_knots, weights, 
+      points, u_knots, v_knots, weights,
       refine, face);
 
   gmd.write_model();
@@ -606,20 +606,20 @@ void test12()
   double p1[3]  = {-10.0, -7.0, 3.0};
   double p2[3]  = {-2.0, -4.0, 0.0};
   double p3[3]  = { 3.0, -3.0, 1.0};
-  double p4[3]  = { 7.0, -5.0, -3.0}; 
-  // second 'row'               
+  double p4[3]  = { 7.0, -5.0, -3.0};
+  // second 'row'
   double p5[3]  = {-10.0, 0.0, -1.0};
   double p6[3]  = {-2.0, 0.0, 3.0};
   double p7[3]  = { 3.0, 1.0, -7.0};
-  double p8[3]  = { 7.0, 0.0, 2.0}; 
-  // third 'row'            
+  double p8[3]  = { 7.0, 0.0, 2.0};
+  // third 'row'
   double p9[3]  = {-10.0, 4.0, 1.0};
   double p10[3] = {-5.0, 2.0, 0.0};
   double p11[3] = { 3.0, 4.0, -3.0};
   double p12[3] = { 7.0, 3.0, 0.0};
 
   std::vector<double*> points;
-  points.push_back(p1); 
+  points.push_back(p1);
   points.push_back(p2);
   points.push_back(p3);
   points.push_back(p4);
@@ -653,9 +653,9 @@ void test12()
 
   pGFace face;
   double refine = 0.1;
-  gmd.place_surface_by_spline( 
+  gmd.place_surface_by_spline(
       u_order, v_order, u_num, v_num, periodicity,
-      points, u_knots, v_knots, weights, 
+      points, u_knots, v_knots, weights,
       refine, face);
 
   gmd.write_model();
@@ -705,7 +705,7 @@ void test13()
 
 /* test14()
  *     - Construct a gmd by loading from file
- *     - Test printer features 
+ *     - Test printer features
  *     - Implicitly destroy the gmd object
  */
 void test14()

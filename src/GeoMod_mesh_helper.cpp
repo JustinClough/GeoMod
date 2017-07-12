@@ -42,7 +42,7 @@ namespace GMD
     {
       M_release( mesh);
     }
-    return; 
+    return;
   }
 
   void mesh_helper_t::mesh_print()
@@ -61,8 +61,8 @@ namespace GMD
       pPList mesh_list = PList_new();
       PList_append( mesh_list, mesh);
       tmp = PM_createFromMesh(
-          model, 
-          M_representation(mesh), 
+          model,
+          M_representation(mesh),
           mesh_list, NULL, NULL, NULL);
       PList_delete( mesh_list);
     }
@@ -125,7 +125,7 @@ namespace GMD
       partCount = 1;
       tmp = mesh;
     }
-    else 
+    else
     {
       partCount = PM_totalNumParts( parMesh);
     }
@@ -135,7 +135,7 @@ namespace GMD
       {
         tmp = PM_mesh( parMesh, i);
       }
-      std::cout << "MESH INFORMATION of part: " << i 
+      std::cout << "MESH INFORMATION of part: " << i
         << "\nVertices: "<< M_numVertices(tmp)
         << "\nEdges: "<< M_numEdges(tmp)
         << "\nFaces: "<< M_numFaces(tmp)
@@ -168,8 +168,8 @@ namespace GMD
     }
 
     if(writestat == 0)
-    { 
-      std::cout << "Mesh " << name << " written." << std::endl; 
+    {
+      std::cout << "Mesh " << name << " written." << std::endl;
     }
     else
     { std::cout << "Mesh " << name << " failed to be written." << std::endl; }
@@ -183,28 +183,28 @@ namespace GMD
     return;
   }
 
-  void mesh_helper_t::place_point( 
-      double coords[3], 
-      double refine, 
-      double radius, 
+  void mesh_helper_t::place_point(
+      double coords[3],
+      double refine,
+      double radius,
       bool abort_on_fail)
   {
     if (refine >0.0)
     {
       if (radius == 0.0)
       {
-        MS_addPointRefinement( m_case, refine, coords); 
+        MS_addPointRefinement( m_case, refine, coords);
       }
       else if (radius > 0.0)
       {
         MS_addSphereRefinement( m_case, refine, radius, coords);
       }
       else if(abort_on_fail)
-      { 
+      {
         print_error( "Refinement radius must be zero or greater");
       }
       else
-      { 
+      {
         print_warning( "Refinement radius must be zero or greater");
       }
     }

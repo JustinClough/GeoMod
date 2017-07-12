@@ -82,17 +82,17 @@ namespace GMD
 
     return;
   }
-  
+
   void gmd_t::set_name( std::string file_name)
   {
     name = file_name;
     return;
   }
 
-  void gmd_t::check_spline_params( 
-      int order, 
-      std::vector<double*> points, 
-      std::vector<double> knots, 
+  void gmd_t::check_spline_params(
+      int order,
+      std::vector<double*> points,
+      std::vector<double> knots,
       std::vector<double> weights)
   {
     if( order <=1)
@@ -106,7 +106,7 @@ namespace GMD
     {
       double tmp1 = knots[i];
       if( i<((int)knots.size() -1) )
-      { 
+      {
         double tmp2 = knots[i+1];
         if (tmp2 < tmp1)
         { print_error("Knots must be in accending order");}
@@ -117,7 +117,7 @@ namespace GMD
       { print_error("Last order_number of knots must be one.");}
 
       if( tmp1 > 1.0 || tmp1 < 0.0)
-      { 
+      {
         print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
       }
     }
@@ -127,12 +127,12 @@ namespace GMD
     return;
   }
 
-  void gmd_t::place_edge_spline( 
-      int order, 
-      std::vector<double*> points, 
-      std::vector<double> knots, 
-      std::vector<double> weights, 
-      double refine, 
+  void gmd_t::place_edge_spline(
+      int order,
+      std::vector<double*> points,
+      std::vector<double> knots,
+      std::vector<double> weights,
+      double refine,
       pGEdge& edge)
   {
     check_spline_params( order, points, knots, weights);
@@ -153,7 +153,7 @@ namespace GMD
     std::vector<double*> points;
     points.push_back( start);
     points.push_back( end);
-    
+
     std::vector<double> knots;
     knots.push_back( 0.0);
     knots.push_back( 0.0);
@@ -213,7 +213,7 @@ namespace GMD
   {
     if(modeler->isWritten())
     { mesher->write( name); }
-    else 
+    else
     { print_error("Model must be written before mesh."); }
     return;
   }
@@ -225,11 +225,11 @@ namespace GMD
   }
 
   void gmd_t::place_surface_by_spline(
-      int u_order, 
-      int v_order, 
+      int u_order,
+      int v_order,
       int u_num,
       int v_num,
-      int periodicity, 
+      int periodicity,
       std::vector<double*> points,
       std::vector<double> u_knots,
       std::vector<double> v_knots,
@@ -237,10 +237,10 @@ namespace GMD
       double refine,
       pGFace& face)
   {
-    check_surface_params( 
+    check_surface_params(
         u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights);
 
-    modeler->place_surface_by_spline( 
+    modeler->place_surface_by_spline(
         u_order, v_order, u_num, v_num, periodicity, points, u_knots, v_knots, weights, face);
 
     mesher->refine_face( refine, face);
@@ -248,15 +248,15 @@ namespace GMD
     return;
   }
 
-  void gmd_t::check_surface_params( 
-      int u_order, 
-      int v_order, 
+  void gmd_t::check_surface_params(
+      int u_order,
+      int v_order,
       int u_num,
       int v_num,
-      int periodicity, 
-      std::vector<double*> points, 
-      std::vector<double> u_knots, 
-      std::vector<double> v_knots, 
+      int periodicity,
+      std::vector<double*> points,
+      std::vector<double> u_knots,
+      std::vector<double> v_knots,
       std::vector<double> weights)
   {
     if( periodicity < 0 || periodicity > 4)
@@ -268,7 +268,7 @@ namespace GMD
     { print_error("v_order too low.");}
 
     if( (int)points.size() != (u_num*v_num))
-    { print_error("Mismatched number of declared and given control points.");} 
+    { print_error("Mismatched number of declared and given control points.");}
 
     if( (int)weights.size() != 1 &&  (int)weights.size() != (u_num*v_num))
     { print_error("Mismatched number of weights and declared control points.");}
@@ -282,7 +282,7 @@ namespace GMD
     {
       double tmp1 = u_knots[i];
       if( i<((int)u_knots.size() -1) )
-      { 
+      {
         double tmp2 = u_knots[i+1];
         if (tmp2 < tmp1)
         { print_error("Knots must be in accending u_order");}
@@ -293,7 +293,7 @@ namespace GMD
       { print_error("Last u_order_number of u_knots must be one.");}
 
       if( tmp1 > 1.0 || tmp1 < 0.0)
-      { 
+      {
         print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
       }
     }
@@ -305,7 +305,7 @@ namespace GMD
     {
       double tmp1 = v_knots[i];
       if( i<((int)v_knots.size() -1) )
-      { 
+      {
         double tmp2 = v_knots[i+1];
         if (tmp2 < tmp1)
         { print_error("Knots must be in accending v_order");}
@@ -316,7 +316,7 @@ namespace GMD
       { print_error("Last v_order_number of v_knots must be one.");}
 
       if( tmp1 > 1.0 || tmp1 < 0.0)
-      { 
+      {
         print_error("Knots must satisfy 0.0<=k[i]<=1.0 .");
       }
     }
@@ -326,8 +326,8 @@ namespace GMD
 
   void gmd_t::force_surf_quads()
   {
-    mesher->force_surf_quad(); 
+    mesher->force_surf_quad();
     return;
   }
-  
+
 }

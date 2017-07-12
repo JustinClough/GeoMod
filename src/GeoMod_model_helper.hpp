@@ -37,7 +37,7 @@ namespace GMD
       /// @param name Name of the file. '.smd' is appended.
       void write( std::string name);
 
-      /// @brief Returns true if the model is topologically valid. 
+      /// @brief Returns true if the model is topologically valid.
       bool isValid();
 
       /// @brief Returns true is the model has been written.
@@ -46,21 +46,21 @@ namespace GMD
       /// @brief Puts the values pointed to in vec into array x.
       /// @param vec The vector of coordinates.
       /// @param x   The array of coordinates to write to.
-      void unpack_vector_spline_points( 
+      void unpack_vector_spline_points(
           std::vector<double*> vec,
           double* x);
 
       /// @brief Puts the values in vec into array x.
       /// @param vec The vector of values.
-      /// @param x   The array of values to write to. 
+      /// @param x   The array of values to write to.
       void unpack_vector( std::vector<double> vec, double* x);
 
       /// @brief Puts the values pointed to in points into all_points.
       /// @param points     The vector of coordinates. Order is
       ///                   all u points in v=0, then v=1, ... etc.
       /// @param all_points The array to write to.
-      void unpack_surface_vector( 
-          std::vector<double*> points, 
+      void unpack_surface_vector(
+          std::vector<double*> points,
           double* all_points);
 
       /// @brief Creates the bounding edges for a surface to become a face.
@@ -73,18 +73,18 @@ namespace GMD
       /// @param v_knots Vector of knots in the v direction.
       /// @param weights Vector of weights. Pass a single value of 0.0
       ///                for non-rational splines.
-      void create_bounding_edges( 
-          int u_order, 
-          int v_order, 
+      void create_bounding_edges(
+          int u_order,
+          int v_order,
           int u_num,
           int v_num,
-          std::vector<double*> points, 
-          std::vector<double> u_knots, 
-          std::vector<double> v_knots, 
+          std::vector<double*> points,
+          std::vector<double> u_knots,
+          std::vector<double> v_knots,
           std::vector<double> weights,
           std::vector<pGEdge>& edges);
-      void unpack_bounding_edges( 
-          std::vector<pGEdge>& edges, 
+      void unpack_bounding_edges(
+          std::vector<pGEdge>& edges,
           pGEdge* bounding_edges);
 
       // Members
@@ -98,9 +98,9 @@ namespace GMD
       /// @param vert   Pointer to the created vertex.
       /// @param abort_on_fail
       ///               Pass false to print only an warning if vertex placement fails.
-      bool place_point( 
-          double coords[3], 
-          pGVertex& vert, 
+      bool place_point(
+          double coords[3],
+          pGVertex& vert,
           bool abort_on_fail);
 
       /// @brief Returns true if the coordinate is on the given dimension
@@ -149,13 +149,13 @@ namespace GMD
       ///        created as model vertices.
       /// @param order   Order of the spline.
       /// @param points  Vector of coordinates of control points.
-      /// @param knots   Vector of spline knots. 
-      /// @param weights Weights for control points. 
+      /// @param knots   Vector of spline knots.
+      /// @param weights Weights for control points.
       ///                Pass single 0.0 for non-rational curve
-      /// @param edge    Pointer to the created edge. 
-      void place_edge( 
-          int order, 
-          std::vector<double*> points, 
+      /// @param edge    Pointer to the created edge.
+      void place_edge(
+          int order,
+          std::vector<double*> points,
           std::vector<double> knots,
           std::vector<double> weights,
           pGEdge& edge);
@@ -163,23 +163,23 @@ namespace GMD
       /// @brief Creates the curve defined by a basis spline.
       /// @param order   Order of the spline.
       /// @param points  Vector of coordinates of control points.
-      /// @param knots   Vector of spline knots. 
-      /// @param weights Weights for control points. 
+      /// @param knots   Vector of spline knots.
+      /// @param weights Weights for control points.
       ///                Pass single 0.0 for non-rational curve
-      /// @param curve   Pointer to the created curve. 
-      void create_curve( 
-          int order, 
-          std::vector<double*> points, 
+      /// @param curve   Pointer to the created curve.
+      void create_curve(
+          int order,
+          std::vector<double*> points,
           std::vector<double> knots,
           std::vector<double> weights,
           pCurve& curve);
 
       /// @brief Creates the edge defined by a curve.
       /// @param points  Vector of coordinates of control points.
-      /// @param curve   Pointer to the curve. 
-      /// @param edge    Pointer to the created edge. 
-      void create_edge( 
-          std::vector<double*> points, 
+      /// @param curve   Pointer to the curve.
+      /// @param edge    Pointer to the created edge.
+      void create_edge(
+          std::vector<double*> points,
           pCurve& curve,
           pGEdge& edge);
 
@@ -194,23 +194,23 @@ namespace GMD
       /// @param u_num       Number of control points in the u direction.
       /// @param v_num       Number of control points in the v direction.
       /// @param periodicity Pass 0 for no period.
-      ///                    1 for periodic in u direction. 
-      ///                    2 for periodic in v direction. 
-      ///                    3 for periodic in u and v direction. 
-      /// @param points      Control points of the surface. Formatted as 
+      ///                    1 for periodic in u direction.
+      ///                    2 for periodic in v direction.
+      ///                    3 for periodic in u and v direction.
+      /// @param points      Control points of the surface. Formatted as
       ///                    all for v=1, increasing u, then v=2, increasing u... etc.
       /// @param u_knots     The spline knots for the u direction.
       /// @param v_knots     The spline knots for the v direction.
-      /// @param weights     The weights of each control. Must be formatted 
-      ///                    the same as the control points. Pass a single 
+      /// @param weights     The weights of each control. Must be formatted
+      ///                    the same as the control points. Pass a single
       ///                    entry 0.0 for non-rational surface.
       /// @param face        Pointer to the created surface.
-      void place_surface_by_spline( 
-          int u_order, 
-          int v_order, 
+      void place_surface_by_spline(
+          int u_order,
+          int v_order,
           int u_num,
           int v_num,
-          int periodicity, 
+          int periodicity,
           std::vector<double*> points,
           std::vector<double> u_knots,
           std::vector<double> v_knots,
@@ -223,24 +223,24 @@ namespace GMD
       /// @param u_num       Number of control points in the u direction.
       /// @param v_num       Number of control points in the v direction.
       /// @param periodicity Pass 0 for no period.
-      ///                    1 for periodic in u direction. 
-      ///                    2 for periodic in v direction. 
-      ///                    3 for periodic in u and v direction. 
-      /// @param points      Control points of the surface. Formatted as 
+      ///                    1 for periodic in u direction.
+      ///                    2 for periodic in v direction.
+      ///                    3 for periodic in u and v direction.
+      /// @param points      Control points of the surface. Formatted as
       ///                    all for v=1, increasing u, then v=2, increasing u... etc.
       /// @param u_knots     The spline knots for the u direction.
       /// @param v_knots     The spline knots for the v direction.
-      /// @param weights     The weights of each control. Must be formatted 
-      ///                    the same as the control points. Pass a single 
+      /// @param weights     The weights of each control. Must be formatted
+      ///                    the same as the control points. Pass a single
       ///                    entry 0.0 for non-rational surface.
       /// @param surface     Pointer to the created surface.
       /// @param edges       Vector of the bounding edges.
-      void create_surface( 
-          int u_order, 
-          int v_order, 
+      void create_surface(
+          int u_order,
+          int v_order,
           int u_num,
           int v_num,
-          int periodicity, 
+          int periodicity,
           std::vector<double*> points,
           std::vector<double> u_knots,
           std::vector<double> v_knots,
@@ -256,7 +256,7 @@ namespace GMD
           pSurface& surface,
           std::vector<pGEdge>& edges,
           pGFace& face);
-          
+
   };
 
 }

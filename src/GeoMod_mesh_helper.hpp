@@ -41,7 +41,7 @@ namespace GMD
       void release();
 
       /// @brief Print mesh info to stdout.
-      ///        Info includes number of mesh vertices, 
+      ///        Info includes number of mesh vertices,
       ///        edges, faces, and regions for each part.
       void print_mesh_info();
 
@@ -60,18 +60,18 @@ namespace GMD
       /// @param coords  Coordinates (x,y,z) of refinement.
       /// @param refine  Relative mesh refinement level.
       /// @param radius  Radius of mesh refinement. Pass 0.0 to ignore.
-      /// @param abort_on_fail 
+      /// @param abort_on_fail
       ///                Abort or continue on failure.
-      void place_point( 
-          double coords[3], 
-          double refine, 
-          double radius, 
+      void place_point(
+          double coords[3],
+          double refine,
+          double radius,
           bool abort_on_fail);
 
       /// @brief Sets basic global mesh details.
       /// @param order_in  Order of the mesh. Pass 1 or 2 ONLY!!!
       /// @param refine_in Relative global refinement level.
-      /// @param grad_rate_in 
+      /// @param grad_rate_in
       ///                  Gradation rate; pass 0.0 to use default.
       void set_global( int order_in, double refine_in, double grad_rate_in);
 
@@ -80,7 +80,7 @@ namespace GMD
       /// @param vert   Existing model vertex.
       void refine_vertex( double refine, pGVertex vert);
 
-      /// @brief Sets refinement around a mesh vertex. 
+      /// @brief Sets refinement around a mesh vertex.
       /// @param refine Relative level of refinement.
       /// @param edge   Existing model edge.
       void refine_edge( double refine, pGEdge edge);

@@ -21,7 +21,7 @@ namespace GMD
 
   model_helper_t::~model_helper_t()
   {
-    // Assumes the user will delete the model 
+    // Assumes the user will delete the model
     //  when they are done with it.
     return;
   }
@@ -65,13 +65,13 @@ namespace GMD
 
     int writestat = GM_write(model, name_c, 0,0);
     if(writestat == 0)
-    { 
-      std::cout << "Model " << name << " written." << std::endl; 
+    {
+      std::cout << "Model " << name << " written." << std::endl;
       Written = true;
     }
     else
-    { 
-      std::cout << "Model " << name 
+    {
+      std::cout << "Model " << name
         << " failed to be written." << std::endl;
     }
 
@@ -126,7 +126,7 @@ namespace GMD
     int answer = 0;
     // Want to find classification on lowest gEnt dim
     // start from top work down, overwrite old answer
-    for(int i=3; i>0; i--) 
+    for(int i=3; i>0; i--)
     {
       if (i<3)
       {
@@ -227,7 +227,7 @@ namespace GMD
     GEIter_delete( e_it);
 
     if( !placed)
-    { 
+    {
       print_warning("Failed to place point on edge at");
       print_coords( coords);
     }
@@ -250,7 +250,7 @@ namespace GMD
     GFIter_delete( f_it);
 
     if( !placed)
-    { 
+    {
       print_warning("Failed to place point in face at");
       print_coords( coords);
     }
@@ -258,8 +258,8 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::put_point_in_region( 
-      double coords[3], 
+  void model_helper_t::put_point_in_region(
+      double coords[3],
       pGVertex& vert)
   {
     bool placed = false;
@@ -277,9 +277,9 @@ namespace GMD
     return;
   }
 
-  bool model_helper_t::place_point( 
-      double coords[3], 
-      pGVertex& vert, 
+  bool model_helper_t::place_point(
+      double coords[3],
+      pGVertex& vert,
       bool abort_on_fail)
   {
     bool updateMesh = true;
@@ -312,8 +312,8 @@ namespace GMD
     return updateMesh;
   }
 
-  void model_helper_t::unpack_vector_spline_points( 
-      std::vector<double*> vec, 
+  void model_helper_t::unpack_vector_spline_points(
+      std::vector<double*> vec,
       double* x)
   {
     int pos = 0;
@@ -339,11 +339,11 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::create_curve( 
-      int order, 
-      std::vector<double*> points, 
-      std::vector<double> knots, 
-      std::vector<double> weights, 
+  void model_helper_t::create_curve(
+      int order,
+      std::vector<double*> points,
+      std::vector<double> knots,
+      std::vector<double> weights,
       pCurve& curve)
   {
     int num_points = (int)points.size();
@@ -359,13 +359,13 @@ namespace GMD
 
     if(weightLess)
     {
-      curve = SCurve_createBSpline( 
+      curve = SCurve_createBSpline(
         order, num_points, u_points, u_knots, NULL);
     }
     else
     {
       unpack_vector( weights, un_weights);
-      curve = SCurve_createBSpline( 
+      curve = SCurve_createBSpline(
         order, num_points, u_points, u_knots, un_weights);
     }
     return;
@@ -414,9 +414,9 @@ namespace GMD
     }
   }
 
-  void model_helper_t::create_edge( 
-      std::vector<double*> points, 
-      pCurve& curve, 
+  void model_helper_t::create_edge(
+      std::vector<double*> points,
+      pCurve& curve,
       pGEdge& edge)
   {
     double* start_point = points[0];
@@ -445,7 +445,7 @@ namespace GMD
     if( region == NULL)
     { print_error("region is NULL");}
 
-    edge = GIP_insertEdgeInRegion( 
+    edge = GIP_insertEdgeInRegion(
         part, start_vert, end_vert, curve, 1, region);
     GRIter_delete( r_it);
 
@@ -468,11 +468,11 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::place_edge( 
-      int order, 
-      std::vector<double*> points, 
-      std::vector<double> knots, 
-      std::vector<double> weights, 
+  void model_helper_t::place_edge(
+      int order,
+      std::vector<double*> points,
+      std::vector<double> knots,
+      std::vector<double> weights,
       pGEdge& edge)
   {
     pCurve curve;
@@ -481,30 +481,30 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::place_surface_by_spline( 
-      int u_order, 
-      int v_order, 
+  void model_helper_t::place_surface_by_spline(
+      int u_order,
+      int v_order,
       int u_num,
       int v_num,
-      int periodicity, 
-      std::vector<double*> points, 
-      std::vector<double> u_knots, 
-      std::vector<double> v_knots, 
-      std::vector<double> weights, 
+      int periodicity,
+      std::vector<double*> points,
+      std::vector<double> u_knots,
+      std::vector<double> v_knots,
+      std::vector<double> weights,
       pGFace& face)
   {
     pSurface surf;
     std::vector<pGEdge> edges;
 
-    create_surface( 
-        u_order, v_order, u_num, v_num, periodicity, 
+    create_surface(
+        u_order, v_order, u_num, v_num, periodicity,
         points, u_knots, v_knots, weights, surf, edges);
     create_face( surf, edges, face);
     return;
   }
 
-  void model_helper_t::unpack_bounding_edges( 
-      std::vector<pGEdge>& edges, 
+  void model_helper_t::unpack_bounding_edges(
+      std::vector<pGEdge>& edges,
       pGEdge* bounding_edges)
   {
     for( int i=0; i<(int)edges.size(); i++)
@@ -514,8 +514,8 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::create_face( 
-      pSurface& surface, 
+  void model_helper_t::create_face(
+      pSurface& surface,
       std::vector<pGEdge>& edges,
       pGFace& face)
   {
@@ -540,22 +540,22 @@ namespace GMD
     GRIter r_it = GM_regionIter( model);
     pGRegion region = GRIter_next( r_it);
 
-    face = GIP_insertFaceInRegion( 
-        part, numEdges, bounding_edges, dirs, 
+    face = GIP_insertFaceInRegion(
+        part, numEdges, bounding_edges, dirs,
         numLoops, indLoop, surface, normal, region);
 
     GRIter_delete( r_it);
     return;
   }
 
-  void model_helper_t::create_bounding_edges( 
-      int u_order, 
-      int v_order, 
+  void model_helper_t::create_bounding_edges(
+      int u_order,
+      int v_order,
       int u_num,
       int v_num,
-      std::vector<double*> points, 
-      std::vector<double> u_knots, 
-      std::vector<double> v_knots, 
+      std::vector<double*> points,
+      std::vector<double> u_knots,
+      std::vector<double> v_knots,
       std::vector<double> weights,
       std::vector<pGEdge>& edges)
   {
@@ -640,16 +640,16 @@ namespace GMD
     return;
   }
 
-  void model_helper_t::create_surface( 
-      int u_order, 
-      int v_order, 
+  void model_helper_t::create_surface(
+      int u_order,
+      int v_order,
       int u_num,
       int v_num,
-      int periodicity, 
-      std::vector<double*> points, 
-      std::vector<double> u_knots, 
-      std::vector<double> v_knots, 
-      std::vector<double> weights, 
+      int periodicity,
+      std::vector<double*> points,
+      std::vector<double> u_knots,
+      std::vector<double> v_knots,
+      std::vector<double> weights,
       pSurface& surface,
       std::vector<pGEdge>& edges)
   {
@@ -687,15 +687,15 @@ namespace GMD
     double all_points[3*num_points] = {0.0};
     unpack_vector_spline_points( points, all_points);
 
-    create_bounding_edges( 
-        u_order, v_order, u_num, v_num, 
+    create_bounding_edges(
+        u_order, v_order, u_num, v_num,
         points, u_knots, v_knots, weights, edges);
 
     if(weightLess)
     {
-      surface = SSurface_createBSpline( 
-          u_order, v_order, 
-          u_num, v_num, 
+      surface = SSurface_createBSpline(
+          u_order, v_order,
+          u_num, v_num,
           u_per, v_per,
           all_points, NULL,
           unp_u_knots, unp_v_knots);
@@ -704,8 +704,8 @@ namespace GMD
     {
       double unp_weights[num_points] = {0.0};
       unpack_vector( weights, unp_weights);
-      surface = SSurface_createBSpline( 
-          u_order, v_order, 
+      surface = SSurface_createBSpline(
+          u_order, v_order,
           u_num,   v_num,
           u_per,   v_per,
           all_points, unp_weights,
