@@ -45,6 +45,25 @@ namespace GMD
     return;
   }
 
+  void mesh_helper_t::cast_serial_to_par()
+  {
+    if( isPar)
+    { // Nothing to do. ParMesh aleady exists/ will exist
+    }
+    else
+    {
+      pGModel model = M_model( mesh);
+      pPList mesh_list = PList_new();
+      PList_append( mesh_list, mesh);
+      parMesh = PM_createFromMesh(
+          model,
+          M_representation(mesh),
+          mesh_list, NULL, NULL, NULL);
+      PList_delete( mesh_list);
+    }
+    return;
+  }
+
   void mesh_helper_t::mesh_print()
   {
     std::cout << "Mesher says hello!" << std::endl;

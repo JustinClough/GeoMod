@@ -56,7 +56,7 @@ namespace GMD
       pMesh get_mesh();
 
       /// @brief Get a pointer to the Simmetrix mesh (parallel only).
-      pParMesh get_par_mesh();
+      pParMesh get_par_mesh( bool forceCast = false);
 
       /// @brief Release the Simmetrix mesh and mesh case.
       void release_mesh();

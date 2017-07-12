@@ -40,6 +40,10 @@ namespace GMD
       /// @brief Free memory of the mesh and mesh case.
       void release();
 
+      /// @brief Assigns the member parMesh to be a single-part
+      ///        parallel mesh based on the serial mesh.
+      void cast_serial_to_par();
+
       /// @brief Print mesh info to stdout.
       ///        Info includes number of mesh vertices,
       ///        edges, faces, and regions for each part.

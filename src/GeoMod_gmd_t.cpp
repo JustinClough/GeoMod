@@ -190,10 +190,16 @@ namespace GMD
     return;
   }
 
-  pParMesh gmd_t::get_par_mesh()
+  pParMesh gmd_t::get_par_mesh( bool forceCast)
   {
-    if( !(mesher->isPar))
-    { print_error("Cannot retrieve serial mesh with this method.");}
+    if( !(mesher->isPar) && !forceCast)
+    { 
+      print_error("Cannot retrieve serial mesh with this method.");
+    }
+    else if ( !(mesher->isPar) && forceCast)
+    {
+      mesher->cast_serial_to_par();
+    }
     return mesher->parMesh;
   }
 
