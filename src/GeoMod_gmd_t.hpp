@@ -56,6 +56,8 @@ namespace GMD
       pMesh get_mesh();
 
       /// @brief Get a pointer to the Simmetrix mesh (parallel only).
+      /// @param forceCast Forces a single-part parallel mesh to be
+      ///                  created from the serial mesh.
       pParMesh get_par_mesh( bool forceCast = false);
 
       /// @brief Release the Simmetrix mesh and mesh case.
