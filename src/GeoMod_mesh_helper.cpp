@@ -60,6 +60,8 @@ namespace GMD
           M_representation(mesh),
           mesh_list, NULL, NULL, NULL);
       PList_delete( mesh_list);
+      M_release( mesh);
+      isPar = true;
     }
     return;
   }

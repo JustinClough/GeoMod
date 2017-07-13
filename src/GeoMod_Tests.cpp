@@ -721,3 +721,21 @@ void test14()
   return;
 }
 
+void test15()
+{
+  std::string fileName = "test2_cube.smd";
+  GMD::gmd_t gmd( fileName, 1);
+
+  gmd.set_global_mesh_params( 1, 0.9, 0.0);
+  gmd.create_mesh();
+
+  pParMesh parMesh = gmd.get_par_mesh( true);
+  (void) parMesh;
+
+  gmd.release_model();
+  gmd.release_mesh();
+
+  cout << "\n\nPass test15\n\n";
+  return;
+}
+
