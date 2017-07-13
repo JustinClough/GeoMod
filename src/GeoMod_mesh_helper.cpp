@@ -33,7 +33,7 @@ namespace GMD
 
   void mesh_helper_t::release()
   {
-    MS_deleteMeshCase(m_case);
+    release_case();
     if(isPar)
     {
       M_release( parMesh);
@@ -42,6 +42,12 @@ namespace GMD
     {
       M_release( mesh);
     }
+    return;
+  }
+
+  void mesh_helper_t::release_case()
+  {
+    MS_deleteMeshCase(m_case);
     return;
   }
 

@@ -40,6 +40,9 @@ namespace GMD
       /// @brief Free memory of the mesh and mesh case.
       void release();
 
+      /// @brief Releases only the mesh case.
+      void release_case();
+
       /// @brief Assigns the member parMesh to be a single-part
       ///        parallel mesh based on the serial mesh.
       void cast_serial_to_par();

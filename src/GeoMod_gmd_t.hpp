@@ -63,6 +63,9 @@ namespace GMD
       /// @brief Release the Simmetrix mesh and mesh case.
       void release_mesh();
 
+      /// @brief Release only the mesh case.
+      void release_mesh_case_only();
+
       // Writing methods
       /// @brief Set the name of the model and mesh.
       /// @param file_name The name of the file.

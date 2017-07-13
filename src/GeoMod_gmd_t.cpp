@@ -59,6 +59,12 @@ namespace GMD
     return;
   }
 
+  void gmd_t::release_mesh_case_only()
+  {
+    mesher->release_case();
+    return;
+  }
+
   void gmd_t::set_abort_on_fail( bool abort_on_fail)
   {
     panicStatus = abort_on_fail;

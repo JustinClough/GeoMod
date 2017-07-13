@@ -721,6 +721,11 @@ void test14()
   return;
 }
 
+/* test15()
+ *     - Construct a gmd by loading from file
+ *     - Test serial to parallel mesh 'casting'
+ *     - Implicitly destroy the gmd object
+ */
 void test15()
 {
   std::string fileName = "test2_cube.smd";
@@ -738,4 +743,3 @@ void test15()
   cout << "\n\nPass test15\n\n";
   return;
 }
-
