@@ -1,10 +1,10 @@
 # Configures build system using cmake
 
 # Modify for your system
-GM_DIR=/lore/clougj/GeoMod
+GM_DIR=<Absolute_Path_To_Project_Root>
+
 
 source $GM_DIR/aux/setup.sh
-cd $GM_DIR
 
 if [ -d "$GM_DIR/build" ]; then
   rm -r $GM_DIR/build/

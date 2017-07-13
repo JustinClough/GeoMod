@@ -19,3 +19,7 @@ install/
 #Ignore Latex support files
 **.aux
 **.log
+
+#Ignore all config files except the template
+**config**.sh
+!aux/config_template.sh
