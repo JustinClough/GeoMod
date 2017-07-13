@@ -103,6 +103,7 @@ namespace GMD
       ///                Pass a vector with one entry of 0.0
       ///                to create a non rational spline
       /// @param refine  The relative mesh refinement for the edge.
+      ///                Pass 0.0 to ignore.
       /// @param edge    Pointer to the created edge.
       void place_edge_spline(
           int order,
@@ -113,9 +114,11 @@ namespace GMD
           pGEdge& edge);
 
       /// @brief Adds a straight edge to the model.
-      /// @param start The start point of the edge (x,y,z).
-      /// @param end   The end point of the edge (x,y,z).
-      /// @param edge  Pointer to the created edge.
+      /// @param start  The start point of the edge (x,y,z).
+      /// @param end    The end point of the edge (x,y,z).
+      /// @param refine Relative mesh refinement near the 
+      ///               created line. Pass 0.0. to ignore.
+      /// @param edge   Pointer to the created edge.
       void place_edge_line(
           double* start,
           double* end,
