@@ -179,6 +179,11 @@ namespace GMD
     return;
   }
 
+  int gmd_t::get_location( double p[3])
+  {
+    return modeler->point_location( p);
+  }
+
   void gmd_t::create_mesh()
   {
     if(modeler->isValid())

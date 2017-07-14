@@ -84,6 +84,22 @@ namespace GMD
     bool answer = false;
     bool areSame = false;
     double closest[] = {0.0, 0.0, 0.0};
+    if( dim == 0)
+    {
+      GVIter v_it = GM_vertexIter( model);
+      pGVertex v;
+      while (( v = GVIter_next( v_it)))
+      {
+        double tmp[3] = { 0.0, 0.0, 0.0};
+        GV_point( v , tmp);
+        compare_coords( coords, tmp, areSame, tol);
+        if( areSame)
+        {
+          answer = true;
+        }
+      }
+      GVIter_delete( v_it);
+    }
     if( dim == 1)
     {
       GEIter e_it = GM_edgeIter( model);
@@ -123,10 +139,10 @@ namespace GMD
 
   int model_helper_t::point_location(double coords[3])
   {
-    int answer = 0;
+    int answer = -1;
     // Want to find classification on lowest gEnt dim
     // start from top work down, overwrite old answer
-    for(int i=3; i>0; i--)
+    for(int i=3; i>(-1); i--)
     {
       if (i<3)
       {
@@ -144,7 +160,7 @@ namespace GMD
           if(GR_containsPoint( region, coords) == 0)
           { // Point is in the void region (spooky!)
             GRIter_delete( r_it);
-            return 0;
+            return -1;
           }
           else if (GR_containsPoint( region, coords) ==1)
           {
@@ -285,7 +301,7 @@ namespace GMD
   {
     bool updateMesh = true;
     int location = point_location(coords);
-    if( location == 0)
+    if( location == -1)
     {
       if(abort_on_fail)
       {
@@ -297,6 +313,24 @@ namespace GMD
       }
       updateMesh = false;
       put_point_outside( coords, vert);
+    }
+    else if ( location == 0)
+    {
+      double tol = GM_tolerance( model);
+      bool areSame = false;
+      GVIter v_it = GM_vertexIter( model);
+      pGVertex v;
+      while (( v = GVIter_next( v_it)))
+      {
+        double tmp[3] = { 0.0, 0.0, 0.0};
+        GV_point( v , tmp);
+        compare_coords( coords, tmp, areSame, tol);
+        if( areSame)
+        {
+          vert = v;
+        }
+      }
+      GVIter_delete( v_it);
     }
     else if ( location == 1)
     {

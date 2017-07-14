@@ -60,6 +60,14 @@ namespace GMD
       ///                  created from the serial mesh.
       pParMesh get_par_mesh( bool forceCast = false);
 
+      /// @brief Returns the dimension of the location of a point.
+      ///        Returns 0, 1, 2, 3 for model vertices, edges,
+      ///        faces, and regions respectively.
+      ///        Returns -1 if the point is in the void region.
+      ///        Aborts if the point location cannot be classified.
+      /// @param p A double array of the point (x, y, z).
+      int get_location( double p[3]);
+
       /// @brief Release the Simmetrix mesh and mesh case.
       void release_mesh();
 
