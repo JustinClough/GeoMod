@@ -143,6 +143,7 @@ namespace GMD
         {
           if(GR_containsPoint( region, coords) == 0)
           { // Point is in the void region (spooky!)
+            GRIter_delete( r_it);
             return 0;
           }
           else if (GR_containsPoint( region, coords) ==1)
