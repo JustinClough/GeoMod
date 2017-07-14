@@ -157,8 +157,8 @@ namespace GMD
     int order = 2;
 
     std::vector<double*> points;
-    points.push_back( end);
     points.push_back( start);
+    points.push_back( end);
 
     std::vector<double> knots;
     knots.push_back( 0.0);
