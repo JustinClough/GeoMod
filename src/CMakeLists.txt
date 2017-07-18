@@ -5,8 +5,7 @@ GeoMod_mesh_helper.cpp
 GeoMod_model_helper.cpp
 GeoMod_printer.cpp
 GeoMod_util.cpp
-GeoMod_Tests.cpp
-density_test.cpp)
+GeoMod_Tests.cpp)
 
 set(GeoMod_headers
 GeoMod_coords.hpp

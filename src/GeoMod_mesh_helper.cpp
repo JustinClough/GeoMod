@@ -79,7 +79,7 @@ namespace GMD
   }
 
   bool mesh_helper_t::isValid()
-  { // Only validates serial meshes for now
+  {
     bool ans = false;
     pParMesh tmp;
     if (!isPar)
