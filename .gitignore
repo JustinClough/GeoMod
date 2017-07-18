@@ -10,16 +10,19 @@ build/
 # Ignore the install directory
 install/
 
-#Ignore Latex support files
+# Ignore any test directories
+**test**/
+
+# Ignore Latex support files
 **.aux
 **.log
 
-#Ignore all config files except the template
+# Ignore all config files except the template
 **config**.sh
 !aux/config_template.sh
 
-#Ignore vim session files
+# Ignore vim session files
 **.vim
 
-#Ignore the todo.list if there is one
+# Ignore the todo.list if there is one
 todo.list
