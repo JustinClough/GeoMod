@@ -10,12 +10,6 @@ build/
 # Ignore the install directory
 install/
 
-#Ignore the density_tests directory
-**density_tests/
-
-#Ignore vim's session files
-**.vim
-
 #Ignore Latex support files
 **.aux
 **.log
@@ -24,5 +18,5 @@ install/
 **config**.sh
 !aux/config_template.sh
 
-#Ignore old source files
-src/old/
+#Ignore the todo.list if there is one
+todo.list
