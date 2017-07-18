@@ -23,6 +23,3 @@ install/
 #Ignore all config files except the template
 **config**.sh
 !aux/config_template.sh
-
-#Ignore old source files
-src/old/
