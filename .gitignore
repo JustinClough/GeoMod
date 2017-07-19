@@ -23,3 +23,6 @@ install/
 
 # Ignore vim session files
 **.vim
+
+# Ignore old files
+src/old/
