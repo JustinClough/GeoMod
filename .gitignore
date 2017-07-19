@@ -23,6 +23,3 @@ install/
 
 # Ignore vim session files
 **.vim
-
-# Ignore the todo.list if there is one
-todo.list
