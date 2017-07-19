@@ -26,10 +26,10 @@ target_include_directories(GeoMod PUBLIC
 
 bob_export_target(GeoMod)
 
-add_executable(GeoMod_app main.cpp)
-target_link_libraries(GeoMod_app PRIVATE GeoMod)
+add_executable(GeoMod_Tests main.cpp)
+target_link_libraries(GeoMod_Tests PRIVATE GeoMod)
 
-bob_export_target(GeoMod_app)
+bob_export_target(GeoMod_Tests)
 
 install(FILES ${GeoMod_headers} DESTINATION include)
 
