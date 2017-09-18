@@ -9,7 +9,6 @@ namespace GMD
     std::cout << "Starting Simmetrix" << std::endl;
     SimPartitionedMesh_start(&argc, &argv);
     Sim_logOn( Sim_log_file_name);
-    SimUtil_start();
     Sim_readLicenseFile(0);
     SimModel_start();
     MS_init();
@@ -21,7 +20,6 @@ namespace GMD
     MS_exit();
     SimModel_stop();
     Sim_unregisterAllKeys();
-    SimUtil_stop();
     Sim_logOff();
     SimPartitionedMesh_stop();
   }
