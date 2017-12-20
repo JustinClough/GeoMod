@@ -26,7 +26,7 @@ target_include_directories(GeoMod PUBLIC
 
 bob_export_target(GeoMod)
 
-add_executable(GeoMod_Tests main.cpp)
+add_executable(GeoMod_Tests main_tests.cpp)
 target_link_libraries(GeoMod_Tests PRIVATE GeoMod)
 
 bob_export_target(GeoMod_Tests)

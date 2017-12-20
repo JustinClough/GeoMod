@@ -3,6 +3,8 @@
 
 #include "GeoMod.hpp"
 
+void run_all_tests();
+
 void test0();
 void test1();
 void test2();
